@@ -7,6 +7,8 @@ import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:jitsi_meet/jitsi_meeting_listener.dart';
 import 'package:jitsi_meet/room_name_constraint.dart';
 import 'package:jitsi_meet/room_name_constraint_type.dart';
+import 'package:katha/login.dart';
+import 'package:katha/splash.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: Splash(),
     );
   }
 }
@@ -59,11 +61,11 @@ class _HomePageState extends State<HomePage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.book,),
-            label: ('Story'),
+            title: Text('Story'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Contact',
+            title: Text('Contact'),
           ),
         ],
         //selectedLabelStyle: TextStyle(fontSize: 22),

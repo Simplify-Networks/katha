@@ -4,6 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
 import 'main.dart';
 
 class Login extends StatefulWidget {
@@ -165,7 +170,7 @@ class FacebookButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
         ),
         onPressed: () {
-          //Implement Facebook login here
+          signInWithFacebook();
         },
       ),
     );
@@ -185,7 +190,7 @@ class GoogleButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
         ),
         onPressed: () {
-          //Implement Google login here
+          signInWithGoogle();
         },
       ),
     );
@@ -215,7 +220,63 @@ class LogintWithEmailText extends StatelessWidget {
   }
 }
 
+FirebaseAuth _auth = FirebaseAuth.instance;
 
+signInWithGoogle() async {
+  try {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
 
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = await googleUser
+        .authentication;
 
+    // Create a new credential
+    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    final UserCredential authResult = await _auth.signInWithCredential(
+        credential);
+    final User user = authResult.user;
+    print(user);
+    // setState(() {
+    //   isLogin = true;
+    //   userName = user.displayName;
+    //   userProfilePic = user.photoURL;
+    // });
+  } catch (error) {
+    print(error);
+  }
+}
+
+signInWithFacebook() async {
+  // Trigger the sign-in flow
+  final LoginResult result = await FacebookAuth.instance.login();
+
+  switch (result.status) {
+    case FacebookAuthLoginResponse.ok:
+    // get the user data
+    /*final userData = await FacebookAuth.instance.getUserData(fields: "name, picture.height(200)");
+      setState(() {
+        userProfilePic = userData["picture"]["data"]["url"].toString();
+        userName = userData["name"].toString();
+        isLogin = true;
+      });*/
+      break;
+    case FacebookAuthLoginResponse.cancelled:
+      print("login cancelled");
+      break;
+    default:
+      print("login failed");
+  }
+
+  // Create a credential from the access token
+  final FacebookAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(result.accessToken.token);
+
+  // Once signed in, return the UserCredential
+  await _auth.signInWithCredential(facebookAuthCredential);
+}
 

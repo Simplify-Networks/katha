@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:katha/main.dart';
 
@@ -7,8 +8,8 @@ import 'login.dart';
 
 void main(){
   runApp(MaterialApp(home:Splash()));
-
 }
+
 class Splash extends StatefulWidget {
   @override
   _SplashState createState() => _SplashState();
@@ -16,9 +17,22 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
 
+  // Define an async function to initialize FlutterFire
+  void initializeFlutterFire() async {
+    try {
+      // Wait for Firebase to initialize and set `_initialized` state to true
+      await Firebase.initializeApp();
+      print("Firebase initialized successfully");
+    } catch(e) {
+      // Set `_error` state to true if Firebase initialization fails
+      print("Firebase fail to initialize");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    initializeFlutterFire();
     /*Future.delayed(
         Duration(seconds: 3),
         () {

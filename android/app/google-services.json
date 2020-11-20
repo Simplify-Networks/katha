@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "267564671616",
+    "firebase_url": "https://katha-app-aee4a.firebaseio.com",
+    "project_id": "katha-app-aee4a",
+    "storage_bucket": "katha-app-aee4a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267564671616:android:11ea474ced8d3ce904bc65",
+        "android_client_info": {
+          "package_name": "com.simplify.katha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "267564671616-no4d4ol3gbj6vv5d15kcd406nc5dfqb3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simplify.katha",
+            "certificate_hash": "5be3fcdbe87b79c8160734656941eda84a20489b"
+          }
+        },
+        {
+          "client_id": "267564671616-u4t3nof14tkjrigpsmthu6kn283egmi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMttNQIv2GxsR-0EMv2KC1rd4vC07Z3EQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "267564671616-u4t3nof14tkjrigpsmthu6kn283egmi3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
