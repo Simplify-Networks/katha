@@ -18,5 +18,6 @@ public final class GeneratedPluginRegistrant {
     flutterEngine.getPlugins().add(new ec.dina.flutter_facebook_auth.FlutterFacebookAuthPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.googlesignin.GoogleSignInPlugin());
     flutterEngine.getPlugins().add(new com.gunschu.jitsi_meet.JitsiMeetPlugin());
+    flutterEngine.getPlugins().add(new com.aboutyou.dart_packages.sign_in_with_apple.SignInWithApplePlugin());
   }
 }
