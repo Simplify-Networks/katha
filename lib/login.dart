@@ -4,14 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:katha/loginwithemail.dart';
 
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
 
 import 'main.dart';
 
@@ -217,7 +216,10 @@ class LogintWithEmailText extends StatelessWidget {
           ),
         ),
         onTap:(){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginWithEmail())
+          );
         },
       ),
     );

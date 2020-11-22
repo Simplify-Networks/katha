@@ -8,6 +8,7 @@ import 'package:jitsi_meet/jitsi_meeting_listener.dart';
 import 'package:jitsi_meet/room_name_constraint.dart';
 import 'package:jitsi_meet/room_name_constraint_type.dart';
 import 'package:katha/login.dart';
+import 'package:katha/loginwithemail.dart';
 import 'package:katha/splash.dart';
 
 void main() {
