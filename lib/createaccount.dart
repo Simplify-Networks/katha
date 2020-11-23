@@ -2,15 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:katha/createaccount.dart';
+import 'package:katha/loginwithemail.dart';
 
 
-class LoginWithEmail extends StatefulWidget {
+class createaccount extends StatefulWidget {
   @override
-  _LoginWithEmailState createState() => _LoginWithEmailState();
+  _creataaccountState createState() => _creataaccountState();
 }
 
-class _LoginWithEmailState extends State<LoginWithEmail> {
+class _creataaccountState extends State<createaccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,14 +27,15 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-             Logo(),
-             TitleText(),
-             SubTitle(),
-             Spacer(),
-             EnterEmail(),
-             EnterPassword(),
-             SignIn(),
-             signup(),
+            Logo(),
+            TitleText(),
+            SubTitle(),
+            Spacer(),
+            Name(),
+            EnterEmail(),
+            EnterPassword(),
+            SignIn(),
+            signup(),
             SizedBox(
               height: 40,
             )
@@ -100,6 +101,34 @@ class SubTitle extends StatelessWidget {
   }
 }
 
+class Name extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 65.0,
+      alignment: Alignment.center,
+      padding: EdgeInsets.fromLTRB(25, 15, 25, 0),
+      child: TextField(
+        style: TextStyle(
+          color: Colors.white,
+        ),
+        decoration: new InputDecoration(
+          hintText: 'Name',
+          hintStyle: TextStyle(color: Colors.white),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+        ).copyWith(isDense: true),
+      ),
+    );
+  }
+}
+
 class EnterEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -123,7 +152,7 @@ class EnterEmail extends StatelessWidget {
             borderSide: BorderSide(color: Colors.white),
           ),
         ).copyWith(isDense: true),
-        ),
+      ),
     );
   }
 }
@@ -170,7 +199,7 @@ class SignIn extends StatelessWidget {
         onPressed: () {
         },
         child: Text(
-          "Sign In",
+          "Sign Up",
           style: TextStyle(
             color: Color(0xFF000000),
           ),
@@ -187,7 +216,7 @@ class signup extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(25, 10, 25, 0),
       child:InkWell(
         child: Text(
-          "Do not have an Account? Create Here",
+          "Already have an Account? Login Here Here",
           textAlign: TextAlign.center,
           style: new TextStyle(
               fontSize: 15.0,
@@ -198,7 +227,7 @@ class signup extends StatelessWidget {
         onTap:(){
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => createaccount())
+              MaterialPageRoute(builder: (context) => LoginWithEmail())
           );
         },
       ),
