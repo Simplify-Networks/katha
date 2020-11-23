@@ -37,6 +37,7 @@ dependencies:
   flutter_facebook_auth: "^0.3.0"
   sign_in_with_apple: ^2.5.4
   http: ^0.12.2
+  email_validator: ^1.0.0
 
 dev_dependencies:
   flutter_test:

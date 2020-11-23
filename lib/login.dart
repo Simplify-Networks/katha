@@ -207,7 +207,7 @@ class LogintWithEmailText extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(25, 10, 25, 0),
       child:InkWell(
         child: Text(
-          "Login with your email",
+          "Login with your Email",
           textAlign: TextAlign.center,
           style: new TextStyle(
               fontSize: 15.0,
