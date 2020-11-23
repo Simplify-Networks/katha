@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>267564671616-6g7ffvlo243mkcs4eg6u8osn1iuljd3r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.267564671616-6g7ffvlo243mkcs4eg6u8osn1iuljd3r</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>267564671616-no4d4ol3gbj6vv5d15kcd406nc5dfqb3.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC0F9H815rLJNUG_qXOeuDgVs6DZgs0oaw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>267564671616</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.simplify.katha</string>
+	<key>PROJECT_ID</key>
+	<string>katha-app-aee4a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>katha-app-aee4a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:267564671616:ios:439504b9d256338c04bc65</string>
+	<key>DATABASE_URL</key>
+	<string>https://katha-app-aee4a.firebaseio.com</string>
+</dict>
+</plist>

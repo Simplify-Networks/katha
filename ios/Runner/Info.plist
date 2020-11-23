@@ -45,5 +45,19 @@
     <string>$(PRODUCT_NAME) MyApp needs access to your camera for meetings.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>$(PRODUCT_NAME) MyApp needs access to your microphone for meetings.</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+    	<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+    			<!-- TODO Replace this value: -->
+    			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+    			<string>com.googleusercontent.apps.267564671616-6g7ffvlo243mkcs4eg6u8osn1iuljd3r</string>
+    		</array>
+    	</dict>
+    </array>
+    <!-- End of the Google Sign-in Section -->
 </dict>
 </plist>

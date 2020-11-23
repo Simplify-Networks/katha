@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Katha</string>
+    <string name="facebook_app_id">368011097791390</string>
+    <string name="fb_login_protocol_scheme">fb368011097791390</string>
+
+</resources>

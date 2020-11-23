@@ -31,6 +31,13 @@ dependencies:
   jitsi_meet: ^1.0.0
   flutter_signin_button: ^1.1.0
 
+  firebase_core: "^0.5.0+1"
+  firebase_auth: "^0.18.1+2"
+  google_sign_in: "^4.5.1"
+  flutter_facebook_auth: "^0.3.0"
+  sign_in_with_apple: ^2.5.4
+  http: ^0.12.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
