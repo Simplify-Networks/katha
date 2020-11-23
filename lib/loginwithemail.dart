@@ -134,6 +134,7 @@ class EnterPassword extends StatelessWidget {
       alignment: Alignment.center,
       padding: EdgeInsets.fromLTRB(25, 15, 25, 0),
       child: TextField(
+        obscureText: true,
         style: TextStyle(
           color: Colors.white,
         ),
