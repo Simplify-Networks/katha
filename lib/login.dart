@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -30,6 +31,7 @@ bool isAppleLogin = false;
 String profilePicPath;
 Uint8List profilePicByte;
 String userProfilePic = "";
+String getusername;
 
 class Login extends StatefulWidget {
   @override
@@ -393,7 +395,7 @@ signInWithApple() async{
 isFirebaseAuthSignedIn(BuildContext context) async{
 //    await _auth.signOut();
   try {
-    _auth.authStateChanges().listen((User user) {
+    _auth.authStateChanges().listen((User user) async {
       if (user == null) {
           isLogin = false;
           print('User is currently signed out!');
@@ -416,7 +418,7 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           userName = appleName;
         }
 
-        checkUserExist(email,userID).then((value) {
+        checkUserExist(email).then((value) {
           if(!value) {
             registerUser(email, userID, userType, userName);
           }
@@ -435,7 +437,10 @@ isFirebaseAuthSignedIn(BuildContext context) async{
         }
         userName = user.displayName;
 
-
+        if(userName == "" || userName == null){
+            await checkUsername(email);
+            userName = getusername;
+        }
         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(imgPath: userProfilePic, username: userName)));
       }
     });
@@ -445,9 +450,22 @@ isFirebaseAuthSignedIn(BuildContext context) async{
   }
 }
 
-Future<bool> checkUserExist(final String email, final String userID) async{
+Future checkUsername(final String email) async{
   final url = "http://35.198.227.22/getUser"; // production server
-  Map body = {"email": email, "userID": userID};
+  Map body = {"email": email};
+  var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+  // print("Response: " + response.body);
+  var extractdata = json.decode(response.body);
+  List data;
+  data = extractdata["result"];
+  getusername = data[0]["userName"];
+
+  return getusername;
+}
+
+Future<bool> checkUserExist(final String email) async{
+  final url = "http://35.198.227.22/getUser"; // production server
+  Map body = {"email": email};
   var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
   // print("Response: " + response.body);
   var extractdata = json.decode(response.body);

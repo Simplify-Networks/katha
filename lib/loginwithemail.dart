@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:katha/createaccount.dart';
 import 'package:http/http.dart' as http;
 import 'package:katha/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 String _email,_password= "";
 final _formKey = GlobalKey<FormState>();
 String getpassword;
+final FirebaseAuth mAuth = FirebaseAuth.instance;
 
 class LoginWithEmail extends StatefulWidget {
   @override
@@ -268,6 +270,7 @@ signin(BuildContext context) async{
   print(_email);
 
   if(await checkUserExist(_email, _password) == true){
+    signinfirebase(_email, _password);
     showdynamicDialog(congratulation, success, context);
   } else {
     showdynamicDialog(warning, warninglong, context);
@@ -291,6 +294,17 @@ Future<bool> checkUserExist(final String email, _password) async{
   }else{
     return false;
   }
+}
+
+void signinfirebase(_email, _password) async {
+    try{
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _email,
+          password: _password
+      );
+    }catch(e){
+      print(e.toString());
+    }
 }
 
 showdynamicDialog(text1, text2, BuildContext context) {

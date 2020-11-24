@@ -1,15 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:katha/login.dart';
 import 'package:katha/loginwithemail.dart';
 import 'package:http/http.dart' as http;
+import 'package:katha/main.dart';
 
 String _name,_email,_password= "";
 String _sessionid = "";
 String usertype = "";
 final _formKey = GlobalKey<FormState>();
+final FirebaseAuth mAuth = FirebaseAuth.instance;
+TextEditingController emailController = new TextEditingController();
+TextEditingController passwordController = new TextEditingController();
 
 class createaccount extends StatefulWidget {
   @override
@@ -169,6 +175,7 @@ class EnterEmail extends StatelessWidget {
       alignment: Alignment.center,
       padding: EdgeInsets.fromLTRB(25, 15, 25, 0),
       child: TextFormField(
+        controller: emailController,
         style: TextStyle(
           color: Colors.white,
         ),
@@ -213,6 +220,7 @@ class EnterPassword extends StatelessWidget {
       alignment: Alignment.center,
       padding: EdgeInsets.fromLTRB(25, 15, 25, 0),
       child: TextFormField(
+        controller: passwordController,
         obscureText: true,
         style: TextStyle(
           color: Colors.white,
@@ -311,6 +319,24 @@ signupwithemail(BuildContext context) async{
     showAlertDialog(context);
   }else{
     await signupsuccess(_name, _email, _password, _sessionid, usertype, context);
+    await linkfirebase(_email,_password);
+  }
+}
+
+void linkfirebase(_email, _password) async{
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _email,
+        password: _password
+    );
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'weak-password') {
+      print('The password provided is too weak.');
+    } else if (e.code == 'email-already-in-use') {
+      print('The account already exists for that email.');
+    }
+  } catch (e) {
+    print(e);
   }
 }
 
