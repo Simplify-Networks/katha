@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:katha/loginwithemail.dart';
+import 'main.dart';
 
 
 class createaccount extends StatefulWidget {
@@ -197,6 +198,7 @@ class SignIn extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
         ),
         onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
         },
         child: Text(
           "Sign Up",
