@@ -38,6 +38,9 @@ dependencies:
   sign_in_with_apple: ^2.5.4
   http: ^0.12.2
   email_validator: ^1.0.0
+  crypto: ^2.1.5
+  firebase_dynamic_links: ^0.5.1
+  path_provider: ^1.6.24
 
 dev_dependencies:
   flutter_test:
