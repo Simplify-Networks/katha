@@ -2,15 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'fragment1.dart';
+import 'fragment2.dart';
+import 'SizeConfig.dart';
 import 'package:jitsi_meet/feature_flag/feature_flag_enum.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:jitsi_meet/jitsi_meeting_listener.dart';
 import 'package:jitsi_meet/room_name_constraint.dart';
 import 'package:jitsi_meet/room_name_constraint_type.dart';
-import 'package:katha/createaccount.dart';
-import 'package:katha/login.dart';
-import 'package:katha/loginwithemail.dart';
-import 'package:katha/splash.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,15 +19,36 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            SizeConfig().init(constraints, orientation);
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'HomeScreen App',
+              home: HomePage(),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+/*class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: createaccount(),
+      home: HomePage(),
     );
   }
-}
+}*/
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -36,7 +56,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   PageController _pageController = PageController();
-  List<Widget> _screens = [Page1(),Page2()];
+  List<Widget> _screens = [Fragment1(),Fragment2(storyTitle: ""),Fragment3(),Fragment4()];
   int _currentIndex = 0;
 
   void _onPageChanged(int index){
@@ -59,15 +79,24 @@ class _HomePageState extends State<HomePage> {
         physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.book,),
-            title: Text('Story'),
+            label: ('Story'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            title: Text('Contact'),
+            label: 'Contacts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Account',
           ),
         ],
         //selectedLabelStyle: TextStyle(fontSize: 22),
@@ -81,59 +110,83 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
-class Page1 extends StatefulWidget {
+class Fragment3 extends StatefulWidget {
   @override
-  _Page1State createState() => _Page1State();
+  _Fragment3State createState() => _Fragment3State();
 }
 
-class _Page1State extends State<Page1> with AutomaticKeepAliveClientMixin {
-
-  var serverText = "";
-  var roomText = "dfkhjbosdifjgolshidkjhikdf";
-  var subjectText = "";
-  var nameText = "";
-  var emailText = "";
-  var isAudioOnly = true;
-  var isAudioMuted = true;
-  var isVideoMuted = true;
-
-  @override
-  void initState() {
-    super.initState();
-    JitsiMeet.addListener(JitsiMeetingListener(
-        onConferenceWillJoin: _onConferenceWillJoin,
-        onConferenceJoined: _onConferenceJoined,
-        onConferenceTerminated: _onConferenceTerminated,
-        onError: _onError));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    JitsiMeet.removeAllListeners();
-  }
-
+class _Fragment3State extends State<Fragment3> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    Size size = MediaQuery.of(context).size;
+    double heigh = size.height;
+    double width = size.width;
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
-      appBar: AppBar(
-        title: Text("Story"),
-      ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context,index){
-
-          /*return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+      body: Column(
+        children: <Widget>[
+          Container(
+            constraints: BoxConstraints.expand(
+              height: 200.0,
+            ),
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.0,1.0],
+                  tileMode: TileMode.clamp
+              ),
+            ),
+            child: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20,65,0,0),
+                  child: Row(
+                    children: <Widget>[
+                      CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage: NetworkImage("https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg"),
+                        backgroundColor: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(130,80,0,0),
+                  child: Column(
+                    children: <Widget>[
+                      Text("Neil Sullivan Paul", style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 3 * SizeConfig.textMultiplier,
+                          fontWeight: FontWeight.bold
+                      ),),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(130,115,0,0),
+                  child: Column(
+                    children: <Widget>[
+                      Text("Protorix", style: TextStyle(
+                        color: Colors.white60,
+                        fontSize: 1.5 * SizeConfig.textMultiplier,
+                      ),),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(5),
+            height: 100,
+            width: 400,
+            child: Card(
               child: Column(
                 children: <Widget>[
                   Text(
-                    //'Index number = ${index + 1}',
-                    'Story Title ${index + 1}',
+                    'Story Title',
+                    textAlign: TextAlign.start,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
@@ -141,157 +194,54 @@ class _Page1State extends State<Page1> with AutomaticKeepAliveClientMixin {
                   ),
                   Text(
                     'Story description',
+                    textAlign: TextAlign.start,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
-          );*/
-
-          return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: new InkWell(
-                onTap: () {
-                  String storyTitle = 'Story Title ${index + 1}';
-                  _joinMeeting(storyTitle);
-                },
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                    //'Index number = ${index + 1}',
-                    'Story Title ${index + 1}',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                    height: 10,
-                    ),
-                    Text(
-                    'Story description',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    )
-                 ],
-                ),
+          ),
+          Container(
+            height: 400,
+            width: 800,
+            padding: EdgeInsets.all(5),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    height: 500,
+                    width: 500,
+                    color: Colors.red,
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Container(
+                    height: 500,
+                    width: 500,
+                    color: Colors.black,
+                  ),
+                ],
               ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
-
-  String _Base64(String s) {
-    String credentials = s;
-    Codec<String, String> stringToBase64 = utf8.fuse(base64);
-    String encoded = stringToBase64.encode(credentials);
-    String replaced = encoded.replaceAll(RegExp('='), '');
-    return replaced;
-  }
-
-  _joinMeeting(String storyTitle) async {
-    String serverUrl =
-    serverText.trim()?.isEmpty ?? "" ? null : serverText;
-    String encoded = _Base64(storyTitle);
-    roomText = encoded;
-    subjectText = storyTitle;
-
-    try {
-      // Enable or disable any feature flag here
-      // If feature flag are not provided, default values will be used
-      // Full list of feature flags (and defaults) available in the README
-      Map<FeatureFlagEnum, bool> featureFlags = {
-        FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
-        FeatureFlagEnum.LIVE_STREAMING_ENABLED: false,
-        FeatureFlagEnum.INVITE_ENABLED: false,
-        //FeatureFlagEnum.MEETING_NAME_ENABLED: false,
-      };
-
-      // Here is an example, disabling features for each platform
-      if (Platform.isAndroid) {
-        // Disable ConnectionService usage on Android to avoid issues (see README)
-        featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
-      } else if (Platform.isIOS) {
-        // Disable PIP on iOS as it looks weird
-        featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
-      }
-
-      // Define meetings options here
-      var options = JitsiMeetingOptions()
-        ..room = roomText
-        ..serverURL = serverUrl
-        ..subject = subjectText
-        ..userDisplayName = nameText
-        ..userEmail = emailText
-        ..audioOnly = isAudioOnly
-        ..audioMuted = isAudioMuted
-        ..videoMuted = isVideoMuted
-        ..featureFlags.addAll(featureFlags);
-
-      debugPrint("JitsiMeetingOptions: $options");
-      await JitsiMeet.joinMeeting(
-        options,
-        listener: JitsiMeetingListener(onConferenceWillJoin: ({message}) {
-          debugPrint("${options.room} will join with message: $message");
-        }, onConferenceJoined: ({message}) {
-          debugPrint("${options.room} joined with message: $message");
-        }, onConferenceTerminated: ({message}) {
-          debugPrint("${options.room} terminated with message: $message");
-        }),
-        // by default, plugin default constraints are used
-        //roomNameConstraints: new Map(), // to disable all constraints
-        //roomNameConstraints: customContraints, // to use your own constraint(s)
-      );
-    } catch (error) {
-      debugPrint("error: $error");
-    }
-  }
-
-  static final Map<RoomNameConstraintType, RoomNameConstraint>
-  customContraints = {
-    RoomNameConstraintType.MAX_LENGTH: new RoomNameConstraint((value) {
-      return value.trim().length <= 50;
-    }, "Maximum room name length should be 30."),
-    RoomNameConstraintType.FORBIDDEN_CHARS: new RoomNameConstraint((value) {
-      return RegExp(r"[$€£]+", caseSensitive: false, multiLine: false)
-          .hasMatch(value) ==
-          false;
-    }, "Currencies characters aren't allowed in room names."),
-  };
-
-  void _onConferenceWillJoin({message}) {
-    debugPrint("_onConferenceWillJoin broadcasted with message: $message");
-  }
-
-  void _onConferenceJoined({message}) {
-    debugPrint("_onConferenceJoined broadcasted with message: $message");
-  }
-
-  void _onConferenceTerminated({message}) {
-    debugPrint("_onConferenceTerminated broadcasted with message: $message");
-  }
-
-  _onError(error) {
-    debugPrint("_onError broadcasted: $error");
-  }
-
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 }
 
-class Page2 extends StatefulWidget {
+class Fragment4 extends StatefulWidget {
   @override
-  _Page2State createState() => _Page2State();
+  _Fragment4State createState() => _Fragment4State();
 }
 
-class _Page2State extends State<Page2> {
+class _Fragment4State extends State<Fragment4> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Contact"),
-      ),
-    );
+    return Container();
   }
 }
+
 

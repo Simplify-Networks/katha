@@ -1,14 +1,13 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/kahweing/Desktop/flutter
-FLUTTER_APPLICATION_PATH=/Users/kahweing/Desktop/kathapp
-FLUTTER_TARGET=/Users/kahweing/Desktop/kathapp/lib/main.dart
+FLUTTER_ROOT=/Users/deneb/Downloads/flutter
+FLUTTER_APPLICATION_PATH=/Users/deneb/Desktop/flutter_Workspace/katha
+FLUTTER_TARGET=/Users/deneb/Desktop/flutter_Workspace/katha/lib/splash.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
 OTHER_LDFLAGS=$(inherited) -framework Flutter
-FLUTTER_FRAMEWORK_DIR=/Users/kahweing/Desktop/flutter/bin/cache/artifacts/engine/ios
+FLUTTER_FRAMEWORK_DIR=/Users/deneb/Downloads/flutter/bin/cache/artifacts/engine/ios
 FLUTTER_BUILD_NAME=1.0.0
 FLUTTER_BUILD_NUMBER=1
-DART_DEFINES=flutter.inspector.structuredErrors%3Dtrue
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true
 TREE_SHAKE_ICONS=false
