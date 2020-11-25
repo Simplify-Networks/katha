@@ -1,11 +1,16 @@
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:katha/RoomDetails.dart';
+import 'package:katha/login.dart';
 import 'SenderScreen.dart';
 
+import 'package:http/http.dart' as http;
+
+String getusername;
 
 class Fragment2 extends StatefulWidget {
   final String storyTitle;
@@ -24,17 +29,40 @@ class _Fragment2State extends State<Fragment2> {
   List<String> _notesForDisplay = List<String>();
 
 
-  void assignVariable() {
-    for (var i = 1; i <= 10; i++) {
-      _notes.add('Neil Sullivan Paul $i');
-      _notesForDisplay.add('Neil Sullivan Paul $i');
+  void assignVariable(List name) {
+    for (var i = 0; i < name.length; i++) {
+      _notes.add(name[i]["userName"]);
+      _notesForDisplay.add(name[i]["userName"]);
+      print(name[i]["userName"]);
     }
+  }
+
+  Future checkUsername() async{
+    final url = "http://35.198.227.22/getUsername"; // production server
+    Map body = {};
+    var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+    // print("Response: " + response.body);
+    var extractdata = json.decode(response.body);
+    List data;
+    data = extractdata["result"];
+    getusername = data[0]["userName"];
+    print(data);
+    return data;
+  }
+
+  checkfordisplayusername() async {
+    List list = await checkUsername();
+    setState(() {
+      assignVariable(list);
+    });
   }
 
 
   @override
   void initState() {
-    assignVariable();
+    // checkUsername();
+    // assignVariable();
+    checkfordisplayusername();
     super.initState();
   }
 

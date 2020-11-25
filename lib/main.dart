@@ -6,7 +6,7 @@ import 'fragment2.dart';
 import 'jitsiMeet.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(home:Splash()));
 }
 
 class MyApp extends StatelessWidget {
