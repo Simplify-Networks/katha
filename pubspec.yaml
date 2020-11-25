@@ -43,6 +43,7 @@ dependencies:
   crypto: ^2.1.5
   firebase_dynamic_links: ^0.5.1
   path_provider: ^1.6.24
+  shared_preferences: ^0.5.12+4
 
 
 dev_dependencies:

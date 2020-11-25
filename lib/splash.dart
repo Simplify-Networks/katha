@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:katha/GlobalStorage.dart';
 import 'package:katha/main.dart';
 
 import 'ReceiverScreen.dart';
+import 'UserModel.dart';
 import 'login.dart';
 
 void main(){
@@ -30,10 +32,26 @@ class _SplashState extends State<Splash> {
     }
   }
 
+  void getUserInfo() async
+  {
+    UserModel userModel = await GlobalStorage().getUser();
+
+    if(userModel != null)
+    {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
+    else
+    {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+    }
+  }
+
+
   @override
   void initState() {
     super.initState();
     initializeFlutterFire();
+    getUserInfo();
     /*Future.delayed(
         Duration(seconds: 3),
         () {
@@ -44,7 +62,7 @@ class _SplashState extends State<Splash> {
         },
     );*/
 
-    Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login())));
+    //Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login())));
   }
 
   @override
