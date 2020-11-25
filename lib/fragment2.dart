@@ -1,13 +1,10 @@
-import 'dart:async';
+
 import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:katha/RoomDetails.dart';
-import 'package:katha/jitsiMeet.dart';
 import 'SenderScreen.dart';
-import 'SizeConfig.dart';
 
 
 class Fragment2 extends StatefulWidget {
@@ -193,7 +190,7 @@ class _Fragment2State extends State<Fragment2> {
                             children: <Widget>[
                               Text("AVAILABLE", style: TextStyle(
                                   color: Colors.green,
-                                  fontSize: 1.5 * SizeConfig.textMultiplier,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold
                               ),),
                             ],

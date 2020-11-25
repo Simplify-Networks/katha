@@ -1,14 +1,9 @@
-
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'FirebaseDB.dart';
-import 'package:katha/login.dart';
 import 'package:katha/splash.dart';
 import 'fragment1.dart';
 import 'fragment2.dart';
-import 'SizeConfig.dart';
 import 'jitsiMeet.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -18,50 +13,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return OrientationBuilder(
-          builder: (context, orientation) {
-            SizeConfig().init(constraints, orientation);
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'HomeScreen App',
-              home: Splash(),
-            );
-          },
-        );
-      },
-    );
+    return LayoutBuilder();
   }
 }
 
-/*class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
-    );
-  }
-}*/
 class HomePage extends StatefulWidget {
-  final String imgPath;
-  String username;
-
-  HomePage({Key key, this.imgPath, this.username}) : super(key: key);
-
   @override
-  _HomePageState createState() => _HomePageState(imgPath, username);
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  String imgPath;
-  String username;
-  _HomePageState(this.imgPath, this.username);
+
   PageController _pageController = PageController();
   List<Widget> _screens;
   int _currentIndex = 0;
@@ -91,7 +53,7 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
-    _screens = [Fragment1(imgPaths1: imgPath, usernames1: username),Fragment2(storyTitle: ""),Fragment3(),Fragment4()];
+    _screens = [Fragment1(),Fragment2(storyTitle: ""),Fragment3(),Fragment4()];
     return Scaffold(
       body: PageView(
         controller: _pageController,
@@ -140,8 +102,7 @@ class _Fragment3State extends State<Fragment3> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double heigh = size.height;
-    double width = size.width;
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -178,7 +139,7 @@ class _Fragment3State extends State<Fragment3> {
                     children: <Widget>[
                       Text("Neil Sullivan Paul", style: TextStyle(
                           color: Colors.white,
-                          fontSize: 3 * SizeConfig.textMultiplier,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold
                       ),),
                     ],
@@ -190,7 +151,7 @@ class _Fragment3State extends State<Fragment3> {
                     children: <Widget>[
                       Text("Protorix", style: TextStyle(
                         color: Colors.white60,
-                        fontSize: 1.5 * SizeConfig.textMultiplier,
+                        fontSize:30,
                       ),),
                     ],
                   ),

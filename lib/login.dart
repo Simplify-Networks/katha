@@ -22,6 +22,9 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
+import 'GlobalStorage.dart';
+import 'UserModel.dart';
+
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 String appleName, appleEmail;
@@ -32,6 +35,7 @@ String profilePicPath;
 Uint8List profilePicByte;
 String userProfilePic = "";
 String getusername;
+UserModel userModel = new UserModel();
 
 class Login extends StatefulWidget {
   @override
@@ -41,8 +45,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   void initState() {
-    super.initState();
     isFirebaseAuthSignedIn(context);
+    super.initState();
   }
 
   @override
@@ -428,10 +432,12 @@ isFirebaseAuthSignedIn(BuildContext context) async{
         if(user.photoURL == null){
 
         }else if(user.photoURL.contains("facebook")){
+          print("ccc fb");
           userProfilePic = user.photoURL + "?height=200";
           downloadImage(userProfilePic);
         }
         else{
+          print("ccc google");
           userProfilePic = user.photoURL.replaceAll("s96-c", "s200-c");
           downloadImage(userProfilePic);
         }
@@ -441,7 +447,16 @@ isFirebaseAuthSignedIn(BuildContext context) async{
             await checkUsername(email);
             userName = getusername;
         }
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(imgPath: userProfilePic, username: userName)));
+
+        userModel.email = email;
+        userModel.userID = userID;
+        userModel.name = userName;
+        userModel.LoginType = userType;
+        userModel.profilePicPath = userProfilePic;
+
+        GlobalStorage().setUser(userModel);
+
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
       }
     });
 //       signOutWithGoogle();
@@ -500,7 +515,7 @@ profilePicturePath() async{
 
 downloadImage(final image) async{
   final path = profilePicPath;
-  print(path);
+  //print(path);
   try {
     if (await File(path).exists()) {
       await File(path).delete();

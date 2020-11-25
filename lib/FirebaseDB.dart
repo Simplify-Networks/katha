@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:katha/GlobalStorage.dart';
 import 'package:katha/jitsiMeet.dart';
+
+import 'UserModel.dart';
 
 class FirebaseDB {
   static final FirebaseDB _firebaseDB = FirebaseDB._internal();
@@ -16,9 +19,12 @@ class FirebaseDB {
   StreamSubscription <Event> updates;
   final databaseReference = FirebaseDatabase.instance.reference();
 
-  void startDBListener()
+
+  void startDBListener() async
   {
-    updates = databaseReference.child("call").child('userid1').onChildAdded.listen((event) {
+    final userM = await GlobalStorage().getUser();
+    String userid = userM.userID;
+    updates = databaseReference.child("call").child(userid).onChildAdded.listen((event) {
 
       if(event.snapshot.key == "roomID")
       {
