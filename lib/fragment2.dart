@@ -1,18 +1,19 @@
-import 'dart:convert';
-import 'dart:io';
+import 'dart:async';
+import 'dart:math';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:jitsi_meet/feature_flag/feature_flag_enum.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
-import 'package:jitsi_meet/jitsi_meeting_listener.dart';
-import 'package:jitsi_meet/room_name_constraint.dart';
-import 'package:jitsi_meet/room_name_constraint_type.dart';
+import 'package:katha/RoomDetails.dart';
+import 'package:katha/jitsiMeet.dart';
+import 'SenderScreen.dart';
 import 'SizeConfig.dart';
 
 
 class Fragment2 extends StatefulWidget {
   final String storyTitle;
   const Fragment2 ({ Key key, this.storyTitle }): super(key: key);
+  //final FirebaseApp app;
 
   @override
   _Fragment2State createState() => _Fragment2State();
@@ -20,17 +21,11 @@ class Fragment2 extends StatefulWidget {
 
 class _Fragment2State extends State<Fragment2> {
 
+  final databaseReference = FirebaseDatabase.instance.reference();
+
   List<String> _notes = List<String>();
   List<String> _notesForDisplay = List<String>();
 
-  var serverText = "";
-  var roomText = "dfkhjbosdifjgolshidkjhikdf";
-  var subjectText = "";
-  var nameText = "";
-  var emailText = "";
-  var isAudioOnly = true;
-  var isAudioMuted = true;
-  var isVideoMuted = true;
 
   void assignVariable() {
     for (var i = 1; i <= 10; i++) {
@@ -39,22 +34,27 @@ class _Fragment2State extends State<Fragment2> {
     }
   }
 
+
   @override
   void initState() {
     assignVariable();
-    JitsiMeet.addListener(JitsiMeetingListener(
-        onConferenceWillJoin: _onConferenceWillJoin,
-        onConferenceJoined: _onConferenceJoined,
-        onConferenceTerminated: _onConferenceTerminated,
-        onError: _onError));
     super.initState();
   }
 
   @override
+  void dispose() {
+    //databaseReference.child('call').child('userid').remove();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
     double heigh = size.height;
     double width = size.width;
+    String roomID = "";
+    
     return Scaffold(
       body: Stack(
         overflow: Overflow.clip,
@@ -215,7 +215,43 @@ class _Fragment2State extends State<Fragment2> {
                       ],
                     ),
                     onTap:(){
-                      _joinMeeting(widget.storyTitle);
+                      //_joinMeeting(widget.storyTitle);
+                      //debugPrint('Inside = '+_notesForDisplay[i]);
+
+                      /*databaseReference.child("flutterDevsTeam1").set({
+                        'name': _notesForDisplay[i],
+                        'title': widget.storyTitle
+                      });*/
+
+                      var r = RoomDetails();
+
+                      if(widget.storyTitle == "")
+                      {
+                        const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+                        Random _rnd = Random();
+                        String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+                            length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+                        roomID = getRandomString(15);
+                        //jitsiMeet().joinMeeting("",roomID);
+
+                        r.roomID = roomID;
+                        r.receiverName = _notesForDisplay[i];
+                      }
+                      else
+                      {
+                        r.storyTitle = widget.storyTitle;
+                        r.receiverName = _notesForDisplay[i];
+                        //jitsiMeet().joinMeeting(widget.storyTitle,"");
+                      }
+
+                      databaseReference.child("call").child("userid").set({
+                        'name': _notesForDisplay[i],
+                        'title': widget.storyTitle,
+                        'status':'dialing',
+                        'roomID': roomID,
+                      });
+
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SenderScreen()));
                     },
                   ),
                 );
@@ -227,110 +263,6 @@ class _Fragment2State extends State<Fragment2> {
     );
   }
 
-  String _Base64(String s) {
-    String credentials = s;
-    Codec<String, String> stringToBase64 = utf8.fuse(base64);
-    String encoded = stringToBase64.encode(credentials);
-    String replaced = encoded.replaceAll(RegExp('='), '');
-    return replaced;
-  }
-
-  _joinMeeting(String storyTitle) async {
-    String serverUrl =
-    serverText.trim()?.isEmpty ?? "" ? null : serverText;
-
-    if(storyTitle != "")
-    {
-      String encoded = _Base64(storyTitle);
-      roomText = encoded;
-      subjectText = storyTitle;
-    }
-    else
-    {
-      String encoded = _Base64("General Meeting");
-      roomText = encoded;
-      subjectText = "General Meeting";
-    }
-
-
-    try {
-      // Enable or disable any feature flag here
-      // If feature flag are not provided, default values will be used
-      // Full list of feature flags (and defaults) available in the README
-      Map<FeatureFlagEnum, bool> featureFlags = {
-        FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
-        FeatureFlagEnum.LIVE_STREAMING_ENABLED: false,
-        FeatureFlagEnum.INVITE_ENABLED: false,
-        //FeatureFlagEnum.MEETING_NAME_ENABLED: false,
-      };
-
-      // Here is an example, disabling features for each platform
-      if (Platform.isAndroid) {
-        // Disable ConnectionService usage on Android to avoid issues (see README)
-        featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
-      } else if (Platform.isIOS) {
-        // Disable PIP on iOS as it looks weird
-        featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
-      }
-
-      // Define meetings options here
-      var options = JitsiMeetingOptions()
-        ..room = roomText
-        ..serverURL = serverUrl
-        ..subject = subjectText
-        ..userDisplayName = nameText
-        ..userEmail = emailText
-        ..audioOnly = isAudioOnly
-        ..audioMuted = isAudioMuted
-        ..videoMuted = isVideoMuted
-        ..featureFlags.addAll(featureFlags);
-
-      debugPrint("JitsiMeetingOptions: $options");
-      await JitsiMeet.joinMeeting(
-        options,
-        listener: JitsiMeetingListener(onConferenceWillJoin: ({message}) {
-          debugPrint("${options.room} will join with message: $message");
-        }, onConferenceJoined: ({message}) {
-          debugPrint("${options.room} joined with message: $message");
-        }, onConferenceTerminated: ({message}) {
-          debugPrint("${options.room} terminated with message: $message");
-        }),
-        // by default, plugin default constraints are used
-        //roomNameConstraints: new Map(), // to disable all constraints
-        //roomNameConstraints: customContraints, // to use your own constraint(s)
-      );
-    } catch (error) {
-      debugPrint("error: $error");
-    }
-  }
-
-  static final Map<RoomNameConstraintType, RoomNameConstraint>
-  customContraints = {
-    RoomNameConstraintType.MAX_LENGTH: new RoomNameConstraint((value) {
-      return value.trim().length <= 50;
-    }, "Maximum room name length should be 30."),
-    RoomNameConstraintType.FORBIDDEN_CHARS: new RoomNameConstraint((value) {
-      return RegExp(r"[$€£]+", caseSensitive: false, multiLine: false)
-          .hasMatch(value) ==
-          false;
-    }, "Currencies characters aren't allowed in room names."),
-  };
-
-  void _onConferenceWillJoin({message}) {
-    debugPrint("_onConferenceWillJoin broadcasted with message: $message");
-  }
-
-  void _onConferenceJoined({message}) {
-    debugPrint("_onConferenceJoined broadcasted with message: $message");
-  }
-
-  void _onConferenceTerminated({message}) {
-    debugPrint("_onConferenceTerminated broadcasted with message: $message");
-  }
-
-  _onError(error) {
-    debugPrint("_onError broadcasted: $error");
-  }
 }
 
 /*class Fragment2 extends StatefulWidget {

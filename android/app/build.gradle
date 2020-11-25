@@ -50,6 +50,7 @@ android {
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     signingConfigs{
@@ -85,4 +86,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.guava:guava:27.0.1-android'
+    implementation 'com.google.firebase:firebase-analytics:18.0.0'
 }

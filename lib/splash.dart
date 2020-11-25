@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:katha/main.dart';
 
+import 'ReceiverScreen.dart';
 import 'login.dart';
 
 void main(){
@@ -43,7 +44,7 @@ class _SplashState extends State<Splash> {
         },
     );*/
 
-    Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login())));
+    Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp())));
   }
 
   @override
