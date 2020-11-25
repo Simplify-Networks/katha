@@ -404,9 +404,6 @@ showSuccessDialog(BuildContext context) {
   Widget okButton = FlatButton(
     child: Text("OK"),
     onPressed: () {
-      Navigator.pop(
-          context,
-          MaterialPageRoute(builder: (context) => LoginWithEmail()));
     },
   );
 

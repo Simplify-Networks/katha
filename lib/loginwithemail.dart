@@ -313,9 +313,7 @@ showdynamicDialog(text1, text2, BuildContext context) {
     child: Text("OK"),
     onPressed: () {
       if (text1 =="Congratulations") {
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()));
+
       } else if (text1 =="Sign In Error") {
         Navigator.pop(
             context,
