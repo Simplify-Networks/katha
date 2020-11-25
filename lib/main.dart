@@ -1,15 +1,12 @@
-import 'dart:convert';
-import 'dart:io';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'FirebaseDB.dart';
 import 'fragment1.dart';
 import 'fragment2.dart';
 import 'SizeConfig.dart';
-import 'package:jitsi_meet/feature_flag/feature_flag_enum.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
-import 'package:jitsi_meet/jitsi_meeting_listener.dart';
-import 'package:jitsi_meet/room_name_constraint.dart';
-import 'package:jitsi_meet/room_name_constraint_type.dart';
+import 'jitsiMeet.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -59,6 +56,19 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _screens = [Fragment1(),Fragment2(storyTitle: ""),Fragment3(),Fragment4()];
   int _currentIndex = 0;
 
+  @override
+  void initState() {
+    jitsiMeet().StartJetsiListener();
+    FirebaseDB().startDBListener();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    jitsiMeet().stopJetsiListerner();
+    FirebaseDB().stopDBListener();
+    super.dispose();
+  }
   void _onPageChanged(int index){
     setState(() {
       _currentIndex = index;
