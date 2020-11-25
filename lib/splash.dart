@@ -44,7 +44,7 @@ class _SplashState extends State<Splash> {
         },
     );*/
 
-    Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp())));
+    Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login())));
   }
 
   @override
