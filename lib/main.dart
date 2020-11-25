@@ -2,6 +2,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'FirebaseDB.dart';
+import 'package:katha/login.dart';
+import 'package:katha/splash.dart';
 import 'fragment1.dart';
 import 'fragment2.dart';
 import 'SizeConfig.dart';
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'HomeScreen App',
-              home: HomePage(),
+              home: Splash(),
             );
           },
         );
@@ -47,13 +49,21 @@ class MyApp extends StatelessWidget {
   }
 }*/
 class HomePage extends StatefulWidget {
+  final String imgPath;
+  String username;
+
+  HomePage({Key key, this.imgPath, this.username}) : super(key: key);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(imgPath, username);
 }
 
 class _HomePageState extends State<HomePage> {
+  String imgPath;
+  String username;
+  _HomePageState(this.imgPath, this.username);
   PageController _pageController = PageController();
-  List<Widget> _screens = [Fragment1(),Fragment2(storyTitle: ""),Fragment3(),Fragment4()];
+  List<Widget> _screens;
   int _currentIndex = 0;
 
   @override
@@ -81,6 +91,7 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
+    _screens = [Fragment1(imgPaths1: imgPath, usernames1: username),Fragment2(storyTitle: ""),Fragment3(),Fragment4()];
     return Scaffold(
       body: PageView(
         controller: _pageController,
@@ -94,19 +105,19 @@ class _HomePageState extends State<HomePage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.book,),
-            label: ('Story'),
+            title: Text("Story"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Contacts',
+            title: Text("Contacts"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
-            label: 'Notifications',
+            title: Text("Notifications"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Account',
+            title: Text("Account"),
           ),
         ],
         //selectedLabelStyle: TextStyle(fontSize: 22),

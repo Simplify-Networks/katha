@@ -3,12 +3,16 @@ import 'SizeConfig.dart';
 import 'fragment2.dart';
 
 class Fragment1 extends StatefulWidget {
+  String imgPaths1;
+  String usernames1;
+
+  Fragment1({this.imgPaths1, this.usernames1});
+
   @override
   _Fragment1State createState() => _Fragment1State();
 }
 
 class _Fragment1State extends State<Fragment1> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -114,7 +118,10 @@ class _Fragment1State extends State<Fragment1> {
                     children: <Widget>[
                       CircleAvatar(
                         radius: 50.0,
-                        backgroundImage: NetworkImage("https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg"),
+                        backgroundImage:
+                        (widget.imgPaths1 == "" || widget.imgPaths1 == "null")?
+                            AssetImage("lib/assets/images/kathalogo.png"):
+                            NetworkImage(widget.imgPaths1),
                         backgroundColor: Colors.black,
                       ),
                     ],
@@ -124,7 +131,7 @@ class _Fragment1State extends State<Fragment1> {
                   padding: const EdgeInsets.fromLTRB(130,80,0,0),
                   child: Column(
                     children: <Widget>[
-                      Text("Neil Sullivan Paul", style: TextStyle(
+                      Text(widget.usernames1, style: TextStyle(
                           color: Colors.white,
                           fontSize: 2.5 * SizeConfig.textMultiplier,
                           fontWeight: FontWeight.bold
