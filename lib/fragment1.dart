@@ -118,7 +118,10 @@ class _Fragment1State extends State<Fragment1> {
                     children: <Widget>[
                       CircleAvatar(
                         radius: 50.0,
-                        backgroundImage: NetworkImage(widget.imgPaths1),
+                        backgroundImage:
+                        (widget.imgPaths1 == "" || widget.imgPaths1 == "null")?
+                            AssetImage("lib/assets/images/kathalogo.png"):
+                            NetworkImage(widget.imgPaths1),
                         backgroundColor: Colors.black,
                       ),
                     ],
