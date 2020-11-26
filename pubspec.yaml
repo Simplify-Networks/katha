@@ -47,6 +47,16 @@ dependencies:
   get: ^3.17.1
   audioplayers: ^0.17.0
   vibration: ^1.7.2
+  flutter_launcher_icons: ^0.8.1
+  flutter_launcher_name: ^0.0.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/images/kathalogo.png"
+
+flutter_launcher_name:
+  name: "Katha"
 
 dev_dependencies:
   flutter_test:
