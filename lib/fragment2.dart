@@ -31,6 +31,7 @@ class _Fragment2State extends State<Fragment2> {
   List<String> _notes = List<String>();
   List<String> _notesForDisplay = List<String>();
   List<String> _userID = List<String>();
+  List<String> _picPath = List<String>();
 
 
   void assignVariable(List name) {
@@ -40,6 +41,7 @@ class _Fragment2State extends State<Fragment2> {
         _notes.add(name[i]["userName"]);
         _notesForDisplay.add(name[i]["userName"]);
         _userID.add(name[i]["userID"]);
+        _picPath.add(name[i]["profilepicURL"]);
       }
     }
   }
@@ -48,7 +50,7 @@ class _Fragment2State extends State<Fragment2> {
     final url = "http://35.198.227.22/getUsername"; // production server
     Map body = {};
     var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
-//    print("Response: " + response.body);
+    print("Response: " + response.body);
     var extractdata = json.decode(response.body);
     List data;
     data = extractdata["result"];
@@ -189,7 +191,7 @@ class _Fragment2State extends State<Fragment2> {
                             children: <Widget>[
                               CircleAvatar(
                                 radius: 35.0,
-                                backgroundImage: NetworkImage("https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg"),
+                                backgroundImage: NetworkImage(_picPath[i]),
                                 backgroundColor: Colors.black,
                               ),
                             ],
@@ -287,6 +289,7 @@ class _Fragment2State extends State<Fragment2> {
                         'title': widget.storyTitle,
                         'status':'dialling',
                         'roomID': roomID,
+                        'picPath': _picPath[i],
                       });
 
                       Navigator.push(context, MaterialPageRoute(builder: (context) => SenderScreen()));

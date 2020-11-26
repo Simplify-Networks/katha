@@ -119,7 +119,7 @@ class DividerLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double h =size.height - 200;
+    double h =size.height - 250;
     return Container(
       padding: EdgeInsets.fromLTRB(25, h-400, 25, 0),
       child: Divider(
@@ -408,12 +408,10 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           userProfilePic = "";
 
         }else if(user.photoURL.contains("facebook")){
-          print("ccc fb");
           userProfilePic = user.photoURL + "?height=200";
           downloadImage(userProfilePic);
         }
         else{
-          print("ccc google");
           userProfilePic = user.photoURL.replaceAll("s96-c", "s200-c");
           downloadImage(userProfilePic);
         }
