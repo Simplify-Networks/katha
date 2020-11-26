@@ -9,8 +9,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 String _email,_password= "";
 final _formKey = GlobalKey<FormState>();
-String getpassword;
+String getpassword,getusername,getpic;
 final FirebaseAuth mAuth = FirebaseAuth.instance;
+List details ;
 
 class LoginWithEmail extends StatefulWidget {
   @override
@@ -27,7 +28,10 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
         height: double.infinity,
         width:double.infinity,
         decoration: new BoxDecoration(
-          gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
+          gradient: new LinearGradient(colors: [
+            Color(0xffBFD4DB),
+            Color(0xff78A2CC)
+          ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               stops: [0.0,1.0],
@@ -40,10 +44,9 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
                Logo(),
-               TitleText(),
                SubTitle(),
               SizedBox(
-                height: size.height * 0.28,
+                height: size.height * 0.15,
               ),
               Form(
                 key:_formKey,
@@ -75,31 +78,8 @@ class Logo extends StatelessWidget {
         height: 200.0,
       ),*/
       //left, top, right, bottom
-      padding: const EdgeInsets.fromLTRB(16, 100, 16, 0),
-      child: FlutterLogo(
-        size: 128,
-      ),
-    );
-  }
-}
-
-class TitleText extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    /*constraints: BoxConstraints.expand(
-        height: 200.0,
-      ),*/
-    return Container(
-      padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
-      child: Text(
-        "Katha",
-        textAlign: TextAlign.center,
-        style: new TextStyle(
-            fontSize: 25.0,
-            color: Colors.white,
-            fontWeight: FontWeight.bold
-        ),
-      ),
+      padding: const EdgeInsets.fromLTRB(16, 230, 16, 0),
+      child:  Image.asset('lib/assets/images/white_logo_transparent_background 1.png'),
     );
   }
 }
@@ -113,9 +93,10 @@ class SubTitle extends StatelessWidget {
         "Inspiring stories at your fingertips",
         textAlign: TextAlign.center,
         style: new TextStyle(
-            fontSize: 10.0,
-            color: Colors.white,
-            fontWeight: FontWeight.normal
+          fontFamily: "Helvetica",
+          fontSize: 15.0,
+          color: Colors.white,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );
@@ -269,15 +250,17 @@ signin(BuildContext context) async{
   print(_password);
   print(_email);
 
-  if(await checkUserExist(_email, _password) == true){
+  List checkuserexsists = await checkUserExist(_email, _password);
+
+  if(checkuserexsists[0] == true){
     signinfirebase(_email, _password);
-    showdynamicDialog(congratulation, success, context);
+    showdynamicDialog(congratulation, success, context, checkuserexsists[1], checkuserexsists[2]);
   } else {
-    showdynamicDialog(warning, warninglong, context);
+    showdynamicDialog(warning, warninglong, context, '', '');
   }
 }
 
-Future<bool> checkUserExist(final String email, _password) async{
+Future<List> checkUserExist(final String email, _password) async{
   final url = "http://35.198.227.22/getUser"; // production server
   Map body = {"email": email};
   var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
@@ -286,13 +269,16 @@ Future<bool> checkUserExist(final String email, _password) async{
   List data;
   data = extractdata["result"];
   getpassword = data[0]["password"];
+  getusername = data[0]["userName"];
+  getpic = data[0]["profilepicURL"];
   print('abc' + getpassword);
   // print("data: " + data.toString());
 
   if(getpassword == _password){
-    return true;
+    details = [true,getusername,getpic];
+    return details;
   }else{
-    return false;
+    return [false] ;
   }
 }
 
@@ -307,13 +293,15 @@ void signinfirebase(_email, _password) async {
     }
 }
 
-showdynamicDialog(text1, text2, BuildContext context) {
+showdynamicDialog(text1, text2, BuildContext context, username ,pic) {
   // set up the button
   Widget okButton = FlatButton(
     child: Text("OK"),
     onPressed: () {
       if (text1 =="Congratulations") {
-
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()));
       } else if (text1 =="Sign In Error") {
         Navigator.pop(
             context,

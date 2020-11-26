@@ -34,7 +34,10 @@ class _creataaccountState extends State<createaccount> {
         height: double.infinity,
         width:double.infinity,
         decoration: new BoxDecoration(
-          gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
+          gradient: new LinearGradient(colors: [
+            Color(0xffBFD4DB),
+            Color(0xff78A2CC)
+          ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               stops: [0.0,1.0],
@@ -47,10 +50,9 @@ class _creataaccountState extends State<createaccount> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Logo(),
-              TitleText(),
               SubTitle(),
               SizedBox(
-                height: size.height * 0.20,
+                height: size.height * 0.07,
               ),
               Form(
                 key: _formKey,
@@ -80,31 +82,8 @@ class Logo extends StatelessWidget {
         height: 200.0,
       ),*/
       //left, top, right, bottom
-      padding: const EdgeInsets.fromLTRB(16, 100, 16, 0),
-      child: FlutterLogo(
-        size: 128,
-      ),
-    );
-  }
-}
-
-class TitleText extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    /*constraints: BoxConstraints.expand(
-        height: 200.0,
-      ),*/
-    return Container(
-      padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
-      child: Text(
-        "Katha",
-        textAlign: TextAlign.center,
-        style: new TextStyle(
-            fontSize: 25.0,
-            color: Colors.white,
-            fontWeight: FontWeight.bold
-        ),
-      ),
+      padding: const EdgeInsets.fromLTRB(16, 230, 16, 0),
+      child:  Image.asset('lib/assets/images/white_logo_transparent_background 1.png'),
     );
   }
 }
@@ -118,9 +97,10 @@ class SubTitle extends StatelessWidget {
         "Inspiring stories at your fingertips",
         textAlign: TextAlign.center,
         style: new TextStyle(
-            fontSize: 10.0,
-            color: Colors.white,
-            fontWeight: FontWeight.normal
+          fontFamily: "Helvetica",
+          fontSize: 15.0,
+          color: Colors.white,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );
