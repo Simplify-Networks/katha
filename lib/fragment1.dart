@@ -31,6 +31,10 @@ class _Fragment1State extends State<Fragment1> {
   @override
   Widget build(BuildContext context) {
 
+    List storyphoto = ["lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
+    List storytittle = ["Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
+    List storyexplaination = ["Story of a Beautiful Princess", "An Adventurous Tale","A Moral Story","A Bunny's Adventure","Story on a Little Bear","Fun Little Story about a Monster","Tale of Two Best Friends","Tale of Two Tails","Story of Thomas and Friends","A Brave Soldier's Tale"];
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -176,24 +180,24 @@ class _Fragment1State extends State<Fragment1> {
                               Container(
                                 height: 200,
                                 width: 150,
-                                child: Image(image: NetworkImage('https://gamespot1.cbsistatic.com/uploads/original/1562/15626911/3573697-star%20wars.jpg'), fit: BoxFit.cover),
+                                child: Image(image:AssetImage(storyphoto[i]), fit: BoxFit.cover),
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(170,50,0,0),
-                                child: Text('Star Wars', style: TextStyle(
+                                child: Text(storytittle[i], style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 25,
+                                    fontSize: 22,
                                     fontWeight: FontWeight.bold
                                 ),),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(170,80,0,0),
-                                child: Text('The Rise of Skywalker'),
+                                padding: const EdgeInsets.fromLTRB(170,100,0,0),
+                                child: Text(storyexplaination[i]),
                               ),
                             ],
                           ),
                           onTap:(){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Fragment2(storyTitle: "Star Wars")));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Fragment2(storyTitle: storytittle[i])));
                           },
                         ),
                       ),
@@ -203,7 +207,7 @@ class _Fragment1State extends State<Fragment1> {
                     ],
                   );
                 },
-                itemCount: 5,
+                itemCount: 10,
               ),
             ),
           ),

@@ -8,8 +8,9 @@ import 'package:katha/login.dart';
 import 'package:katha/loginwithemail.dart';
 import 'package:http/http.dart' as http;
 import 'package:katha/main.dart';
+import 'package:crypto/crypto.dart';
 
-String _name,_email,_password= "";
+String _name,_email,_password, _userid= "";
 String _sessionid = "";
 String usertype = "";
 final _formKey = GlobalKey<FormState>();
