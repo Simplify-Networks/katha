@@ -391,6 +391,7 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           userID = user.uid;
           userType = user.providerData[0].providerId;
           userName = user.displayName;
+
         } else {
           if(appleEmail != null) {
             email = appleEmail;
@@ -402,14 +403,9 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           userName = appleName;
         }
 
-        checkUserExist(email).then((value) {
-          if(!value) {
-            registerUser(email, userID, userType, userName);
-          }
-        });
-
         isLogin = true;
         if(user.photoURL == null){
+          userProfilePic = "";
 
         }else if(user.photoURL.contains("facebook")){
           print("ccc fb");
@@ -421,6 +417,13 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           userProfilePic = user.photoURL.replaceAll("s96-c", "s200-c");
           downloadImage(userProfilePic);
         }
+
+        checkUserExist(email).then((value) {
+          if(!value) {
+            registerUser(email, userID, userType, userName, userProfilePic);
+          }
+        });
+
         userName = user.displayName;
 
         if(userName == "" || userName == null){
@@ -475,9 +478,9 @@ Future<bool> checkUserExist(final String email) async{
   }
 }
 
-void registerUser(final String email, final userID, final userType, final userName) async {
+void registerUser(final String email, final userID, final userType, final userName, final profilepic) async {
   final url = "http://35.198.227.22/registerUser"; // production server
-  Map body = {"email": email, "userID": userID, "userType": userType, "userName": userName};
+  Map body = {"email": email, "userID": userID, "userType": userType, "userName": userName, "profilepicURL":profilepic, "password": ""};
   var response = await http.post(
     url, body: json.encode(body), headers: { "Accept": "application/json"},)
       .timeout(Duration(seconds: 30));
