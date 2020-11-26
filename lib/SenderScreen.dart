@@ -1,6 +1,14 @@
+import 'dart:async';
+
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vibration/vibration.dart';
+
+import 'RoomDetails.dart';
+import 'jitsiMeet.dart';
 
 class SenderScreen extends StatefulWidget {
   @override
@@ -8,9 +16,79 @@ class SenderScreen extends StatefulWidget {
 }
 
 class _SenderScreenState extends State<SenderScreen> {
+
+  AudioCache musicCache;
+  AudioPlayer instance;
+  Timer timer;
+
+  StreamSubscription <Event> updates;
+  final databaseReference = FirebaseDatabase.instance.reference();
+
+  void setListner(){
+    var r = RoomDetails();
+
+    updates = databaseReference.child("call").child(r.receiverID).onChildChanged.listen((event) {
+
+      if(event.snapshot.value == "accept")
+      {
+        FirebaseDatabase.instance.reference().child('call').child(r.receiverID).remove();
+
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        } else {
+          SystemNavigator.pop();
+        }
+
+        if(r.roomID != "" && r.roomID != null){
+          jitsiMeet().joinMeeting("",r.roomID);
+        }
+        else{
+          jitsiMeet().joinMeeting(r.storyTitle,"");
+        }
+
+      }
+      else if(event.snapshot.value == "declined")
+      {
+        FirebaseDatabase.instance.reference().child('call').child(r.receiverID).remove();
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        } else {
+          SystemNavigator.pop();
+        }
+      }
+    });
+  }
+
+  Future<void> playRingtone() async {
+    timer=  new Timer.periodic(Duration(seconds:1), (Timer t) async => await Vibration.hasVibrator() ? Vibration.vibrate() : null);
+    musicCache = AudioCache(prefix: "assets/");
+    instance = await musicCache.loop("dial.mp3");
+  }
+
+  @override
+  void initState() {
+    setListner();
+    playRingtone();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    updates.cancel();
+    if(instance != null){
+      instance.pause();
+    }
+
+    if(timer != null){
+      timer.cancel();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 
+    var r = RoomDetails();
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -41,11 +119,13 @@ class _SenderScreenState extends State<SenderScreen> {
                 child: InkWell(
                   child: CircleAvatar(
                     radius: 50.0,
-                    backgroundImage: NetworkImage("https://e7.pngegg.com/pngimages/145/522/png-clipart-end-call-button-telephone-call-button-computer-icons-button-text-trademark.png"),
+                    //backgroundImage: NetworkImage("https://e7.pngegg.com/pngimages/145/522/png-clipart-end-call-button-telephone-call-button-computer-icons-button-text-trademark.png"),
+                    backgroundImage: AssetImage("lib/assets/images/end_call_btn.png"),
                     backgroundColor: Colors.black,
                   ),
                   onTap: (){
-                    FirebaseDatabase.instance.reference().child('call').child('userid').remove();
+                    FirebaseDatabase.instance.reference().child('call').child(r.receiverID).remove();
+                    r.clearDetails();
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
                     } else {
@@ -57,7 +137,6 @@ class _SenderScreenState extends State<SenderScreen> {
             ),
           ],
         ),
-
       ),
     );
   }

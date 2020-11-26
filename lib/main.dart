@@ -1,12 +1,24 @@
+import 'dart:async';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'FirebaseDB.dart';
+import 'package:katha/UserModel.dart';
 import 'package:katha/splash.dart';
+import 'GlobalStorage.dart';
+import 'ReceiverScreen.dart';
 import 'fragment1.dart';
 import 'fragment2.dart';
 import 'jitsiMeet.dart';
 
+final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+
 void main() {
-  runApp(MaterialApp(home:Splash()));
+  runApp(
+      MaterialApp(
+          navigatorKey: navKey,
+          home:Splash(),
+      ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -28,17 +40,53 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _screens;
   int _currentIndex = 0;
 
+  StreamSubscription <Event> updates;
+  final databaseReference = FirebaseDatabase.instance.reference();
+  UserModel userM = new UserModel();
+
+  Future<void> startDBListener() async {
+    userM = await GlobalStorage().getUser();
+    UserModel sD = new UserModel();
+    String userid = userM.userID;
+    updates = databaseReference.child("call").child(userid).onChildAdded.listen((event) {
+
+      if(event.snapshot.key == "name"){
+        sD.name = event.snapshot.value;
+      }
+
+      if(event.snapshot.key == "imagePath"){
+        sD.profilePicPath = event.snapshot.value;
+      }
+
+      if(event.snapshot.key == "roomID")
+      {
+        if(event.snapshot.value != null && event.snapshot.value != "")
+        {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ReceiverScreen(storyTitle:"",roomID:event.snapshot.value,senderDetails:sD)));
+        }
+      }
+      if(event.snapshot.key == "title")
+      {
+        if(event.snapshot.value != null && event.snapshot.value != "")
+        {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ReceiverScreen(storyTitle:event.snapshot.value,roomID:"",senderDetails:sD)));
+        }
+      }
+    });
+  }
+
   @override
   void initState() {
     jitsiMeet().StartJetsiListener();
-    FirebaseDB().startDBListener();
+    startDBListener();
     super.initState();
   }
 
   @override
   void dispose() {
     jitsiMeet().stopJetsiListerner();
-    FirebaseDB().stopDBListener();
+    databaseReference.child('call').child(userM.userID).remove();
+    updates.cancel();
     super.dispose();
   }
   void _onPageChanged(int index){
@@ -91,6 +139,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
 }
 
 class Fragment3 extends StatefulWidget {

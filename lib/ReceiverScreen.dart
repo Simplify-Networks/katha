@@ -1,26 +1,80 @@
 
+import 'dart:async';
+
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:flutter/services.dart';
+import 'package:katha/UserModel.dart';
+import 'package:vibration/vibration.dart';
+
+import 'GlobalStorage.dart';
+import 'package:katha/jitsiMeet.dart';
 
 class ReceiverScreen extends StatefulWidget {
+  final String roomID;
+  final String storyTitle;
+  final UserModel senderDetails;
+
+  const ReceiverScreen({ Key key, this.storyTitle , this.roomID, this.senderDetails }): super(key: key);
+
   @override
   _ReceiverScreenState createState() => _ReceiverScreenState();
 }
 
 class _ReceiverScreenState extends State<ReceiverScreen> {
 
+  AudioCache musicCache;
+  AudioPlayer instance;
+  Timer timer;
+
+  UserModel userModel = new UserModel();
+  StreamSubscription <Event> updates;
+  final databaseReference = FirebaseDatabase.instance.reference();
+
+  Future<void> getUserInfo() async {
+    userModel = await GlobalStorage().getUser();
+  }
+
+  void setListner(){
+
+    updates = databaseReference.child("call").child(userModel.userID).onChildRemoved.listen((event) {
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      } else {
+        SystemNavigator.pop();
+      }
+    });
+  }
+
+  Future<void> playRingtone() async {
+    timer=  new Timer.periodic(Duration(seconds:1), (Timer t) async => await Vibration.hasVibrator() ? Vibration.vibrate() : null);
+    musicCache = AudioCache(prefix: "assets/");
+    instance = await musicCache.loop("android.mp3");
+  }
+
   @override
   void initState() {
-    //FlutterRingtonePlayer.playNotification();
-    FlutterRingtonePlayer.play(
-      android: AndroidSounds.notification,
-      ios: IosSounds.glass,
-      looping: true, // Android only - API >= 28
-      volume: 0.1, // Android only - API >= 28
-      asAlarm: false, // Android only - all APIs
-    );
+    getUserInfo();
+    setListner();
+    playRingtone();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    updates.cancel();
+    if(instance != null){
+      instance.pause();
+    }
+
+    if(timer != null){
+      timer.cancel();
+    }
+    super.dispose();
   }
 
   @override
@@ -54,7 +108,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
               ),
             ),
             Center(
-              child: Text("Neil Sullivan Paul", style: TextStyle(
+              child: Text(widget.senderDetails.name, style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
                   fontWeight: FontWeight.bold
@@ -66,11 +120,25 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
                 child: InkWell(
                   child: CircleAvatar(
                     radius: 50.0,
-                    backgroundImage: NetworkImage("https://w7.pngwing.com/pngs/298/579/png-transparent-call-logo-button-interior-design-services-icon-design-designer-call-button-room-web-button-interior-design-services-thumbnail.png"),
+                    //backgroundImage: NetworkImage("https://w7.pngwing.com/pngs/298/579/png-transparent-call-logo-button-interior-design-services-icon-design-designer-call-button-room-web-button-interior-design-services-thumbnail.png"),
+                    backgroundImage: AssetImage("lib/assets/images/accept_call_btn.png"),
                     backgroundColor: Colors.black,
                   ),
                   onTap: (){
-                    debugPrint('Answer call');
+                    FirebaseDatabase.instance.reference().child('call').child(userModel.userID).update({'status':'accept'});
+
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    } else {
+                      SystemNavigator.pop();
+                    }
+
+                    if(widget.roomID != "" && widget.roomID != null){
+                      jitsiMeet().joinMeeting("",widget.roomID);
+                    }
+                    else{
+                      jitsiMeet().joinMeeting(widget.storyTitle,"");
+                    }
                   },
                 ),
               ),
@@ -81,11 +149,17 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
                 child: InkWell(
                   child: CircleAvatar(
                     radius: 50.0,
-                    backgroundImage: NetworkImage("https://e7.pngegg.com/pngimages/145/522/png-clipart-end-call-button-telephone-call-button-computer-icons-button-text-trademark.png"),
+                    backgroundImage: AssetImage("lib/assets/images/end_call_btn.png"),
                     backgroundColor: Colors.black,
                   ),
                   onTap: (){
-                    debugPrint('Declined call');
+                    //FirebaseDatabase.instance.reference().child('call').child(userModel.userID).remove();
+                    FirebaseDatabase.instance.reference().child('call').child(userModel.userID).update({'status':'declined'});
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    } else {
+                      SystemNavigator.pop();
+                    }
                   },
                 ),
               ),

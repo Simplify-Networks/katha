@@ -8,7 +8,7 @@ class Fragment1 extends StatefulWidget {
   _Fragment1State createState() => _Fragment1State();
 }
 
-class _Fragment1State extends State<Fragment1> {
+class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixin{
 
   UserModel userModel = new UserModel();
   String name = "";
@@ -30,6 +30,8 @@ class _Fragment1State extends State<Fragment1> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
 
     List storyphoto = ["lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
     List storytittle = ["Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
@@ -225,4 +227,8 @@ class _Fragment1State extends State<Fragment1> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
