@@ -74,6 +74,8 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
     if(timer != null){
       timer.cancel();
     }
+
+    print("dispose?");
     super.dispose();
   }
 
@@ -102,7 +104,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
                 padding: const EdgeInsets.only(bottom:200.0),
                 child: CircleAvatar(
                   radius: 75.0,
-                  backgroundImage: NetworkImage("https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg"),
+                  backgroundImage: NetworkImage(widget.senderDetails.profilePicPath),
                   backgroundColor: Colors.black,
                 ),
               ),
@@ -125,6 +127,14 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
                     backgroundColor: Colors.black,
                   ),
                   onTap: (){
+                    updates.cancel();
+                    if(instance != null){
+                      instance.pause();
+                    }
+
+                    if(timer != null){
+                      timer.cancel();
+                    }
                     FirebaseDatabase.instance.reference().child('call').child(userModel.userID).update({'status':'accept'});
 
                     if (Navigator.canPop(context)) {
@@ -154,6 +164,14 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
                   ),
                   onTap: (){
                     //FirebaseDatabase.instance.reference().child('call').child(userModel.userID).remove();
+                    updates.cancel();
+                    if(instance != null){
+                      instance.pause();
+                    }
+
+                    if(timer != null){
+                      timer.cancel();
+                    }
                     FirebaseDatabase.instance.reference().child('call').child(userModel.userID).update({'status':'declined'});
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);

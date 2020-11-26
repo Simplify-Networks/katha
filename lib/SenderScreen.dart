@@ -19,7 +19,6 @@ class _SenderScreenState extends State<SenderScreen> {
 
   AudioCache musicCache;
   AudioPlayer instance;
-  Timer timer;
 
   StreamSubscription <Event> updates;
   final databaseReference = FirebaseDatabase.instance.reference();
@@ -28,6 +27,11 @@ class _SenderScreenState extends State<SenderScreen> {
     var r = RoomDetails();
 
     updates = databaseReference.child("call").child(r.receiverID).onChildChanged.listen((event) {
+
+      updates.cancel();
+      if(instance != null){
+        instance.pause();
+      }
 
       if(event.snapshot.value == "accept")
       {
@@ -60,7 +64,6 @@ class _SenderScreenState extends State<SenderScreen> {
   }
 
   Future<void> playRingtone() async {
-    timer=  new Timer.periodic(Duration(seconds:1), (Timer t) async => await Vibration.hasVibrator() ? Vibration.vibrate() : null);
     musicCache = AudioCache(prefix: "assets/");
     instance = await musicCache.loop("dial.mp3");
   }
@@ -77,10 +80,6 @@ class _SenderScreenState extends State<SenderScreen> {
     updates.cancel();
     if(instance != null){
       instance.pause();
-    }
-
-    if(timer != null){
-      timer.cancel();
     }
     super.dispose();
   }
@@ -124,6 +123,10 @@ class _SenderScreenState extends State<SenderScreen> {
                     backgroundColor: Colors.black,
                   ),
                   onTap: (){
+                    updates.cancel();
+                    if(instance != null){
+                      instance.pause();
+                    }
                     FirebaseDatabase.instance.reference().child('call').child(r.receiverID).remove();
                     r.clearDetails();
                     if (Navigator.canPop(context)) {

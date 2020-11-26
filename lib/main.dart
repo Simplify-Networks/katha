@@ -58,6 +58,10 @@ class _HomePageState extends State<HomePage> {
         sD.profilePicPath = event.snapshot.value;
       }
 
+      if(event.snapshot.key == "picPath"){
+        sD.profilePicPath = event.snapshot.value;
+      }
+
       if(event.snapshot.key == "roomID")
       {
         if(event.snapshot.value != null && event.snapshot.value != "")
@@ -151,8 +155,8 @@ class _Fragment3State extends State<Fragment3> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    return Scaffold(
+    return Container();
+    /*return Scaffold(
       body: Column(
         children: <Widget>[
           Container(
@@ -259,7 +263,7 @@ class _Fragment3State extends State<Fragment3> {
           ),
         ],
       ),
-    );
+    );*/
   }
 }
 
