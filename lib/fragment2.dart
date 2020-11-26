@@ -4,7 +4,9 @@ import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:katha/GlobalStorage.dart';
 import 'package:katha/RoomDetails.dart';
+import 'package:katha/UserModel.dart';
 import 'package:katha/login.dart';
 import 'SenderScreen.dart';
 
@@ -24,16 +26,21 @@ class Fragment2 extends StatefulWidget {
 class _Fragment2State extends State<Fragment2> {
 
   final databaseReference = FirebaseDatabase.instance.reference();
+  UserModel userModel = new UserModel();
 
   List<String> _notes = List<String>();
   List<String> _notesForDisplay = List<String>();
+  List<String> _userID = List<String>();
 
 
   void assignVariable(List name) {
     for (var i = 0; i < name.length; i++) {
-      _notes.add(name[i]["userName"]);
-      _notesForDisplay.add(name[i]["userName"]);
-      print(name[i]["userName"]);
+      if(name[i]["userID"] != userModel.userID)
+      {
+        _notes.add(name[i]["userName"]);
+        _notesForDisplay.add(name[i]["userName"]);
+        _userID.add(name[i]["userID"]);
+      }
     }
   }
 
@@ -41,17 +48,16 @@ class _Fragment2State extends State<Fragment2> {
     final url = "http://35.198.227.22/getUsername"; // production server
     Map body = {};
     var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
-    // print("Response: " + response.body);
+//    print("Response: " + response.body);
     var extractdata = json.decode(response.body);
     List data;
     data = extractdata["result"];
-    getusername = data[0]["userName"];
-    print(data);
     return data;
   }
 
   checkfordisplayusername() async {
     List list = await checkUsername();
+    userModel = await GlobalStorage().getUser();
     setState(() {
       assignVariable(list);
     });
@@ -269,10 +275,13 @@ class _Fragment2State extends State<Fragment2> {
                         //jitsiMeet().joinMeeting(widget.storyTitle,"");
                       }
 
-                      databaseReference.child("call").child("userid").set({
+                      r.receiverID = _userID[i];
+                      r.status = "dialling";
+
+                      databaseReference.child("call").child(_userID[i]).set({
                         'name': _notesForDisplay[i],
                         'title': widget.storyTitle,
-                        'status':'dialing',
+                        'status':'dialling',
                         'roomID': roomID,
                       });
 
@@ -290,152 +299,3 @@ class _Fragment2State extends State<Fragment2> {
 
 }
 
-/*class Fragment2 extends StatefulWidget {
-  @override
-  _Fragment2State createState() => _Fragment2State();
-}
-
-class _Fragment2State extends State<Fragment2> {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double heigh = size.height;
-    double width = size.width;
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Container(
-                constraints: BoxConstraints.expand(
-                  height: 200.0,
-                ),
-                decoration: new BoxDecoration(
-                  gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      stops: [0.0,1.0],
-                      tileMode: TileMode.clamp
-                  ),
-                ),
-                child: Stack(
-                  overflow: Overflow.visible,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top:50.0),
-                            child: Text(
-                              "Contacts",
-                              textAlign: TextAlign.center,
-                              style: new TextStyle(
-                                  fontSize: 25.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w300
-                              ),
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  hintText: 'Search...'
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: 4,
-                  padding: EdgeInsets.fromLTRB(15,0,15,0),
-                  itemBuilder: (context,i){
-                    return Container(
-                      constraints: BoxConstraints.expand(
-                        height: 120.0,
-                      ),
-                      child: Stack(
-                        overflow: Overflow.visible,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20,35,0,0),
-                            child: Row(
-                              children: <Widget>[
-                                CircleAvatar(
-                                  radius: 35.0,
-                                  backgroundImage: NetworkImage("https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg"),
-                                  backgroundColor: Colors.black,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(100,40,0,0),
-                            child: Column(
-                              children: <Widget>[
-                                Text("Neil Sullivan Paul", style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 3 * SizeConfig.textMultiplier,
-                                    fontWeight: FontWeight.bold
-                                ),),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(100,70,0,0),
-                            child: Column(
-                              children: <Widget>[
-                                Text("Protorix", style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 1.5 * SizeConfig.textMultiplier,
-                                ),),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(100,90,0,0),
-                            child: Column(
-                              children: <Widget>[
-                                Text("Protorix", style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 1.5 * SizeConfig.textMultiplier,
-                                ),),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0,110,0,0),
-                            child: Divider(
-                              thickness: 1.5,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(width-80,60,0,0),
-                            child: FlutterLogo(
-                              size: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}*/

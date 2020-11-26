@@ -11,12 +11,16 @@ class RoomDetails {
   String roomID = "";
   String storyTitle = "";
   String receiverName = "";
+  String receiverID = "";
+  String status = "";
 
   void clearDetails()
   {
     roomID = "";
     storyTitle = "";
     receiverName = "";
+    receiverID = "";
+    status = "";
   }
 
 }

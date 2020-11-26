@@ -8,7 +8,7 @@ class Fragment1 extends StatefulWidget {
   _Fragment1State createState() => _Fragment1State();
 }
 
-class _Fragment1State extends State<Fragment1> {
+class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixin{
 
   UserModel userModel = new UserModel();
   String name = "";
@@ -30,7 +30,7 @@ class _Fragment1State extends State<Fragment1> {
 
   @override
   Widget build(BuildContext context) {
-
+    super.build(context);
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -211,4 +211,8 @@ class _Fragment1State extends State<Fragment1> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

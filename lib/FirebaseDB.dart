@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:katha/GlobalStorage.dart';
 import 'package:katha/jitsiMeet.dart';
+import 'package:get/get.dart';
 
+import 'ReceiverScreen.dart';
 import 'UserModel.dart';
+import 'main.dart';
 
 class FirebaseDB {
   static final FirebaseDB _firebaseDB = FirebaseDB._internal();
@@ -19,7 +23,6 @@ class FirebaseDB {
   StreamSubscription <Event> updates;
   final databaseReference = FirebaseDatabase.instance.reference();
 
-
   void startDBListener() async
   {
     final userM = await GlobalStorage().getUser();
@@ -28,20 +31,16 @@ class FirebaseDB {
 
       if(event.snapshot.key == "roomID")
       {
-        print("aaa event.snapshot.key roomID = "+event.snapshot.key);
         if(event.snapshot.value != null && event.snapshot.value != "")
         {
-          print("aaa Some Data changed = "+event.snapshot.value);
-          jitsiMeet().joinMeeting("",event.snapshot.value);
+          //jitsiMeet().joinMeeting("",event.snapshot.value);
         }
       }
       if(event.snapshot.key == "title")
       {
-        print("aaa event.snapshot.key title = "+event.snapshot.key);
         if(event.snapshot.value != null && event.snapshot.value != "")
         {
-          print("aaa Some Data changed = "+event.snapshot.value);
-          jitsiMeet().joinMeeting(event.snapshot.value,"");
+          //jitsiMeet().joinMeeting(event.snapshot.value,"");
         }
       }
     });
