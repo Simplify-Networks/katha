@@ -38,11 +38,11 @@ class _SplashState extends State<Splash> {
 
     if(userModel != null)
     {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+      Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage())));
     }
     else
     {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+      Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login())));
     }
   }
 
@@ -80,12 +80,13 @@ class _SplashState extends State<Splash> {
         height: size.height,
         width: double.infinity,
         child: Center(
-          child: FlutterLogo(
-            size: 250,
-          ),
+          child: Image.asset('lib/assets/images/white_logo_transparent_background 1.png'),
         ),
         decoration: new BoxDecoration(
-          gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
+          gradient: new LinearGradient(colors: [
+            Color(0xffBFD4DB),
+            Color(0xff78A2CC)
+            ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               stops: [0.0,1.0],
