@@ -284,12 +284,14 @@ class _Fragment2State extends State<Fragment2> {
                       r.receiverID = _userID[i];
                       r.status = "dialling";
 
+                      print("_notesForDisplay[i] ="+_notesForDisplay[i]);
+
                       databaseReference.child("call").child(_userID[i]).set({
-                        'name': _notesForDisplay[i],
+                        'name': userModel.name,
                         'title': widget.storyTitle,
                         'status':'dialling',
                         'roomID': roomID,
-                        'picPath': _picPath[i],
+                        'picPath': userModel.profilePicPath,
                       });
 
                       Navigator.push(context, MaterialPageRoute(builder: (context) => SenderScreen()));
