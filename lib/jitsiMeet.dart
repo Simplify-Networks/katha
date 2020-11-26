@@ -10,6 +10,8 @@ import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:jitsi_meet/jitsi_meeting_listener.dart';
 import 'package:jitsi_meet/room_name_constraint.dart';
 import 'package:jitsi_meet/room_name_constraint_type.dart';
+import 'package:katha/GlobalStorage.dart';
+import 'package:katha/UserModel.dart';
 
 class jitsiMeet{
   static final jitsiMeet _jitsiMeet = jitsiMeet._internal();
@@ -94,12 +96,14 @@ class jitsiMeet{
         featureFlags[FeatureFlagEnum.MEETING_NAME_ENABLED] = false;
       }
 
+      UserModel userModel = await GlobalStorage().getUser();
+
       // Define meetings options here
       var options = JitsiMeetingOptions()
         ..room = roomText
         ..serverURL = serverUrl
         ..subject = subjectText
-        ..userDisplayName = nameText
+        ..userDisplayName = userModel.name
         ..userEmail = emailText
         ..audioOnly = isAudioOnly
         ..audioMuted = isAudioMuted
