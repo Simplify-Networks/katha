@@ -31,6 +31,12 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+
+    List storyphoto = ["lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
+    List storytittle = ["Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
+    List storyexplaination = ["Story of a Beautiful Princess", "An Adventurous Tale","A Moral Story","A Bunny's Adventure","Story on a Little Bear","Fun Little Story about a Monster","Tale of Two Best Friends","Tale of Two Tails","Story of Thomas and Friends","A Brave Soldier's Tale"];
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -50,7 +56,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
               overflow: Overflow.visible,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20,65,0,0),
+                  padding: const EdgeInsets.fromLTRB(20,75,0,0),
                   child: Row(
                     children: <Widget>[
                       CircleAvatar(
@@ -65,25 +71,27 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(130,80,0,0),
+                  padding: const EdgeInsets.fromLTRB(130,100,0,0),
                   child: Column(
                     children: <Widget>[
                       Text(name, style: TextStyle(
+                          fontFamily: 'SFProDisplay',
                           color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600
                       ),),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(130,115,0,0),
+                  padding: const EdgeInsets.fromLTRB(130,125,0,0),
                   child: Column(
                     children: <Widget>[
                       Text("Senoir Storyteller", style: TextStyle(
+                          fontFamily: 'Helvetica',
                           color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700
                       ),),
                     ],
                   ),
@@ -120,26 +128,29 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                   Padding(
                     padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
                     child: Text("Ayca Khohreman", style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
+                        fontFamily: 'SFProDisplay',
+                        color: Color(0xff4A4A4A),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600
                     ),),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(15, 45, 0, 0),
                     child: Text("Snow White starts at 15:00 today", style: TextStyle(
-                        color: Colors.black,
+                        fontFamily: 'Helvetica',
+                        color: Color(0xff4A4A4A),
                         fontSize: 15,
-                        fontWeight: FontWeight.normal
+                        fontWeight: FontWeight.w400
                     ),),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width-140, 80, 0, 0),
+                    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width-140, 75, 0, 0),
                     child: InkWell(
                       child: Text("Find out more ->", style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal
+                          fontFamily: 'Helvetica',
+                          color: Color(0xff3C29B1),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400
                       ),),
                       onTap: (){
                         debugPrint('Find out more');
@@ -160,7 +171,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                   return  Column(
                     children: <Widget>[
                       Container(
-                        height: 200,
+                        height: 130,
                         width: 800,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -174,26 +185,31 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                           child: Stack(
                             children: <Widget>[
                               Container(
-                                height: 200,
-                                width: 150,
-                                child: Image(image: NetworkImage('https://gamespot1.cbsistatic.com/uploads/original/1562/15626911/3573697-star%20wars.jpg'), fit: BoxFit.cover),
+                                height: 130,
+                                width: 130,
+                                child: Image(image:AssetImage(storyphoto[i]), fit: BoxFit.cover),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(170,50,0,0),
-                                child: Text('Star Wars', style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold
+                                padding: const EdgeInsets.fromLTRB(150,40,0,0),
+                                child: Text(storytittle[i], style: TextStyle(
+                                    fontFamily: 'SFProDisplay',
+                                    color: Color(0xff4A4A4A),
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600
                                 ),),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(170,80,0,0),
-                                child: Text('The Rise of Skywalker'),
+                                padding: const EdgeInsets.fromLTRB(150,60,0,0),
+                                child: Text(storyexplaination[i], style: TextStyle(
+                                    fontFamily: 'Helvetica',
+                                    color: Color(0xff4A4A4A),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
                               ),
-                            ],
+                              )],
                           ),
                           onTap:(){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Fragment2(storyTitle: "Star Wars")));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Fragment2(storyTitle: storytittle[i])));
                           },
                         ),
                       ),
@@ -203,7 +219,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                     ],
                   );
                 },
-                itemCount: 5,
+                itemCount: 10,
               ),
             ),
           ),

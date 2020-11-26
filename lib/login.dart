@@ -54,7 +54,10 @@ class _LoginState extends State<Login> {
     return Scaffold(
       body: new Container(
         decoration: new BoxDecoration(
-          gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
+          gradient: new LinearGradient(colors: [
+            Color(0xffBFD4DB),
+            Color(0xff78A2CC)
+          ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               stops: [0.0,1.0],
@@ -66,7 +69,6 @@ class _LoginState extends State<Login> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Logo(),
-            TitleText(),
             SubTitle(),
             DividerLine(),
             if(Platform.isIOS) AppleButton(),
@@ -88,31 +90,8 @@ class Logo extends StatelessWidget {
         height: 200.0,
       ),*/
       //left, top, right, bottom
-      padding: const EdgeInsets.fromLTRB(16, 100, 16, 0),
-      child: FlutterLogo(
-        size: 128,
-      ),
-    );
-  }
-}
-
-class TitleText extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    /*constraints: BoxConstraints.expand(
-        height: 200.0,
-      ),*/
-    return Container(
-      padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
-      child: Text(
-        "Katha",
-        textAlign: TextAlign.center,
-        style: new TextStyle(
-            fontSize: 25.0,
-            color: Colors.white,
-            fontWeight: FontWeight.bold
-        ),
-      ),
+      padding: const EdgeInsets.fromLTRB(16, 230, 16, 0),
+      child:  Image.asset('lib/assets/images/white_logo_transparent_background 1.png'),
     );
   }
 }
@@ -126,9 +105,10 @@ class SubTitle extends StatelessWidget {
         "Inspiring stories at your fingertips",
         textAlign: TextAlign.center,
         style: new TextStyle(
-            fontSize: 10.0,
+            fontFamily: "Helvetica",
+            fontSize: 15.0,
             color: Colors.white,
-            fontWeight: FontWeight.normal
+            fontWeight: FontWeight.w400,
         ),
       ),
     );
@@ -141,7 +121,7 @@ class DividerLine extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     double h =size.height - 200;
     return Container(
-      padding: EdgeInsets.fromLTRB(25, h-300, 25, 0),
+      padding: EdgeInsets.fromLTRB(25, h-400, 25, 0),
       child: Divider(
         thickness: 1.5,
         color: Colors.white,
@@ -411,6 +391,7 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           userID = user.uid;
           userType = user.providerData[0].providerId;
           userName = user.displayName;
+
         } else {
           if(appleEmail != null) {
             email = appleEmail;
@@ -422,14 +403,9 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           userName = appleName;
         }
 
-        checkUserExist(email).then((value) {
-          if(!value) {
-            registerUser(email, userID, userType, userName);
-          }
-        });
-
         isLogin = true;
         if(user.photoURL == null){
+          userProfilePic = "";
 
         }else if(user.photoURL.contains("facebook")){
           print("ccc fb");
@@ -441,6 +417,13 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           userProfilePic = user.photoURL.replaceAll("s96-c", "s200-c");
           downloadImage(userProfilePic);
         }
+
+        checkUserExist(email).then((value) {
+          if(!value) {
+            registerUser(email, userID, userType, userName, userProfilePic);
+          }
+        });
+
         userName = user.displayName;
 
         if(userName == "" || userName == null){
@@ -495,9 +478,9 @@ Future<bool> checkUserExist(final String email) async{
   }
 }
 
-void registerUser(final String email, final userID, final userType, final userName) async {
+void registerUser(final String email, final userID, final userType, final userName, final profilepic) async {
   final url = "http://35.198.227.22/registerUser"; // production server
-  Map body = {"email": email, "userID": userID, "userType": userType, "userName": userName};
+  Map body = {"email": email, "userID": userID, "userType": userType, "userName": userName, "profilepicURL":profilepic, "password": ""};
   var response = await http.post(
     url, body: json.encode(body), headers: { "Accept": "application/json"},)
       .timeout(Duration(seconds: 30));

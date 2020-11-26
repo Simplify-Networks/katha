@@ -8,8 +8,9 @@ import 'package:katha/login.dart';
 import 'package:katha/loginwithemail.dart';
 import 'package:http/http.dart' as http;
 import 'package:katha/main.dart';
+import 'package:crypto/crypto.dart';
 
-String _name,_email,_password= "";
+String _name,_email,_password, _userid= "";
 String _sessionid = "";
 String usertype = "";
 final _formKey = GlobalKey<FormState>();
@@ -360,7 +361,7 @@ Future<bool> checkUserExist(final String email) async{
 
 Future<bool> signupsuccess(final String name, email, password, sessionid, usertype, BuildContext context) async{
   final url = "http://35.198.227.22/registerUser"; // production server
-  Map body = {"email": email, "userID": sessionid, "userType": usertype, "userName": name, "password": password};
+  Map body = {"email": email, "userID": sessionid, "userType": usertype, "userName": name, "password": password, "profilepicURL":" "};
   var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
   // print("Response: " + response.body);
   var extractdata = json.decode(response.body);

@@ -109,21 +109,22 @@ class _Fragment2State extends State<Fragment2> {
                   children: <Widget>[
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top:55.0),
+                        padding: const EdgeInsets.only(top:60.0),
                         child: Text(
                           "CONTACTS",
                           textAlign: TextAlign.center,
                           style: new TextStyle(
-                              fontSize: 25.0,
+                              fontFamily: 'Helvetica',
                               color: Colors.white,
-                              fontWeight: FontWeight.w300
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400
                           ),
                         ),
                       ),
                     ),
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10,45,10,0),
+                        padding: const EdgeInsets.fromLTRB(10,50,10,0),
                         child:Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -199,9 +200,10 @@ class _Fragment2State extends State<Fragment2> {
                           child: Column(
                             children: <Widget>[
                               Text(_notesForDisplay[(i-1) < 0 ? 0 : i], style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold
+                                  fontFamily: 'SFProDisplay',
+                                  color: Color(0xff4A4A4A),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600
                               ),),
                             ],
                           ),
@@ -210,10 +212,11 @@ class _Fragment2State extends State<Fragment2> {
                           padding: const EdgeInsets.fromLTRB(100,45,0,0),
                           child: Column(
                             children: <Widget>[
-                              Text("Senoir Storyteller", style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.normal
+                              Text("Senior Storyteller", style: TextStyle(
+                                  fontFamily: 'Helvetica',
+                                  color: Color(0xff4A4A4A),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w300
                               ),),
                             ],
                           ),
@@ -223,9 +226,10 @@ class _Fragment2State extends State<Fragment2> {
                           child: Column(
                             children: <Widget>[
                               Text("AVAILABLE", style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold
+                                  fontFamily: 'Helvetica',
+                                  color: Color(0xff51B549),
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700
                               ),),
                             ],
                           ),
