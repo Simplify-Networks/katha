@@ -97,7 +97,10 @@ class _Fragment2State extends State<Fragment2> {
               height: 200.0,
             ),
             decoration: new BoxDecoration(
-              gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
+              gradient: new LinearGradient(colors: [
+                Color(0xffBFD4DB),
+                Color(0xff78A2CC)
+              ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   stops: [0.0,1.0],

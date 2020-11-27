@@ -6,12 +6,15 @@ import 'package:katha/createaccount.dart';
 import 'package:http/http.dart' as http;
 import 'package:katha/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'UserModel.dart';
+import 'GlobalStorage.dart';
 
 String _email,_password= "";
 final _formKey = GlobalKey<FormState>();
-String getpassword,getusername,getpic;
+String getpassword,getusername,getpic, getuserid, getusertype;
 final FirebaseAuth mAuth = FirebaseAuth.instance;
 List details ;
+UserModel userModel = new UserModel();
 
 class LoginWithEmail extends StatefulWidget {
   @override
@@ -254,9 +257,10 @@ signin(BuildContext context) async{
 
   if(checkuserexsists[0] == true){
     signinfirebase(_email, _password);
-    showdynamicDialog(congratulation, success, context, checkuserexsists[1], checkuserexsists[2]);
+    showdynamicDialog(congratulation, success, context, checkuserexsists[1], checkuserexsists[2],checkuserexsists[3],checkuserexsists[4],checkuserexsists[5]);
+
   } else {
-    showdynamicDialog(warning, warninglong, context, '', '');
+    showdynamicDialog(warning, warninglong, context, '', '', '', '', '');
   }
 }
 
@@ -271,11 +275,13 @@ Future<List> checkUserExist(final String email, _password) async{
   getpassword = data[0]["password"];
   getusername = data[0]["userName"];
   getpic = data[0]["profilepicURL"];
+  getuserid = data[0]["userID"];
+  getusertype = data[0]["userType"];
   print('abc' + getpassword);
   // print("data: " + data.toString());
 
   if(getpassword == _password){
-    details = [true,getusername,getpic];
+    details = [true,getusername,getpic,getuserid,getusertype,email];
     return details;
   }else{
     return [false] ;
@@ -293,15 +299,23 @@ void signinfirebase(_email, _password) async {
     }
 }
 
-showdynamicDialog(text1, text2, BuildContext context, username ,pic) {
+showdynamicDialog(text1, text2, BuildContext context, username ,pic, id, type, uemail) {
   // set up the button
   Widget okButton = FlatButton(
     child: Text("OK"),
     onPressed: () {
       if (text1 =="Congratulations") {
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()));
+
+        userModel.email = uemail;
+        userModel.userID = id;
+        userModel.name = username;
+        userModel.LoginType = type;
+        userModel.profilePicPath = pic;
+
+        GlobalStorage().setUser(userModel);
+
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+
       } else if (text1 =="Sign In Error") {
         Navigator.pop(
             context,
