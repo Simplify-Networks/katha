@@ -120,7 +120,10 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10)),
-                      gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
+                      gradient: new LinearGradient(colors: [
+                        Color(0xffBFD4DB),
+                        Color(0xff78A2CC)
+                      ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           stops: [0.0,1.0],
