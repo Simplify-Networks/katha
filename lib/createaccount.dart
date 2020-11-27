@@ -9,6 +9,8 @@ import 'package:katha/loginwithemail.dart';
 import 'package:http/http.dart' as http;
 import 'package:katha/main.dart';
 import 'package:crypto/crypto.dart';
+import 'GlobalStorage.dart';
+import 'UserModel.dart';
 
 String _name,_email,_password, _userid= "";
 String _sessionid = "";
@@ -17,6 +19,7 @@ final _formKey = GlobalKey<FormState>();
 final FirebaseAuth mAuth = FirebaseAuth.instance;
 TextEditingController emailController = new TextEditingController();
 TextEditingController passwordController = new TextEditingController();
+UserModel userModel = new UserModel();
 
 class createaccount extends StatefulWidget {
   @override
@@ -349,7 +352,7 @@ Future<bool> signupsuccess(final String name, email, password, sessionid, userty
   data = extractdata["status"];
   // print("data: " + data.toString());
   if(data == "success"){
-    showSuccessDialog(context);
+    showSuccessDialog(context, email, sessionid, name, usertype, '');
   }
 }
 
@@ -358,7 +361,6 @@ showAlertDialog(BuildContext context) {
   Widget okButton = FlatButton(
     child: Text("OK"),
     onPressed: () {
-      Navigator.of(context, rootNavigator: true).pop();
     },
   );
 
@@ -380,11 +382,20 @@ showAlertDialog(BuildContext context) {
   );
 }
 
-showSuccessDialog(BuildContext context) {
+showSuccessDialog(BuildContext context,uemail, id, username, type, pic) {
   // set up the button
   Widget okButton = FlatButton(
     child: Text("OK"),
     onPressed: () {
+      userModel.email = uemail;
+      userModel.userID = id;
+      userModel.name = username;
+      userModel.LoginType = type;
+      userModel.profilePicPath = pic;
+
+      GlobalStorage().setUser(userModel);
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
     },
   );
 

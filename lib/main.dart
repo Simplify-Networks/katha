@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:katha/UserModel.dart';
+import 'package:katha/login.dart';
 import 'package:katha/splash.dart';
 import 'GlobalStorage.dart';
 import 'ReceiverScreen.dart';
@@ -11,6 +13,7 @@ import 'fragment2.dart';
 import 'jitsiMeet.dart';
 
 final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+FirebaseAuth _auth = FirebaseAuth.instance;
 
 void main() {
   runApp(
@@ -275,8 +278,52 @@ class Fragment4 extends StatefulWidget {
 class _Fragment4State extends State<Fragment4> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      /*body: Center(
+        child: FlutterLogo(
+          size: 250,
+        ),
+      ),*/
+
+      body: new Container(
+        child: Center(
+          child: RaisedButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            onPressed: () {
+              signout(context);
+            },
+            child: Text(
+              "Log Out",
+              style: TextStyle(
+                color: Color(0xFF000000),
+              ),
+            ),
+          ),
+        ),
+        decoration: new BoxDecoration(
+          gradient: new LinearGradient(colors: [
+            Color(0xffBFD4DB),
+            Color(0xff78A2CC)
+          ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp
+          ),
+        ),
+      ),
+    );
   }
+}
+
+signout(BuildContext context) async{
+  await _auth.signOut();
+
+  GlobalStorage().logoff();
+
+  Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
 }
 
 
