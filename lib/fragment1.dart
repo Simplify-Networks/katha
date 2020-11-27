@@ -90,7 +90,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                   padding: const EdgeInsets.fromLTRB(130,125,0,0),
                   child: Column(
                     children: <Widget>[
-                      Text("Senoir Storyteller", style: TextStyle(
+                      Text("Senior Storyteller", style: TextStyle(
                           fontFamily: 'Helvetica',
                           color: Colors.white,
                           fontSize: 15,

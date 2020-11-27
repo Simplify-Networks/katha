@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -8,6 +9,7 @@ import 'package:katha/GlobalStorage.dart';
 import 'package:katha/RoomDetails.dart';
 import 'package:katha/UserModel.dart';
 import 'package:katha/login.dart';
+import 'DisplayUserList.dart';
 import 'SenderScreen.dart';
 
 import 'package:http/http.dart' as http;
@@ -30,11 +32,20 @@ class _Fragment2State extends State<Fragment2> {
 
   List<String> _notes = List<String>();
   List<String> _notesForDisplay = List<String>();
+
   List<String> _userID = List<String>();
   List<String> _picPath = List<String>();
+  List<String> _status = List<String>();
+  List<String> _id = List<String>();
+  List<String> _statusFromDb = List<String>();
 
+  List<DisplayUserList> UserDetailsList = new List<DisplayUserList>();
+  List<DisplayUserList> UserDetailsListDisplay = new List<DisplayUserList>();
+
+  StreamSubscription <Event> updates;
 
   void assignVariable(List name) {
+
     for (var i = 0; i < name.length; i++) {
       if(name[i]["userID"] != userModel.userID)
       {
@@ -42,22 +53,65 @@ class _Fragment2State extends State<Fragment2> {
         _notesForDisplay.add(name[i]["userName"]);
         _userID.add(name[i]["userID"]);
         _picPath.add(name[i]["profilepicURL"]);
+        _status.add("-");
       }
     }
+
+    for (var i = 0; i < _id.length; i++) {
+      for (var j = 0; j < _userID.length; j++) {
+        if(_id[i] == _userID[j])
+        {
+          _status[j] = _statusFromDb[i];
+        }
+      }
+    }
+
+    for(var i = 0;i<_notesForDisplay.length;i++)
+    {
+      DisplayUserList displayUserList = new DisplayUserList();
+      displayUserList.name = _notes[i];
+      displayUserList.userid = _userID[i];
+      displayUserList.profilePicPath = _picPath[i];
+      displayUserList.status = _status[i];
+
+      UserDetailsList.add(displayUserList);
+      UserDetailsListDisplay.add(displayUserList);
+    }
+
+  }
+
+  Future<void> getUserStatus() async {
+    await databaseReference.child("user").once().then((DataSnapshot snapshot) {
+      Map<dynamic,dynamic> map = snapshot.value;
+      map.forEach((key, value) {
+        Map<dynamic,dynamic> map1 = value;
+        map1.forEach((key, value) {
+          if(key.toString() == "id")
+          {
+            _id.add(value.toString());
+          }
+          else if(key.toString() == "status")
+          {
+            _statusFromDb.add(value.toString());
+          }
+        });
+      });
+      checkfordisplayusername();
+    });
   }
 
   Future checkUsername() async{
     final url = "http://35.198.227.22/getUsername"; // production server
     Map body = {};
     var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
-    print("Response: " + response.body);
+    //print("Response: " + response.body);
     var extractdata = json.decode(response.body);
     List data;
     data = extractdata["result"];
     return data;
   }
 
-  checkfordisplayusername() async {
+  Future<void> checkfordisplayusername() async {
     List list = await checkUsername();
     userModel = await GlobalStorage().getUser();
     setState(() {
@@ -65,18 +119,19 @@ class _Fragment2State extends State<Fragment2> {
     });
   }
 
-
   @override
   void initState() {
     // checkUsername();
     // assignVariable();
-    checkfordisplayusername();
+    getUserStatus();
     super.initState();
   }
 
   @override
   void dispose() {
     //databaseReference.child('call').child('userid').remove();
+    UserDetailsList = null;
+    UserDetailsListDisplay = null;
     super.dispose();
   }
 
@@ -155,10 +210,21 @@ class _Fragment2State extends State<Fragment2> {
                               onChanged: (text){
                                 text = text.toLowerCase();
                                 setState(() {
-                                  _notesForDisplay = _notes.where((note) {
-                                    var noteTitle = note.toLowerCase();
-                                    return noteTitle.contains(text);
-                                  }).toList();
+                                  if(text == "")
+                                  {
+                                    UserDetailsListDisplay = UserDetailsList;
+                                  }
+                                  else
+                                  {
+                                    UserDetailsListDisplay = null;
+                                    UserDetailsListDisplay = new List<DisplayUserList>();
+
+                                    UserDetailsList.forEach((userDetail) {
+                                      if (userDetail.name.toLowerCase().contains(text)) {
+                                        UserDetailsListDisplay.add(userDetail);
+                                      }
+                                    });
+                                  }
                                 });
                               },
                             ),
@@ -178,7 +244,9 @@ class _Fragment2State extends State<Fragment2> {
               padding: EdgeInsets.zero,
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: _notesForDisplay.length,
+              //itemCount: _notesForDisplay.length,
+              //itemCount: UserDetailsList.length,
+              itemCount: UserDetailsListDisplay.length,
               itemBuilder: (context,i){
                 return Container(
                   constraints: BoxConstraints.expand(
@@ -194,7 +262,7 @@ class _Fragment2State extends State<Fragment2> {
                             children: <Widget>[
                               CircleAvatar(
                                 radius: 35.0,
-                                backgroundImage: NetworkImage(_picPath[i]),
+                                backgroundImage: NetworkImage(UserDetailsListDisplay[i].profilePicPath),
                                 backgroundColor: Colors.black,
                               ),
                             ],
@@ -204,7 +272,8 @@ class _Fragment2State extends State<Fragment2> {
                           padding: const EdgeInsets.fromLTRB(100,20,0,0),
                           child: Column(
                             children: <Widget>[
-                              Text(_notesForDisplay[(i-1) < 0 ? 0 : i], style: TextStyle(
+                              //Text(_notesForDisplay[(i-1) < 0 ? 0 : i], style: TextStyle(
+                              Text(UserDetailsListDisplay[(i-1) < 0 ? 0 : i].name, style: TextStyle(
                                   fontFamily: 'SFProDisplay',
                                   color: Color(0xff4A4A4A),
                                   fontSize: 17,
@@ -230,9 +299,9 @@ class _Fragment2State extends State<Fragment2> {
                           padding: const EdgeInsets.fromLTRB(100,75,0,0),
                           child: Column(
                             children: <Widget>[
-                              Text("AVAILABLE", style: TextStyle(
+                              Text(UserDetailsListDisplay[i].status == "-" ? "OFFLINE" : UserDetailsListDisplay[i].status, style: TextStyle(
                                   fontFamily: 'Helvetica',
-                                  color: Color(0xff51B549),
+                                  color: UserDetailsListDisplay[i].status == "-" ? Colors.red:Color(0xff51B549),
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700
                               ),),
@@ -275,21 +344,20 @@ class _Fragment2State extends State<Fragment2> {
                         //jitsiMeet().joinMeeting("",roomID);
 
                         r.roomID = roomID;
-                        r.receiverName = _notesForDisplay[i];
+                        r.receiverName = UserDetailsListDisplay[i].name;
                       }
                       else
                       {
                         r.storyTitle = widget.storyTitle;
-                        r.receiverName = _notesForDisplay[i];
+                        r.receiverName = UserDetailsListDisplay[i].name;
                         //jitsiMeet().joinMeeting(widget.storyTitle,"");
                       }
 
-                      r.receiverID = _userID[i];
+                      r.receiverID = UserDetailsListDisplay[i].userid;
                       r.status = "dialling";
 
-                      print("_notesForDisplay[i] ="+_notesForDisplay[i]);
 
-                      databaseReference.child("call").child(_userID[i]).set({
+                      databaseReference.child("call").child(UserDetailsListDisplay[i].userid).set({
                         'name': userModel.name,
                         'title': widget.storyTitle,
                         'status':'dialling',
