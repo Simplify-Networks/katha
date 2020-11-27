@@ -35,7 +35,7 @@ String profilePicPath;
 Uint8List profilePicByte;
 String userProfilePic = "";
 String getusername;
-UserModel userModel = new UserModel();
+
 
 class Login extends StatefulWidget {
   @override
@@ -428,6 +428,8 @@ isFirebaseAuthSignedIn(BuildContext context) async{
             await checkUsername(email);
             userName = getusername;
         }
+
+        UserModel userModel = new UserModel();
 
         userModel.email = email;
         userModel.userID = userID;

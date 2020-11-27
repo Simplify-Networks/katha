@@ -2,7 +2,7 @@
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/deneb/Downloads/flutter"
 export "FLUTTER_APPLICATION_PATH=/Users/deneb/Desktop/flutter_Workspace/katha"
-export "FLUTTER_TARGET=/Users/deneb/Desktop/flutter_Workspace/katha/lib/splash.dart"
+export "FLUTTER_TARGET=/Users/deneb/Desktop/flutter_Workspace/katha/lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build/ios"
 export "OTHER_LDFLAGS=$(inherited) -framework Flutter"

@@ -34,7 +34,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
 
   PageController _pageController = PageController();
   List<Widget> _screens;
@@ -77,22 +77,49 @@ class _HomePageState extends State<HomePage> {
         }
       }
     });
+
+    SetOnlineStatus();
+  }
+
+  void SetOnlineStatus()
+  {
+    databaseReference.child("user").child(userM.userID).set({
+      'id': userM.userID,
+      'name':userM.name,
+      'status':'ONLINE',
+    });
   }
 
   @override
   void initState() {
     jitsiMeet().StartJetsiListener();
     startDBListener();
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     jitsiMeet().stopJetsiListerner();
     databaseReference.child('call').child(userM.userID).remove();
+    databaseReference.child('user').child(userM.userID).remove();
     updates.cancel();
     super.dispose();
   }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print("state=$state");
+    if(state == AppLifecycleState.resumed){
+      SetOnlineStatus();
+    }
+    else{
+      databaseReference.child('user').child(userM.userID).remove();
+    }
+  }
+
   void _onPageChanged(int index){
     setState(() {
       _currentIndex = index;
