@@ -350,7 +350,7 @@ signout(BuildContext context) async{
 
   GlobalStorage().logoff();
 
-  Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
 }
 
 

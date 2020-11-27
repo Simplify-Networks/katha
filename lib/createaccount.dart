@@ -395,7 +395,7 @@ showSuccessDialog(BuildContext context,uemail, id, username, type, pic) {
 
       GlobalStorage().setUser(userModel);
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
     },
   );
 

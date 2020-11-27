@@ -314,7 +314,7 @@ showdynamicDialog(text1, text2, BuildContext context, username ,pic, id, type, u
 
         GlobalStorage().setUser(userModel);
 
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
 
       } else if (text1 =="Sign In Error") {
         Navigator.pop(
