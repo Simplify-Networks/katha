@@ -82,7 +82,7 @@ class Logo extends StatelessWidget {
       ),*/
       //left, top, right, bottom
       padding: const EdgeInsets.fromLTRB(16, 230, 16, 0),
-      child:  Image.asset('lib/assets/images/white_logo_transparent_background 1.png'),
+      child:  Image.asset('lib/assets/images/kathahigh.png'),
     );
   }
 }

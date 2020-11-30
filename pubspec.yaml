@@ -53,7 +53,7 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/images/kathalogo.png"
+  image_path: "lib/assets/images/kathaapplogo.png"
 
 flutter_launcher_name:
   name: "Katha"

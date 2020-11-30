@@ -80,7 +80,7 @@ class _SplashState extends State<Splash> {
         height: size.height,
         width: double.infinity,
         child: Center(
-          child: Image.asset('lib/assets/images/white_logo_transparent_background 1.png'),
+          child: Image.asset('lib/assets/images/kathahigh.png'),
         ),
         decoration: new BoxDecoration(
           gradient: new LinearGradient(colors: [
