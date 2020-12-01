@@ -24,6 +24,7 @@ class jitsiMeet{
   var isAudioOnly = true;
   var isAudioMuted = true;
   var isVideoMuted = true;
+  UserModel userM = new UserModel();
 
   factory jitsiMeet(){
     return _jitsiMeet;
@@ -32,8 +33,8 @@ class jitsiMeet{
   jitsiMeet._internal();
 
 
-  void StartJetsiListener()
-  {
+  Future<void> StartJetsiListener() async {
+    userM = await GlobalStorage().getUser();
     JitsiMeet.addListener(JitsiMeetingListener(
         onConferenceWillJoin: _onConferenceWillJoin,
         onConferenceJoined: _onConferenceJoined,
@@ -147,6 +148,11 @@ class jitsiMeet{
 
   void _onConferenceJoined({message}) {
     debugPrint("_onConferenceJoined broadcasted with message: $message");
+    FirebaseDatabase.instance.reference().child("user").child(userM.userID).set({
+      'id': userM.userID,
+      'name':userM.name,
+      'status':'IN SESSION',
+    });
   }
 
   void _onConferenceTerminated({message}) {

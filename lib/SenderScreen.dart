@@ -96,7 +96,10 @@ class _SenderScreenState extends State<SenderScreen> {
         height: height,
         width: width,
         decoration: new BoxDecoration(
-          gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
+          gradient: new LinearGradient(colors: [
+            Color(0xffBFD4DB),
+            Color(0xff78A2CC)
+          ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               stops: [0.0,1.0],
@@ -127,8 +130,10 @@ class _SenderScreenState extends State<SenderScreen> {
                     if(instance != null){
                       instance.pause();
                     }
+
                     FirebaseDatabase.instance.reference().child('call').child(r.receiverID).remove();
                     r.clearDetails();
+
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
                     } else {

@@ -47,6 +47,39 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   final databaseReference = FirebaseDatabase.instance.reference();
   UserModel userM = new UserModel();
 
+  showAlertDialog(BuildContext context) {
+
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {},
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Continue"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("AlertDialog"),
+      content: Text("Would you like to continue learning how to use Flutter alerts?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   Future<void> startDBListener() async {
     userM = await GlobalStorage().getUser();
     UserModel sD = new UserModel();
@@ -98,6 +131,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     jitsiMeet().StartJetsiListener();
     startDBListener();
     WidgetsBinding.instance.addObserver(this);
+    Future.delayed(Duration.zero, () => showAlertDialog(context));
     super.initState();
   }
 
@@ -118,7 +152,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     if(state == AppLifecycleState.resumed){
       SetOnlineStatus();
     }
-    else{
+    else if(state == AppLifecycleState.inactive){
+      databaseReference.child('user').child(userM.userID).remove();
+    }
+    else if(state == AppLifecycleState.detached){
       databaseReference.child('user').child(userM.userID).remove();
     }
   }
@@ -182,118 +219,120 @@ class Fragment3 extends StatefulWidget {
 }
 
 class _Fragment3State extends State<Fragment3> {
+
+  List newsTitle = ["Ayca Kohreman","Emre Can","Steve Jobs","Orhan Turk","Orhan Turk"];
+  List newsDescription = ["Snow White starw at 15:00 today","Titanic is coming Wednesday","The Robin Hood start at 2:45.I am waiting for everyone","At 13:45, calling all Heroes to join.","On Saturday, let's dance Baby Sharks!"];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container();
-    /*return Scaffold(
-      body: Column(
+    return Container(
+      child: Stack(
         children: <Widget>[
-          Container(
-            constraints: BoxConstraints.expand(
-              height: 200.0,
-            ),
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(colors: [Color.fromARGB(255, 69,104,220),Color.fromARGB(255, 176,106,179)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [0.0,1.0],
-                  tileMode: TileMode.clamp
-              ),
-            ),
-            child: Stack(
-              overflow: Overflow.visible,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20,65,0,0),
-                  child: Row(
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 50.0,
-                        backgroundImage: NetworkImage("https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg"),
-                        backgroundColor: Colors.black,
+          DefaultTabController(length: 2,
+              child: Scaffold(
+                appBar: AppBar(
+                  bottom: TabBar(
+                    unselectedLabelColor: Colors.white,
+                    labelColor: Colors.white,
+                    tabs: <Widget>[
+                    //new Tab(text: 'In', icon: Icon(Icons.directions_car, color: Colors.grey),),
+                    //new Tab(icon: new Image.asset("lib/assets/images/end_call_btn.png"), text: "Browse"),
+                    //new Tab(icon: Icon(Icons.directions_car, color: Colors.grey), text: "Browse"),
+                      new Tab(text: "1"),
+                      new Tab(text: "2"),
+                  ],),
+                  flexibleSpace: Container(
+                    constraints: BoxConstraints.expand(
+                      height: 200.0,
+                    ),
+                    decoration: new BoxDecoration(
+                      gradient: new LinearGradient(colors: [
+                        Color(0xffBFD4DB),
+                        Color(0xff78A2CC)
+                      ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          stops: [0.0,1.0],
+                          tileMode: TileMode.clamp
                       ),
-                    ],
+                    ),
+                    child: Stack(
+                      overflow: Overflow.visible,
+                      children: <Widget>[
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom:50.0),
+                            child: Text(
+                              "NEWS",
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                  fontFamily: 'Helvetica',
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  //elevation: 0.0,
+                  toolbarHeight: 170,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(130,80,0,0),
-                  child: Column(
-                    children: <Widget>[
-                      Text("Neil Sullivan Paul", style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    ],
-                  ),
+                body: TabBarView(
+                  children: <Widget>[
+                    ListView.builder(
+                      itemCount: newsTitle.length,
+                      //itemBuilder: (context,i)=>ListTile(title:Text("test")),
+                      itemBuilder: (context,i)=>
+                          Container(
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)
+                              ),
+                              margin: EdgeInsets.all(15.0),
+                              //elevation: 10.0,
+                              child:Column(
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Text(
+                                      newsTitle[i],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 15,
+                                        fontFamily: 'Helvetica',
+                                      ),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      newsDescription[i],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 15,
+                                          fontFamily: 'Helvetica',
+                                      ),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                    ),
+                    Center(
+                      child: Text("Page 2"),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(130,115,0,0),
-                  child: Column(
-                    children: <Widget>[
-                      Text("Protorix", style: TextStyle(
-                        color: Colors.white60,
-                        fontSize:30,
-                      ),),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(5),
-            height: 100,
-            width: 400,
-            child: Card(
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    'Story Title',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Story description',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
               ),
-            ),
-          ),
-          Container(
-            height: 400,
-            width: 800,
-            padding: EdgeInsets.all(5),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    height: 500,
-                    width: 500,
-                    color: Colors.red,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Container(
-                    height: 500,
-                    width: 500,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-            ),
           ),
         ],
       ),
-    );*/
+    );
   }
 }
 
@@ -303,53 +342,152 @@ class Fragment4 extends StatefulWidget {
 }
 
 class _Fragment4State extends State<Fragment4> {
+
+  UserModel userModel = new UserModel();
+  String name = "";
+  String picPath = "";
+
+  Future<void> getUserInfo() async {
+    userModel = await GlobalStorage().getUser();
+    setState(() {
+      name = userModel.name;
+      picPath = userModel.profilePicPath;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUserInfo();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*body: Center(
-        child: FlutterLogo(
-          size: 250,
-        ),
-      ),*/
-
-      body: new Container(
-        child: Center(
-          child: RaisedButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            onPressed: () {
-              signout(context);
-            },
-            child: Text(
-              "Log Out",
-              style: TextStyle(
-                color: Color(0xFF000000),
-              ),
-            ),
-          ),
-        ),
-        decoration: new BoxDecoration(
-          gradient: new LinearGradient(colors: [
-            Color(0xffBFD4DB),
-            Color(0xff78A2CC)
-          ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp
-          ),
-        ),
-      ),
+     body: Container(
+       child: Column(
+         children: <Widget>[
+           Stack(
+             children: <Widget>[
+               Container(
+                 constraints: BoxConstraints.expand(
+                   height: 200.0,
+                 ),
+                 decoration: new BoxDecoration(
+                   gradient: new LinearGradient(colors: [
+                     Color(0xffBFD4DB),
+                     Color(0xff78A2CC)
+                   ],
+                       begin: Alignment.topLeft,
+                       end: Alignment.bottomRight,
+                       stops: [0.0,1.0],
+                       tileMode: TileMode.clamp
+                   ),
+                 ),
+                 child: Center(
+                   child: Padding(
+                     padding: const EdgeInsets.only(bottom:55.0),
+                     child: Text(
+                       "ACCOUNTS",
+                       textAlign: TextAlign.center,
+                       style: new TextStyle(
+                           fontFamily: 'Helvetica',
+                           color: Colors.white,
+                           fontSize: 20,
+                           fontWeight: FontWeight.w400
+                       ),
+                     ),
+                   ),
+                 ),
+               ),
+               Container(
+                 child: Center(
+                   child: Padding(
+                     padding: const EdgeInsets.only(top:140,bottom: 10),
+                     child: CircleAvatar(
+                       radius: 60.0,
+                       backgroundImage:
+                       (picPath == "" || picPath == null)?
+                       AssetImage("lib/assets/images/kathalogo.png"):
+                       NetworkImage(picPath),
+                       backgroundColor: Colors.black,
+                     ),
+                   ),
+                 ),
+               ),
+             ],
+           ),
+           Container(
+             child: Column(
+               children: <Widget>[
+                 Text(name, style: TextStyle(
+                     fontFamily: 'SFProDisplay',
+                     color: Colors.black,
+                     fontSize: 17,
+                     fontWeight: FontWeight.w600
+                 ),),
+                 Text("Senior Storyteller", style: TextStyle(
+                     fontFamily: 'Helvetica',
+                     color: Colors.black,
+                     fontSize: 15,
+                     fontWeight: FontWeight.w700
+                 ),),
+                 Card(
+                   elevation: 0,
+                   color: Colors.transparent,
+                   child: ListTile(
+                     title: Text("Information Update", style: TextStyle(
+                         fontFamily: 'Helvetica',
+                         color: Colors.black,
+                         fontSize: 15,
+                         fontWeight: FontWeight.w500
+                     ),),
+                     trailing: Icon(Icons.arrow_forward_ios),
+                   ),
+                 ),
+                 Card(
+                   elevation: 0,
+                   color: Colors.transparent,
+                   child: ListTile(
+                     title: Text("Change Password", style: TextStyle(
+                         fontFamily: 'Helvetica',
+                         color: Colors.black,
+                         fontSize: 15,
+                         fontWeight: FontWeight.w500
+                     ),),
+                     trailing: Icon(Icons.arrow_forward_ios),
+                   ),
+                 ),
+                 InkWell(
+                   child: Card(
+                     elevation: 0,
+                     color: Colors.transparent,
+                     child: ListTile(
+                       title: Text("Sign Out", style: TextStyle(
+                           fontFamily: 'Helvetica',
+                           color: Colors.red,
+                           fontSize: 15,
+                           fontWeight: FontWeight.w600
+                       ),),
+                     ),
+                   ),
+                   onTap: (){
+                     signout(context);
+                   },
+                 ),
+               ],
+             ),
+           ),
+         ],
+       ),
+     ),
     );
   }
 }
 
 signout(BuildContext context) async{
   await _auth.signOut();
-
   GlobalStorage().logoff();
-
   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
 }
 

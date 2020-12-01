@@ -103,7 +103,8 @@ class _Fragment2State extends State<Fragment2> {
   Future checkUsername() async{
     final url = "http://35.198.227.22/getUsername"; // production server
     Map body = {};
-    var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+    var body_encoded = json.encode(body);
+    var response = await http.post(url, body: body_encoded, headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
     //print("Response: " + response.body);
     var extractdata = json.decode(response.body);
     List data;
@@ -133,6 +134,18 @@ class _Fragment2State extends State<Fragment2> {
     UserDetailsList = null;
     UserDetailsListDisplay = null;
     super.dispose();
+  }
+
+  Color getColor(String word) {
+    if(word == "-"){
+      return Color.fromARGB(255, 170, 105, 181);
+    }
+    else if(word == "IN SESSION"){
+      return Colors.red;
+    }
+    else if(word == "ONLINE"){
+      return Colors.green;
+    }
   }
 
   @override
@@ -301,7 +314,8 @@ class _Fragment2State extends State<Fragment2> {
                             children: <Widget>[
                               Text(UserDetailsListDisplay[i].status == "-" ? "OFFLINE" : UserDetailsListDisplay[i].status, style: TextStyle(
                                   fontFamily: 'Helvetica',
-                                  color: UserDetailsListDisplay[i].status == "-" ? Colors.red:Color(0xff51B549),
+                                  //color: UserDetailsListDisplay[i].status == "-" ? Colors.red:Color(0xff51B549),
+                                  color: getColor(UserDetailsListDisplay[i].status),
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700
                               ),),
@@ -332,40 +346,44 @@ class _Fragment2State extends State<Fragment2> {
                         'title': widget.storyTitle
                       });*/
 
-                      var r = RoomDetails();
-
-                      if(widget.storyTitle == "")
+                      if(UserDetailsListDisplay[i].status == "ONLINE")
                       {
-                        const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-                        Random _rnd = Random();
-                        String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-                            length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-                        roomID = getRandomString(15);
-                        //jitsiMeet().joinMeeting("",roomID);
+                        var r = RoomDetails();
 
-                        r.roomID = roomID;
-                        r.receiverName = UserDetailsListDisplay[i].name;
+                        if(widget.storyTitle == "")
+                        {
+                          const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+                          Random _rnd = Random();
+                          String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+                              length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+                          roomID = getRandomString(15);
+                          //jitsiMeet().joinMeeting("",roomID);
+
+                          r.roomID = roomID;
+                          r.receiverName = UserDetailsListDisplay[i].name;
+                        }
+                        else
+                        {
+                          r.storyTitle = widget.storyTitle;
+                          r.receiverName = UserDetailsListDisplay[i].name;
+                          //jitsiMeet().joinMeeting(widget.storyTitle,"");
+                        }
+
+                        r.receiverID = UserDetailsListDisplay[i].userid;
+                        r.status = "dialling";
+
+
+                        databaseReference.child("call").child(UserDetailsListDisplay[i].userid).set({
+                          'name': userModel.name,
+                          'title': widget.storyTitle,
+                          'status':'dialling',
+                          'roomID': roomID,
+                          'picPath': userModel.profilePicPath,
+                        });
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SenderScreen()));
                       }
-                      else
-                      {
-                        r.storyTitle = widget.storyTitle;
-                        r.receiverName = UserDetailsListDisplay[i].name;
-                        //jitsiMeet().joinMeeting(widget.storyTitle,"");
-                      }
 
-                      r.receiverID = UserDetailsListDisplay[i].userid;
-                      r.status = "dialling";
-
-
-                      databaseReference.child("call").child(UserDetailsListDisplay[i].userid).set({
-                        'name': userModel.name,
-                        'title': widget.storyTitle,
-                        'status':'dialling',
-                        'roomID': roomID,
-                        'picPath': userModel.profilePicPath,
-                      });
-
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SenderScreen()));
                     },
                   ),
                 );
