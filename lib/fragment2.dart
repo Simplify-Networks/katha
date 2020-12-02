@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:katha/GlobalStorage.dart';
 import 'package:katha/RoomDetails.dart';
 import 'package:katha/UserModel.dart';
-import 'package:katha/login.dart';
+import 'package:toast/toast.dart';
 import 'DisplayUserList.dart';
 import 'SenderScreen.dart';
 
@@ -32,17 +32,160 @@ class _Fragment2State extends State<Fragment2> {
 
   List<String> _notes = List<String>();
   List<String> _notesForDisplay = List<String>();
-
   List<String> _userID = List<String>();
   List<String> _picPath = List<String>();
   List<String> _status = List<String>();
   List<String> _id = List<String>();
   List<String> _statusFromDb = List<String>();
-
+  List<String> _FrienduserID = List<String>();
+  List<String> _FriendpicPath = List<String>();
+  List<String> _Friendname = List<String>();
+  List<DisplayUserList> FriendList = new List<DisplayUserList>();
   List<DisplayUserList> UserDetailsList = new List<DisplayUserList>();
   List<DisplayUserList> UserDetailsListDisplay = new List<DisplayUserList>();
-
   StreamSubscription <Event> updates;
+  TextEditingController customController = TextEditingController();
+
+   Future<bool> checkUserID(final String userid) async{
+    final url = "http://35.198.227.22/getUser"; // production server
+    Map body = {"userID": userid};
+    var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+    // print("Response: " + response.body);
+    var extractdata = json.decode(response.body);
+    List data;
+    data = extractdata["result"];
+
+    if(data.length == 0)
+    {
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  Future<bool> getFriend() async{
+    userModel = await GlobalStorage().getUser();
+    _FrienduserID.clear();
+    _Friendname.clear();
+    _FriendpicPath.clear();
+
+    final url = "http://35.198.227.22/getFriend"; // production server
+    Map body = {"myUserID": userModel.userID};
+    var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+    //print("Response: " + response.body);
+    Map<String,dynamic> map = jsonDecode(response.body.toString());
+    map.forEach((key, value) {
+      List<dynamic> list = value;
+      for(var i=0;i<list.length;i++){
+//        _FrienduserID.add(list[i]["userID"]);
+//        _Friendname.add(list[i]["userName"]);
+//        _FriendpicPath.add(list[i]["profilepicURL"]);
+//        _notesForDisplay.add(list[i]["userName"]);
+        _notes.add(list[i]["userName"]);
+        _notesForDisplay.add(list[i]["userName"]);
+        _userID.add(list[i]["userID"]);
+        _picPath.add(list[i]["profilepicURL"]);
+        _status.add("-");
+      }
+    });
+
+    setState(() {
+      assignVariable1();
+    });
+  }
+
+  void assignVariable1()
+  {
+    for (var i = 0; i < _id.length; i++) {
+      for (var j = 0; j < _userID.length; j++) {
+        if(_id[i] == _userID[j])
+        {
+          _status[j] = _statusFromDb[i];
+        }
+      }
+    }
+
+    for(var i = 0;i<_notesForDisplay.length;i++)
+    {
+      DisplayUserList displayUserList = new DisplayUserList();
+      displayUserList.name = _notes[i];
+      displayUserList.userid = _userID[i];
+      displayUserList.profilePicPath = _picPath[i];
+      displayUserList.status = _status[i];
+
+      UserDetailsList.add(displayUserList);
+      UserDetailsListDisplay.add(displayUserList);
+    }
+  }
+
+  Future<String> showAlertDialog(BuildContext context) {
+
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Add"),
+      onPressed:  () async {
+
+        if(customController.text.toString().isEmpty)
+        {
+          Toast.show("Please enter user ID.", context, duration: 3);
+          Navigator.of(context).pop();
+        }
+        else
+        {
+          if(customController.text.toString() != userModel.userID)
+          {
+            bool exist = await checkUserID(customController.text.toString());
+
+            if(exist){
+              databaseReference.child("friend_request").child(customController.text.toString()).child(userModel.userID).set({
+                'requestor_id': userModel.userID,
+                'name':userModel.name,
+                'picPath':userModel.profilePicPath,
+                'status':'request',
+              });
+              Toast.show("Request sent.", context, duration: 3);
+            }
+            else{
+              Toast.show("Invalid User ID.", context, duration: 3);
+            }
+          }
+          else
+          {
+            Toast.show("Invalid User ID.", context, duration: 3);
+          }
+          Navigator.of(context).pop(customController.text.toString());
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Add Contact"),
+      content: TextField(
+        controller: customController,
+        decoration: new InputDecoration.collapsed(hintText: "Insert User ID"),
+      ),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   void assignVariable(List name) {
 
@@ -96,7 +239,8 @@ class _Fragment2State extends State<Fragment2> {
           }
         });
       });
-      checkfordisplayusername();
+      //checkfordisplayusername();
+      getFriend();
     });
   }
 
@@ -113,8 +257,8 @@ class _Fragment2State extends State<Fragment2> {
   }
 
   Future<void> checkfordisplayusername() async {
-    List list = await checkUsername();
     userModel = await GlobalStorage().getUser();
+    List list = await checkUsername();
     setState(() {
       assignVariable(list);
     });
@@ -282,7 +426,7 @@ class _Fragment2State extends State<Fragment2> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(100,20,0,0),
+                          padding: const EdgeInsets.fromLTRB(100,45,0,0),
                           child: Column(
                             children: <Widget>[
                               //Text(_notesForDisplay[(i-1) < 0 ? 0 : i], style: TextStyle(
@@ -295,7 +439,7 @@ class _Fragment2State extends State<Fragment2> {
                             ],
                           ),
                         ),
-                        Padding(
+                        /*Padding(
                           padding: const EdgeInsets.fromLTRB(100,45,0,0),
                           child: Column(
                             children: <Widget>[
@@ -307,9 +451,9 @@ class _Fragment2State extends State<Fragment2> {
                               ),),
                             ],
                           ),
-                        ),
+                        ),*/
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(100,75,0,0),
+                          padding: const EdgeInsets.fromLTRB(100,70,0,0),
                           child: Column(
                             children: <Widget>[
                               Text(UserDetailsListDisplay[i].status == "-" ? "OFFLINE" : UserDetailsListDisplay[i].status, style: TextStyle(
@@ -391,6 +535,16 @@ class _Fragment2State extends State<Fragment2> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          showAlertDialog(context).then((value){
+
+          });
+        },
+        backgroundColor: Color(0xff78A2CC),
+        child: Icon(Icons.add),
+        //backgroundColor: Colors.lightBlue,
       ),
     );
   }

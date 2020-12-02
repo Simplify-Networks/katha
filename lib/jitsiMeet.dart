@@ -80,7 +80,15 @@ class jitsiMeet{
         FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
         FeatureFlagEnum.LIVE_STREAMING_ENABLED: false,
         FeatureFlagEnum.INVITE_ENABLED: false,
-        //FeatureFlagEnum.MEETING_NAME_ENABLED: false,
+        FeatureFlagEnum.CHAT_ENABLED: false,
+        FeatureFlagEnum.MEETING_PASSWORD_ENABLED: false,
+        FeatureFlagEnum.TOOLBOX_ALWAYS_VISIBLE: false,
+        FeatureFlagEnum.RAISE_HAND_ENABLED: false,
+        FeatureFlagEnum.RECORDING_ENABLED: false,
+        FeatureFlagEnum.IOS_RECORDING_ENABLED: false,
+        FeatureFlagEnum.CALENDAR_ENABLED: false,
+        FeatureFlagEnum.ADD_PEOPLE_ENABLED: false,
+        FeatureFlagEnum.CLOSE_CAPTIONS_ENABLED: false,
       };
 
       // Here is an example, disabling features for each platform

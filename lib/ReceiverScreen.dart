@@ -75,7 +75,6 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
       timer.cancel();
     }
 
-    print("dispose?");
     super.dispose();
   }
 

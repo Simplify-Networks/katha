@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:katha/GlobalStorage.dart';
+import 'package:katha/StoryIntro.dart';
 import 'UserModel.dart';
 import 'fragment2.dart';
 
@@ -40,7 +41,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Container(
+          /*Container(
             constraints: BoxConstraints.expand(
               height: 200.0,
             ),
@@ -215,7 +216,69 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                               )],
                           ),
                           onTap:(){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Fragment2(storyTitle: storytittle[i])));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => StoryIntro(storyTitle: storytittle[i])));
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                    ],
+                  );
+                },
+                itemCount: 10,
+              ),
+            ),
+          ),*/
+          Padding(
+            padding: const EdgeInsets.only(top:40.0),
+            child: Container(
+              //padding: EdgeInsets.all(5),
+              child: ListView.builder(
+                padding: EdgeInsets.fromLTRB(10,0,10,0),
+                itemBuilder: (context,i){
+                  return  Column(
+                    children: <Widget>[
+                      Container(
+                        height: 130,
+                        width: 800,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          color: Colors.white,
+                        ),
+                        child: InkWell(
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                height: 130,
+                                width: 130,
+                                child: Image(image:AssetImage(storyphoto[i]), fit: BoxFit.cover),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(150,40,0,0),
+                                child: Text(storytittle[i], style: TextStyle(
+                                    fontFamily: 'SFProDisplay',
+                                    color: Color(0xff4A4A4A),
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600
+                                ),),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(150,60,0,0),
+                                child: Text(storyexplaination[i], style: TextStyle(
+                                    fontFamily: 'Helvetica',
+                                    color: Color(0xff4A4A4A),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
+                                ),
+                              )],
+                          ),
+                          onTap:(){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => StoryIntro(storyTitle: storytittle[i])));
                           },
                         ),
                       ),
