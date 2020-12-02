@@ -49,6 +49,9 @@ dependencies:
   vibration: ^1.7.2
   flutter_launcher_icons: ^0.8.1
   flutter_launcher_name: ^0.0.1
+  flutter_swiper: ^1.1.6
+  toast: ^0.1.5
+  flutter_local_notifications: ^3.0.1+6
 
 flutter_icons:
   android: true

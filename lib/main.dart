@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:katha/UserModel.dart';
 import 'package:katha/login.dart';
 import 'package:katha/splash.dart';
+import 'FriendScreen.dart';
 import 'GlobalStorage.dart';
 import 'ReceiverScreen.dart';
 import 'fragment1.dart';
@@ -14,6 +16,8 @@ import 'jitsiMeet.dart';
 
 final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 FirebaseAuth _auth = FirebaseAuth.instance;
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 void main() {
   runApp(
@@ -44,41 +48,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   int _currentIndex = 0;
 
   StreamSubscription <Event> updates;
+  StreamSubscription <Event> friend_event;
   final databaseReference = FirebaseDatabase.instance.reference();
   UserModel userM = new UserModel();
-
-  showAlertDialog(BuildContext context) {
-
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed:  () {},
-    );
-    Widget continueButton = FlatButton(
-      child: Text("Continue"),
-      onPressed:  () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("AlertDialog"),
-      content: Text("Would you like to continue learning how to use Flutter alerts?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
 
   Future<void> startDBListener() async {
     userM = await GlobalStorage().getUser();
@@ -126,12 +98,26 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     });
   }
 
+  Future<void> startDBFriendListener() async {
+    userM = await GlobalStorage().getUser();
+    friend_event = databaseReference.child("friend_request").child("1234").onChildAdded.listen((event) {
+      print(event.snapshot.value);
+    });
+
+    await databaseReference.child("friend_request").child("1234").once().then((DataSnapshot snapshot) {
+      //Map<dynamic,dynamic> map = snapshot.value;
+      var s = snapshot.value;
+      print("snapshot.value = $s");
+    });
+  }
+
   @override
   void initState() {
     jitsiMeet().StartJetsiListener();
     startDBListener();
+    startDBFriendListener();
     WidgetsBinding.instance.addObserver(this);
-    Future.delayed(Duration.zero, () => showAlertDialog(context));
+    //Future.delayed(Duration.zero, () => showAlertDialog(context));
     super.initState();
   }
 
@@ -142,13 +128,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     databaseReference.child('call').child(userM.userID).remove();
     databaseReference.child('user').child(userM.userID).remove();
     updates.cancel();
+    friend_event.cancel();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    print("state=$state");
+
     if(state == AppLifecycleState.resumed){
       SetOnlineStatus();
     }
@@ -194,7 +181,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
-            title: Text("Notifications"),
+            title: Text("News"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
@@ -223,7 +210,7 @@ class _Fragment3State extends State<Fragment3> {
   List newsTitle = ["Ayca Kohreman","Emre Can","Steve Jobs","Orhan Turk","Orhan Turk"];
   List newsDescription = ["Snow White starw at 15:00 today","Titanic is coming Wednesday","The Robin Hood start at 2:45.I am waiting for everyone","At 13:45, calling all Heroes to join.","On Saturday, let's dance Baby Sharks!"];
 
-  @override
+  /*@override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -333,6 +320,90 @@ class _Fragment3State extends State<Fragment3> {
         ],
       ),
     );
+  }*/
+
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          Container(
+            constraints: BoxConstraints.expand(
+              height: 200.0,
+            ),
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(colors: [
+                Color(0xffBFD4DB),
+                Color(0xff78A2CC)
+              ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.0,1.0],
+                  tileMode: TileMode.clamp
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:55.0),
+                child: Text(
+                  "News",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      fontFamily: 'Helvetica',
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 200.0),
+            child: ListView.builder(
+              itemCount: newsTitle.length,
+              //itemBuilder: (context,i)=>ListTile(title:Text("test")),
+              itemBuilder: (context,i)=>
+                  Container(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)
+                      ),
+                      margin: EdgeInsets.all(15.0),
+                      //elevation: 10.0,
+                      child:Column(
+                        children: <Widget>[
+                          ListTile(
+                            title: Text(
+                              newsTitle[i],
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                                fontFamily: 'Helvetica',
+                              ),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(
+                              newsDescription[i],
+                              style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 15,
+                                fontFamily: 'Helvetica',
+                              ),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -403,7 +474,7 @@ class _Fragment4State extends State<Fragment4> {
                Container(
                  child: Center(
                    child: Padding(
-                     padding: const EdgeInsets.only(top:140,bottom: 10),
+                     padding: const EdgeInsets.only(top:140),
                      child: CircleAvatar(
                        radius: 60.0,
                        backgroundImage:
@@ -420,19 +491,25 @@ class _Fragment4State extends State<Fragment4> {
            Container(
              child: Column(
                children: <Widget>[
-                 Text(name, style: TextStyle(
-                     fontFamily: 'SFProDisplay',
-                     color: Colors.black,
-                     fontSize: 17,
-                     fontWeight: FontWeight.w600
-                 ),),
-                 Text("Senior Storyteller", style: TextStyle(
-                     fontFamily: 'Helvetica',
-                     color: Colors.black,
-                     fontSize: 15,
-                     fontWeight: FontWeight.w700
-                 ),),
-                 Card(
+                 Padding(
+                   padding: const EdgeInsets.only(top:10.0),
+                   child: Text(name, style: TextStyle(
+                       fontFamily: 'SFProDisplay',
+                       color: Colors.black,
+                       fontSize: 17,
+                       fontWeight: FontWeight.w600
+                   ),),
+                 ),
+                 Padding(
+                   padding: const EdgeInsets.only(top:10.0,bottom:10),
+                   child: SelectableText("ID: ${userModel.userID}", style: TextStyle(
+                       fontFamily: 'Helvetica',
+                       color: Colors.black,
+                       fontSize: 15,
+                       fontWeight: FontWeight.w700
+                   ),),
+                 ),
+                 /*Card(
                    elevation: 0,
                    color: Colors.transparent,
                    child: ListTile(
@@ -444,19 +521,24 @@ class _Fragment4State extends State<Fragment4> {
                      ),),
                      trailing: Icon(Icons.arrow_forward_ios),
                    ),
-                 ),
-                 Card(
-                   elevation: 0,
-                   color: Colors.transparent,
-                   child: ListTile(
-                     title: Text("Change Password", style: TextStyle(
-                         fontFamily: 'Helvetica',
-                         color: Colors.black,
-                         fontSize: 15,
-                         fontWeight: FontWeight.w500
-                     ),),
-                     trailing: Icon(Icons.arrow_forward_ios),
+                 ),*/
+                 InkWell(
+                   child: Card(
+                     elevation: 0,
+                     color: Colors.transparent,
+                     child: ListTile(
+                       title: Text("Friends", style: TextStyle(
+                           fontFamily: 'Helvetica',
+                           color: Colors.black,
+                           fontSize: 15,
+                           fontWeight: FontWeight.w500
+                       ),),
+                       trailing: Icon(Icons.arrow_forward_ios),
+                     ),
                    ),
+                   onTap: (){
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => FriendScreen()));
+                   },
                  ),
                  InkWell(
                    child: Card(
