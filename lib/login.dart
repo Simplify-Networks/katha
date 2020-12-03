@@ -417,17 +417,11 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           downloadImage(userProfilePic);
         }
 
-        // checkUserExist(email).then((value) {
-        //   if(!value) {
-        //     registerUser(email, userID, userType, userName, userProfilePic);
-        //   }
-        // });
         bool abc;
         abc = await checkUserExist(email);
         if(!abc) {
-               registerUser(email, userID, userType, userName, userProfilePic);
+               await registerUser(email, userID, userType, userName, userProfilePic);
              }
-
 
         userName = user.displayName;
 
@@ -500,7 +494,7 @@ Future checkUserServerID(final String email) async{
   return uid;
 }
 
-void registerUser(final String email, final userID, final userType, final userName, final profilepic) async {
+Future<void> registerUser(final String email, final userID, final userType, final userName, final profilepic) async {
   final url = "http://35.198.227.22/registerUser"; // production server
   Map body = {"email": email, "serveruid": userID, "userType": userType, "userName": userName, "profilepicURL":profilepic, "password": ""};
   var response = await http.post(
