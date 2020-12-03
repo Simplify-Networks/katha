@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:katha/UserModel.dart';
@@ -16,8 +17,6 @@ import 'jitsiMeet.dart';
 
 final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 FirebaseAuth _auth = FirebaseAuth.instance;
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 void main() {
   runApp(
@@ -52,10 +51,65 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   final databaseReference = FirebaseDatabase.instance.reference();
   UserModel userM = new UserModel();
 
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  AndroidInitializationSettings androidInitializationSettings;
+  IOSInitializationSettings iosInitializationSettings;
+  InitializationSettings initializationSettings;
+
+  void initializing() async {
+    androidInitializationSettings =new AndroidInitializationSettings('@mipmap/ic_launcher');
+    iosInitializationSettings =new IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    initializationSettings =new InitializationSettings(androidInitializationSettings, iosInitializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: onSelectNotification);
+  }
+
+  void _showNotifications(String name,String id) async {
+    await notification(name,id);
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    return CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(body),
+      actions: <Widget>[
+        CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {
+              print("");
+            },
+            child: Text("Okay")),
+      ],
+    );
+  }
+
+  Future onSelectNotification(String payLoad) {
+    if (payLoad != null) {
+      print(payLoad);
+    }
+  }
+
+  Future<void> notification(String name,String id) async {
+    AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+        id, 'Channel title', 'channel body',
+        priority: Priority.High,
+        importance: Importance.Max,
+        ticker: 'test');
+
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+
+    NotificationDetails notificationDetails =
+    NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'Friend Request', "$name sent you a friend request.", notificationDetails);
+  }
+
   Future<void> startDBListener() async {
     userM = await GlobalStorage().getUser();
     UserModel sD = new UserModel();
     String userid = userM.userID;
+
     updates = databaseReference.child("call").child(userid).onChildAdded.listen((event) {
 
       if(event.snapshot.key == "name"){
@@ -100,19 +154,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
 
   Future<void> startDBFriendListener() async {
     userM = await GlobalStorage().getUser();
-    friend_event = databaseReference.child("friend_request").child("1234").onChildAdded.listen((event) {
-      print(event.snapshot.value);
-    });
-
-    await databaseReference.child("friend_request").child("1234").once().then((DataSnapshot snapshot) {
-      //Map<dynamic,dynamic> map = snapshot.value;
-      var s = snapshot.value;
-      print("snapshot.value = $s");
+    friend_event = databaseReference.child("friend_request").child(userM.userID).onChildAdded.listen((event) {
+      Map<dynamic,dynamic> map = event.snapshot.value;
+      _showNotifications(map["name"],map["requestor_id"]);
     });
   }
 
   @override
   void initState() {
+    initializing();
     jitsiMeet().StartJetsiListener();
     startDBListener();
     startDBFriendListener();
