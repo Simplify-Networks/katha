@@ -20,9 +20,9 @@ class _StorySliderState extends State<StorySlider> {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 120,
+            height: 170,
             child: Center(
-              child: Text("Beauty and the beast", style: TextStyle(
+              child: Text("The Gingerbread Man", style: TextStyle(
                   fontFamily: 'SFProDisplay',
                   color: Color(0xff4A4A4A),
                   fontSize: 25,
@@ -51,7 +51,7 @@ class _StorySliderState extends State<StorySlider> {
             ),
           ),*/
           Container(
-            height: MediaQuery.of(context).size.height - 120,
+            height: MediaQuery.of(context).size.height - 200,
             width: MediaQuery.of(context).size.width,
             //padding: EdgeInsets.all(5),
             child: new Swiper(
@@ -67,7 +67,8 @@ class _StorySliderState extends State<StorySlider> {
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(gingerBread[index]),fit: BoxFit.fill,
+                          // image: AssetImage(gingerBread[index]),fit: BoxFit.fill,
+                          image:AssetImage(gingerBread[index])
                         ),
                       ),
                     ),

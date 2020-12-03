@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:katha/StorySlider.dart';
 import 'package:katha/UserModel.dart';
 import 'package:katha/login.dart';
 import 'package:katha/splash.dart';
