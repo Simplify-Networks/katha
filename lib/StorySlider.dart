@@ -11,7 +11,7 @@ class StorySlider extends StatefulWidget {
 
 class _StorySliderState extends State<StorySlider> {
 
-  List gingerBread = ["lib/assets/Story/Cover.jpg","Picture1.png","lib/assets/Story/Picture2.png","lib/assets/Story/Picture3.png","lib/assets/Story/Picture4.png","lib/assets/Story/Picture5.png","lib/assets/Story/Picture6.png","lib/assets/Story/Picture7.png","lib/assets/Story/Picture8.png","lib/assets/Story/Picture9.png","lib/assets/Story/Picture10.png","lib/assets/Story/Picture11.png","lib/assets/Story/Picture12.png"];
+  List gingerBread = ["lib/assets/gingerBreadStory/Cover.jpg","lib/assets/gingerBreadStory/Picture1.png","lib/assets/gingerBreadStory/Picture2.png","lib/assets/gingerBreadStory/Picture3.png","lib/assets/gingerBreadStory/Picture4.png","lib/assets/gingerBreadStory/Picture5.png","lib/assets/gingerBreadStory/Picture6.png","lib/assets/gingerBreadStory/Picture7.png","lib/assets/gingerBreadStory/Picture8.png","lib/assets/gingerBreadStory/Picture9.png","lib/assets/gingerBreadStory/Picture10.png","lib/assets/gingerBreadStory/Picture11.png","lib/assets/gingerBreadStory/Picture12.png"];
 
   @override
   Widget build(BuildContext context) {
@@ -65,17 +65,16 @@ class _StorySliderState extends State<StorySlider> {
                     Container(
                       height: MediaQuery.of(context).size.height - 120,
                       width: MediaQuery.of(context).size.width,
-                      color: Colors.blue,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage("lib/assets/Story/Cover.jpg"),fit: BoxFit.cover,
+                          image: AssetImage(gingerBread[index]),fit: BoxFit.fill,
                         ),
                       ),
                     ),
                   ],
                 );
               },
-              itemCount: 10,
+              itemCount: gingerBread.length,
               //viewportFraction: 0.8,
               //scale: 0.9,
             ),

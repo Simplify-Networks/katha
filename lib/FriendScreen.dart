@@ -77,6 +77,23 @@ class _FriendScreenState extends State<FriendScreen> {
     }
   }
 
+  Future<bool> deleteFriend(final String userid,final String requestorID) async{
+
+    final url = "http://35.198.227.22/deleteFriend"; // production server
+    Map body = {"myUserID": userid,"friendUserID": requestorID};
+    var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+    Map<String,dynamic> map = jsonDecode(response.body.toString());
+    String s = map['status'];
+
+    if(s != "success")
+    {
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
   void assignVariable()
   {
     RequestorList.clear();
@@ -111,6 +128,9 @@ class _FriendScreenState extends State<FriendScreen> {
 
     await FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).once().then((DataSnapshot snapshot) {
       Map<dynamic,dynamic> map = snapshot.value;
+
+      print("map= $map");
+
       if(map !=  null)
       {
         map.forEach((key, value) {
@@ -170,6 +190,7 @@ class _FriendScreenState extends State<FriendScreen> {
         FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).child(requestorID).remove();
         Navigator.of(context).pop();
         getFriendRequestList();
+        getFriend();
       },
     );
 
@@ -195,6 +216,63 @@ class _FriendScreenState extends State<FriendScreen> {
         cancelButton,
         rejectButton,
         acceptButton,
+      ],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future<String> showFriendDialog(BuildContext context, String profilePicPath, String name,String requestorID) {
+
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    Widget DeleteButton = FlatButton(
+      child: Text("Delete"),
+      onPressed:  () {
+        deleteFriend(userModel.userID,requestorID);
+        FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).child(requestorID).remove();
+        Navigator.of(context).pop();
+        getFriend();
+      },
+    );
+
+
+    // set up the AlertDialo
+    AlertDialog alert = AlertDialog(
+      title: Text("Friend"),
+      content: Container(
+        height: 140,
+        child: Column(
+          children: <Widget>[
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: NetworkImage(profilePicPath),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(name),
+          ],
+        ),
+      ),
+      actions: [
+        cancelButton,
+        DeleteButton,
       ],
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -289,48 +367,121 @@ class _FriendScreenState extends State<FriendScreen> {
               ),
               body: TabBarView(
                 children: <Widget>[
-                  ListView.builder(
+                  /*ListView.builder(
                     itemCount: FriendList.length,
                     //itemBuilder: (context,i)=>ListTile(title:Text("test")),
                     itemBuilder: (context,i)=>
                         Container(
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            ),
-                            margin: EdgeInsets.all(15.0),
-                            //elevation: 10.0,
-                            child:Stack(
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: CircleAvatar(
-                                    radius: 50.0,
-                                    backgroundImage:
-                                    (FriendList[i].profilePicPath == "" || FriendList[i].profilePicPath == "null")?
-                                    AssetImage("lib/assets/images/kathalogo.png"):
-                                    NetworkImage(FriendList[i].profilePicPath),
-                                    backgroundColor: Colors.black,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 130,top: 40),
-                                  child: ListTile(
-                                    title: Text(
-                                      FriendList[i].name,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 15,
-                                        fontFamily: 'Helvetica',
-                                      ),
-                                      textAlign: TextAlign.start,
+                          child: InkWell(
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)
+                              ),
+                              margin: EdgeInsets.all(15.0),
+                              //elevation: 10.0,
+                              child:Stack(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: CircleAvatar(
+                                      radius: 50.0,
+                                      backgroundImage:
+                                      (FriendList[i].profilePicPath == "" || FriendList[i].profilePicPath == "null")?
+                                      AssetImage("lib/assets/images/kathalogo.png"):
+                                      NetworkImage(FriendList[i].profilePicPath),
+                                      backgroundColor: Colors.black,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 130,top: 40),
+                                    child: ListTile(
+                                      title: Text(
+                                        FriendList[i].name,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15,
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
+                            onTap: (){
+                              print("onTap??");
+                              showFriendDialog(context,RequestorList[i].profilePicPath,RequestorList[i].name,RequestorList[i].userid);
+                            },
                           ),
                         ),
+                  ),*/
+                  Container(
+                    //padding: EdgeInsets.all(5),
+                    child: ListView.builder(
+                      padding: EdgeInsets.all(6),
+                      itemBuilder: (context,i){
+                        return  Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Container(
+                                height: 130,
+                                width: size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                  ),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      offset: Offset(0.0,1.0),
+                                      blurRadius: 6.0,
+                                    ),
+                                  ],
+                                ),
+                                child: InkWell(
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 10,top:15),
+                                          child: CircleAvatar(
+                                            radius: 50.0,
+                                            backgroundImage: NetworkImage(FriendList[i].profilePicPath),
+                                            backgroundColor: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(130,60,0,0),
+                                        child: Text(FriendList[i].name, style: TextStyle(
+                                            fontFamily: 'SFProDisplay',
+                                            color: Color(0xff4A4A4A),
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600
+                                        ),),
+                                      ),
+                                    ],
+                                  ),
+                                  onTap:(){
+                                    showFriendDialog(context,FriendList[i].profilePicPath,FriendList[i].name,FriendList[i].userid);
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                          ],
+                        );
+                      },
+                      itemCount: FriendList.length,
+                    ),
                   ),
                   Container(
                     //padding: EdgeInsets.all(5),

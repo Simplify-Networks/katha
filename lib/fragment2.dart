@@ -153,7 +153,7 @@ class _Fragment2State extends State<Fragment2> {
               Toast.show("Request sent.", context, duration: 3);
             }
             else{
-              Toast.show("Invalid User ID.", context, duration: 3);
+              Toast.show("User ID not found.", context, duration: 3);
             }
           }
           else
@@ -538,9 +538,10 @@ class _Fragment2State extends State<Fragment2> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          showAlertDialog(context).then((value){
+          /*showAlertDialog(context).then((value){
 
-          });
+          });*/
+          showAlertDialog(context);
         },
         backgroundColor: Color(0xff78A2CC),
         child: Icon(Icons.add),
