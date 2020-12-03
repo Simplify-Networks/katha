@@ -35,6 +35,7 @@ String profilePicPath;
 Uint8List profilePicByte;
 String userProfilePic = "";
 String getusername;
+String uid;
 
 
 class Login extends StatefulWidget {
@@ -431,8 +432,10 @@ isFirebaseAuthSignedIn(BuildContext context) async{
 
         UserModel userModel = new UserModel();
 
+        await checkUserServerID(email);
+
         userModel.email = email;
-        userModel.userID = userID;
+        userModel.userID = uid;
         userModel.name = userName;
         userModel.LoginType = userType;
         userModel.profilePicPath = userProfilePic;
@@ -478,9 +481,22 @@ Future<bool> checkUserExist(final String email) async{
   }
 }
 
+Future checkUserServerID(final String email) async{
+  final url = "http://35.198.227.22/getUser"; // production server
+  Map body = {"email": email};
+  var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+  // print("Response: " + response.body);
+  var extractdata = json.decode(response.body);
+  List data;
+  data = extractdata["result"];
+  uid = data[0]["userID"];
+
+  return uid;
+}
+
 void registerUser(final String email, final userID, final userType, final userName, final profilepic) async {
   final url = "http://35.198.227.22/registerUser"; // production server
-  Map body = {"email": email, "userID": userID, "userType": userType, "userName": userName, "profilepicURL":profilepic, "password": ""};
+  Map body = {"email": email, "serveruid": userID, "userType": userType, "userName": userName, "profilepicURL":profilepic, "password": ""};
   var response = await http.post(
     url, body: json.encode(body), headers: { "Accept": "application/json"},)
       .timeout(Duration(seconds: 30));

@@ -275,7 +275,7 @@ Future<List> checkUserExist(final String email, _password) async{
   getpassword = data[0]["password"];
   getusername = data[0]["userName"];
   getpic = data[0]["profilepicURL"];
-  getuserid = data[0]["userID"];
+  getuserid = data[0]["serveruid"];
   getusertype = data[0]["userType"];
   print('abc' + getpassword);
   // print("data: " + data.toString());

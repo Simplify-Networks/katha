@@ -15,6 +15,7 @@ import 'UserModel.dart';
 String _name,_email,_password, _userid= "";
 String _sessionid = "";
 String usertype = "";
+String serveruid;
 final _formKey = GlobalKey<FormState>();
 final FirebaseAuth mAuth = FirebaseAuth.instance;
 TextEditingController emailController = new TextEditingController();
@@ -344,7 +345,7 @@ Future<bool> checkUserExist(final String email) async{
 
 Future<bool> signupsuccess(final String name, email, password, sessionid, usertype, BuildContext context) async{
   final url = "http://35.198.227.22/registerUser"; // production server
-  Map body = {"email": email, "userID": sessionid, "userType": usertype, "userName": name, "password": password, "profilepicURL":" "};
+  Map body = {"email": email, "serveruid": sessionid, "userType": usertype, "userName": name, "password": password, "profilepicURL":" "};
   var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
   // print("Response: " + response.body);
   var extractdata = json.decode(response.body);
@@ -352,8 +353,22 @@ Future<bool> signupsuccess(final String name, email, password, sessionid, userty
   data = extractdata["status"];
   // print("data: " + data.toString());
   if(data == "success"){
-    showSuccessDialog(context, email, sessionid, name, usertype, '');
+    await checkUserServerID(email);
+    showSuccessDialog(context, email, serveruid, name, usertype, '');
   }
+}
+
+Future checkUserServerID(final String email) async{
+  final url = "http://35.198.227.22/getUser"; // production server
+  Map body = {"email": email};
+  var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+  // print("Response: " + response.body);
+  var extractdata = json.decode(response.body);
+  List data;
+  data = extractdata["result"];
+  serveruid = data[0]["userID"];
+
+  return serveruid;
 }
 
 showAlertDialog(BuildContext context) {
@@ -382,13 +397,13 @@ showAlertDialog(BuildContext context) {
   );
 }
 
-showSuccessDialog(BuildContext context,uemail, id, username, type, pic) {
+showSuccessDialog(BuildContext context, uemail, serverid, username, type, pic) {
   // set up the button
   Widget okButton = FlatButton(
     child: Text("OK"),
     onPressed: () {
       userModel.email = uemail;
-      userModel.userID = id;
+      userModel.userID = serverid;
       userModel.name = username;
       userModel.LoginType = type;
       userModel.profilePicPath = pic;
