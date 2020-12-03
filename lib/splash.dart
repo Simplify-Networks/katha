@@ -34,16 +34,18 @@ class _SplashState extends State<Splash> {
 
   void getUserInfo() async
   {
-    UserModel userModel = await GlobalStorage().getUser();
+    //UserModel userModel = await GlobalStorage().getUser();
 
-    if(userModel != null)
-    {
-      Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage())));
-    }
-    else
-    {
-      Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login())));
-    }
+    GlobalStorage().getUser().then((value){
+      if(value != null)
+      {
+        Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage())));
+      }
+      else
+      {
+        Timer(Duration(milliseconds: 1500),()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login())));
+      }
+    });
   }
 
 

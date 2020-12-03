@@ -22,17 +22,19 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   }
 
   Future<void> getUserInfo() async {
-    userModel = await GlobalStorage().getUser();
-    setState(() {
-      name = userModel.name;
-      picPath = userModel.profilePicPath;
+    //userModel = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value){
+      userModel = value;
+      setState(() {
+        name = userModel.name;
+        picPath = userModel.profilePicPath;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
 
     List storyphoto = ["lib/assets/Story/gingerbread.jpg","lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
     List storytittle = ["The Gingerbread Man","Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
@@ -41,197 +43,228 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          // Container(
-          //   constraints: BoxConstraints.expand(
-          //     height: 200.0,
-          //   ),
-          //   decoration: new BoxDecoration(
-          //     gradient: new LinearGradient(colors: [
-          //       Color(0xffBFD4DB),
-          //       Color(0xff78A2CC)
-          //     ],
-          //         begin: Alignment.topLeft,
-          //         end: Alignment.bottomRight,
-          //         stops: [0.0,1.0],
-          //         tileMode: TileMode.clamp
-          //     ),
-          //   ),
-          //   child: Stack(
-          //     overflow: Overflow.visible,
-          //     children: <Widget>[
-          //       Padding(
-          //         padding: const EdgeInsets.fromLTRB(20,75,0,0),
-          //         child: Row(
-          //           children: <Widget>[
-          //             CircleAvatar(
-          //               radius: 50.0,
-          //               backgroundImage:
-          //               (picPath == "" || picPath == "null")?
-          //                   AssetImage("lib/assets/images/kathalogo.png"):
-          //                   NetworkImage(picPath),
-          //               backgroundColor: Colors.black,
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //       Padding(
-          //         padding: const EdgeInsets.fromLTRB(130,100,0,0),
-          //         child: Column(
-          //           children: <Widget>[
-          //             Text(name, style: TextStyle(
-          //                 fontFamily: 'SFProDisplay',
-          //                 color: Colors.white,
-          //                 fontSize: 17,
-          //                 fontWeight: FontWeight.w600
-          //             ),),
-          //           ],
-          //         ),
-          //       ),
-          //       Padding(
-          //         padding: const EdgeInsets.fromLTRB(130,125,0,0),
-          //         child: Column(
-          //           children: <Widget>[
-          //             Text("Senior Storyteller", style: TextStyle(
-          //                 fontFamily: 'Helvetica',
-          //                 color: Colors.white,
-          //                 fontSize: 15,
-          //                 fontWeight: FontWeight.w700
-          //             ),),
-          //           ],
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(10,210,10,10),
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width,
-          //     height: 100,
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(10),
-          //       color: Colors.white,
-          //     ),
-          //     child: Stack(
-          //       children: <Widget>[
-          //         Container(
-          //           width: MediaQuery.of(context).size.width-10,
-          //           height: 4,
-          //           decoration: BoxDecoration(
-          //             borderRadius: BorderRadius.only(
-          //                 topLeft: Radius.circular(10),
-          //                 topRight: Radius.circular(10)),
-          //             gradient: new LinearGradient(colors: [
-          //               Color(0xffBFD4DB),
-          //               Color(0xff78A2CC)
-          //             ],
-          //                 begin: Alignment.topLeft,
-          //                 end: Alignment.bottomRight,
-          //                 stops: [0.0,1.0],
-          //                 tileMode: TileMode.clamp
-          //             ),
-          //           ),
-          //         ),
-          //         Padding(
-          //           padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
-          //           child: Text("Ayca Khohreman", style: TextStyle(
-          //               fontFamily: 'SFProDisplay',
-          //               color: Color(0xff4A4A4A),
-          //               fontSize: 17,
-          //               fontWeight: FontWeight.w600
-          //           ),),
-          //         ),
-          //         Padding(
-          //           padding: const EdgeInsets.fromLTRB(15, 45, 0, 0),
-          //           child: Text("Snow White starts at 15:00 today", style: TextStyle(
-          //               fontFamily: 'Helvetica',
-          //               color: Color(0xff4A4A4A),
-          //               fontSize: 15,
-          //               fontWeight: FontWeight.w400
-          //           ),),
-          //         ),
-          //         Padding(
-          //           padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width-140, 75, 0, 0),
-          //           child: InkWell(
-          //             child: Text("Find out more ->", style: TextStyle(
-          //                 fontFamily: 'Helvetica',
-          //                 color: Color(0xff3C29B1),
-          //                 fontSize: 12,
-          //                 fontWeight: FontWeight.w400
-          //             ),),
-          //             onTap: (){
-          //               debugPrint('Find out more');
-          //             },
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.only(top:320.0),
-          //   child: Container(
-          //     //padding: EdgeInsets.all(5),
-          //     child: ListView.builder(
-          //       padding: EdgeInsets.fromLTRB(10,0,10,0),
-          //       itemBuilder: (context,i){
-          //         return  Column(
-          //           children: <Widget>[
-          //             Container(
-          //               height: 130,
-          //               width: 800,
-          //               decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.only(
-          //                   topLeft: Radius.circular(10),
-          //                   topRight: Radius.circular(10),
-          //                   bottomRight: Radius.circular(10),
-          //                 ),
-          //                 color: Colors.white,
-          //               ),
-          //               child: InkWell(
-          //                 child: Stack(
-          //                   children: <Widget>[
-          //                     Container(
-          //                       height: 130,
-          //                       width: 130,
-          //                       child: Image(image:AssetImage(storyphoto[i]), fit: BoxFit.cover),
-          //                     ),
-          //                     Padding(
-          //                       padding: const EdgeInsets.fromLTRB(150,40,0,0),
-          //                       child: Text(storytittle[i], style: TextStyle(
-          //                           fontFamily: 'SFProDisplay',
-          //                           color: Color(0xff4A4A4A),
-          //                           fontSize: 17,
-          //                           fontWeight: FontWeight.w600
-          //                       ),),
-          //                     ),
-          //                     Padding(
-          //                       padding: const EdgeInsets.fromLTRB(150,60,0,0),
-          //                       child: Text(storyexplaination[i], style: TextStyle(
-          //                           fontFamily: 'Helvetica',
-          //                           color: Color(0xff4A4A4A),
-          //                           fontSize: 15,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                     )],
-          //                 ),
-          //                 onTap:(){
-          //                   Navigator.push(context, MaterialPageRoute(builder: (context) => StoryIntro(storyTitle: storytittle[i])));
-          //                 },
-          //               ),
-          //             ),
-          //             SizedBox(
-          //               height: 10.0,
-          //             ),
-          //           ],
-          //         );
-          //       },
-          //       itemCount: 10,
-          //     ),
-          //   ),
-          // ),
+          Container(
+            constraints: BoxConstraints.expand(
+              height: 200.0,
+            ),
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(colors: [
+                Color(0xffBFD4DB),
+                Color(0xff78A2CC)
+              ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.0,1.0],
+                  tileMode: TileMode.clamp
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:55.0),
+                child: Text(
+                  "LIBRARY",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      fontFamily: 'Helvetica',
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400
+                  ),
+                ),
+              ),
+            ),
+          ),
+          /*Container(
+            constraints: BoxConstraints.expand(
+              height: 200.0,
+            ),
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(colors: [
+                Color(0xffBFD4DB),
+                Color(0xff78A2CC)
+              ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.0,1.0],
+                  tileMode: TileMode.clamp
+              ),
+            ),
+            child: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20,75,0,0),
+                  child: Row(
+                    children: <Widget>[
+                      CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage:
+                        (picPath == "" || picPath == "null")?
+                            AssetImage("lib/assets/images/kathalogo.png"):
+                            NetworkImage(picPath),
+                        backgroundColor: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(130,100,0,0),
+                  child: Column(
+                    children: <Widget>[
+                      Text(name, style: TextStyle(
+                          fontFamily: 'SFProDisplay',
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600
+                      ),),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(130,125,0,0),
+                  child: Column(
+                    children: <Widget>[
+                      Text("Senior Storyteller", style: TextStyle(
+                          fontFamily: 'Helvetica',
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700
+                      ),),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.only(top:40.0),
+            padding: const EdgeInsets.fromLTRB(10,210,10,10),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width-10,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      gradient: new LinearGradient(colors: [
+                        Color(0xffBFD4DB),
+                        Color(0xff78A2CC)
+                      ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          stops: [0.0,1.0],
+                          tileMode: TileMode.clamp
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
+                    child: Text("Ayca Khohreman", style: TextStyle(
+                        fontFamily: 'SFProDisplay',
+                        color: Color(0xff4A4A4A),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600
+                    ),),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 45, 0, 0),
+                    child: Text("Snow White starts at 15:00 today", style: TextStyle(
+                        fontFamily: 'Helvetica',
+                        color: Color(0xff4A4A4A),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400
+                    ),),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width-140, 75, 0, 0),
+                    child: InkWell(
+                      child: Text("Find out more ->", style: TextStyle(
+                          fontFamily: 'Helvetica',
+                          color: Color(0xff3C29B1),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400
+                      ),),
+                      onTap: (){
+                        debugPrint('Find out more');
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top:320.0),
+            child: Container(
+              //padding: EdgeInsets.all(5),
+              child: ListView.builder(
+                padding: EdgeInsets.fromLTRB(10,0,10,0),
+                itemBuilder: (context,i){
+                  return  Column(
+                    children: <Widget>[
+                      Container(
+                        height: 130,
+                        width: 800,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          color: Colors.white,
+                        ),
+                        child: InkWell(
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                height: 130,
+                                width: 130,
+                                child: Image(image:AssetImage(storyphoto[i]), fit: BoxFit.cover),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(150,40,0,0),
+                                child: Text(storytittle[i], style: TextStyle(
+                                    fontFamily: 'SFProDisplay',
+                                    color: Color(0xff4A4A4A),
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600
+                                ),),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(150,60,0,0),
+                                child: Text(storyexplaination[i], style: TextStyle(
+                                    fontFamily: 'Helvetica',
+                                    color: Color(0xff4A4A4A),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              )],
+                          ),
+                          onTap:(){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => StoryIntro(storyTitle: storytittle[i])));
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                    ],
+                  );
+                },
+                itemCount: 10,
+              ),
+            ),
+          ),*/
+          Padding(
+            padding: const EdgeInsets.only(top:220.0),
             child: Container(
               //padding: EdgeInsets.all(5),
               child: ListView.builder(

@@ -34,7 +34,10 @@ class jitsiMeet{
 
 
   Future<void> StartJetsiListener() async {
-    userM = await GlobalStorage().getUser();
+    //userM = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value){
+      userM = value;
+    });
     JitsiMeet.addListener(JitsiMeetingListener(
         onConferenceWillJoin: _onConferenceWillJoin,
         onConferenceJoined: _onConferenceJoined,

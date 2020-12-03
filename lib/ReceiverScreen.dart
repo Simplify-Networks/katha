@@ -35,7 +35,10 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
   final databaseReference = FirebaseDatabase.instance.reference();
 
   Future<void> getUserInfo() async {
-    userModel = await GlobalStorage().getUser();
+    //userModel = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value){
+      userModel = value;
+    });
   }
 
   void setListner(){
