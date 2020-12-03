@@ -65,34 +65,39 @@ class _Fragment2State extends State<Fragment2> {
   }
 
   Future<bool> getFriend() async{
-    userModel = await GlobalStorage().getUser();
-    _FrienduserID.clear();
-    _Friendname.clear();
-    _FriendpicPath.clear();
+    //userModel = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value) async {
+      userModel = value;
+      _FrienduserID.clear();
+      _Friendname.clear();
+      _FriendpicPath.clear();
 
-    final url = "http://35.198.227.22/getFriend"; // production server
-    Map body = {"myUserID": userModel.userID};
-    var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
-    //print("Response: " + response.body);
-    Map<String,dynamic> map = jsonDecode(response.body.toString());
-    map.forEach((key, value) {
-      List<dynamic> list = value;
-      for(var i=0;i<list.length;i++){
+      final url = "http://35.198.227.22/getFriend"; // production server
+      Map body = {"myUserID": userModel.userID};
+      var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+      //print("Response: " + response.body);
+      Map<String,dynamic> map = jsonDecode(response.body.toString());
+      map.forEach((key, value) {
+        List<dynamic> list = value;
+        for(var i=0;i<list.length;i++){
 //        _FrienduserID.add(list[i]["userID"]);
 //        _Friendname.add(list[i]["userName"]);
 //        _FriendpicPath.add(list[i]["profilepicURL"]);
 //        _notesForDisplay.add(list[i]["userName"]);
-        _notes.add(list[i]["userName"]);
-        _notesForDisplay.add(list[i]["userName"]);
-        _userID.add(list[i]["userID"]);
-        _picPath.add(list[i]["profilepicURL"]);
-        _status.add("-");
-      }
+          _notes.add(list[i]["userName"]);
+          _notesForDisplay.add(list[i]["userName"]);
+          _userID.add(list[i]["userID"]);
+          _picPath.add(list[i]["profilepicURL"]);
+          _status.add("-");
+        }
+      });
+
+      setState(() {
+        assignVariable1();
+      });
+
     });
 
-    setState(() {
-      assignVariable1();
-    });
   }
 
   void assignVariable1()
@@ -132,57 +137,74 @@ class _Fragment2State extends State<Fragment2> {
       child: Text("Add"),
       onPressed:  () async {
 
-        if(customController.text.toString().isEmpty)
+        if(userModel.userID == "" || userModel.userID == null)
         {
-          Toast.show("Please enter user ID.", context, duration: 3);
+          Toast.show("Something went wrong. Please try again later.", context, duration: 3);
           Navigator.of(context).pop();
         }
-        else
-        {
-          if(customController.text.toString() != userModel.userID)
+        else{
+          if(customController.text.toString().isEmpty)
           {
-            var isFriend = false;
-            for(var i=0;i<UserDetailsList.length;i++){
-              if(customController.text.toString() == UserDetailsList[i].userid){
-                isFriend = true;
-                break;
-              }
-            }
-
-            if(!isFriend){
-              bool exist = await checkUserID(customController.text.toString());
-              if(exist){
-                databaseReference.child("friend_request").child(customController.text.toString()).child(userModel.userID).set({
-                  'requestor_id': userModel.userID,
-                  'name':userModel.name,
-                  'picPath':userModel.profilePicPath,
-                  'status':'request',
-                });
-                Toast.show("Request sent.", context, duration: 3);
-              }
-              else{
-                Toast.show("User ID not found.", context, duration: 3);
-              }
-            }
-            else{
-              Toast.show("User ID added.", context, duration: 3);
-            }
+            Toast.show("Please enter user ID.", context, duration: 3);
+            Navigator.of(context).pop();
           }
           else
           {
-            Toast.show("Invalid User ID.", context, duration: 3);
+            if(customController.text.toString() != userModel.userID)
+            {
+              var isFriend = false;
+              for(var i=0;i<UserDetailsList.length;i++){
+                if(customController.text.toString() == UserDetailsList[i].userid){
+                  isFriend = true;
+                  break;
+                }
+              }
+
+              if(!isFriend){
+                bool exist = await checkUserID(customController.text.toString());
+                if(exist){
+                  databaseReference.child("friend_request").child(customController.text.toString()).child(userModel.userID).set({
+                    'requestor_id': userModel.userID,
+                    'name':userModel.name,
+                    'picPath':userModel.profilePicPath,
+                    'status':'request',
+                  });
+                  Toast.show("Request sent.", context, duration: 3);
+                }
+                else{
+                  Toast.show("User ID not found.", context, duration: 3);
+                }
+              }
+              else{
+                Toast.show("User ID added.", context, duration: 3);
+              }
+            }
+            else
+            {
+              Toast.show("Invalid User ID.", context, duration: 3);
+            }
+            Navigator.of(context).pop(customController.text.toString());
           }
-          Navigator.of(context).pop(customController.text.toString());
         }
+
       },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Add Contact"),
+      title: Text("Add Family"),
       content: TextField(
         controller: customController,
-        decoration: new InputDecoration.collapsed(hintText: "Insert User ID"),
+        //decoration: new InputDecoration.collapsed(hintText: "Insert User ID"),
+        decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          hintText: "Insert User ID",
+        ),
       ),
       actions: [
         cancelButton,
@@ -269,10 +291,13 @@ class _Fragment2State extends State<Fragment2> {
   }
 
   Future<void> checkfordisplayusername() async {
-    userModel = await GlobalStorage().getUser();
-    List list = await checkUsername();
-    setState(() {
-      assignVariable(list);
+    //userModel = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value) async {
+      userModel = value;
+      List list = await checkUsername();
+      setState(() {
+        assignVariable(list);
+      });
     });
   }
 
@@ -340,7 +365,7 @@ class _Fragment2State extends State<Fragment2> {
                       child: Padding(
                         padding: const EdgeInsets.only(top:60.0),
                         child: Text(
-                          "CONTACTS",
+                          "FAMILY",
                           textAlign: TextAlign.center,
                           style: new TextStyle(
                               fontFamily: 'Helvetica',
@@ -528,7 +553,6 @@ class _Fragment2State extends State<Fragment2> {
                         r.receiverID = UserDetailsListDisplay[i].userid;
                         r.status = "dialling";
 
-
                         databaseReference.child("call").child(UserDetailsListDisplay[i].userid).set({
                           'name': userModel.name,
                           'title': widget.storyTitle,
@@ -559,6 +583,7 @@ class _Fragment2State extends State<Fragment2> {
         child: Icon(Icons.add),
         //backgroundColor: Colors.lightBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 

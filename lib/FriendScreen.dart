@@ -37,27 +37,29 @@ class _FriendScreenState extends State<FriendScreen> {
   final databaseReference = FirebaseDatabase.instance.reference();
 
   Future<bool> getFriend() async{
-    userModel = await GlobalStorage().getUser();
-    _FrienduserID.clear();
-    _Friendname.clear();
-    _FriendpicPath.clear();
+    //userModel = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value) async {
+      userModel = value;
+      _FrienduserID.clear();
+      _Friendname.clear();
+      _FriendpicPath.clear();
 
-    final url = "http://35.198.227.22/getFriend"; // production server
-    Map body = {"myUserID": userModel.userID};
-    var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
-    //print("Response: " + response.body);
-    Map<String,dynamic> map = jsonDecode(response.body.toString());
-    map.forEach((key, value) {
-      List<dynamic> list = value;
-      for(var i=0;i<list.length;i++){
-        _FrienduserID.add(list[i]["userID"]);
-        _Friendname.add(list[i]["userName"]);
-        _FriendpicPath.add(list[i]["profilepicURL"]);
-      }
-    });
-
-    setState(() {
-      assignVariable1();
+      final url = "http://35.198.227.22/getFriend"; // production server
+      Map body = {"myUserID": userModel.userID};
+      var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+      //print("Response: " + response.body);
+      Map<String,dynamic> map = jsonDecode(response.body.toString());
+      map.forEach((key, value) {
+        List<dynamic> list = value;
+        for(var i=0;i<list.length;i++){
+          _FrienduserID.add(list[i]["userID"]);
+          _Friendname.add(list[i]["userName"]);
+          _FriendpicPath.add(list[i]["profilepicURL"]);
+        }
+      });
+      setState(() {
+        assignVariable1();
+      });
     });
   }
 
@@ -121,44 +123,45 @@ class _FriendScreenState extends State<FriendScreen> {
   }
 
   Future<void> getFriendRequestList() async {
-    userModel = await GlobalStorage().getUser();
-    _picPath.clear();
-    _userID.clear();
-    _name.clear();
-    _status.clear();
+    //userModel = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value) async {
+      userModel = value;
+      _picPath.clear();
+      _userID.clear();
+      _name.clear();
+      _status.clear();
 
-    await FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).once().then((DataSnapshot snapshot) {
-      Map<dynamic,dynamic> map = snapshot.value;
+      await FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).once().then((DataSnapshot snapshot) {
+        Map<dynamic,dynamic> map = snapshot.value;
 
-      if(map !=  null)
-      {
-        map.forEach((key, value) {
-          Map<dynamic,dynamic> map1 = value;
-          map1.forEach((key, value) {
-            if(key == "picPath")
-            {
-              _picPath.add(value);
-            }
-            else if(key == "requestor_id")
-            {
-              _userID.add(value);
-            }
-            else if(key == "name")
-            {
-              _name.add(value);
-            }
-            else if(key == "status")
-            {
-              _status.add(value);
-            }
+        if(map !=  null)
+        {
+          map.forEach((key, value) {
+            Map<dynamic,dynamic> map1 = value;
+            map1.forEach((key, value) {
+              if(key == "picPath")
+              {
+                _picPath.add(value);
+              }
+              else if(key == "requestor_id")
+              {
+                _userID.add(value);
+              }
+              else if(key == "name")
+              {
+                _name.add(value);
+              }
+              else if(key == "status")
+              {
+                _status.add(value);
+              }
+            });
           });
+        }
+        setState(() {
+          assignVariable();
         });
-      }
-
-      setState(() {
-        assignVariable();
       });
-
     });
   }
 
@@ -332,8 +335,8 @@ class _FriendScreenState extends State<FriendScreen> {
                     //new Tab(text: 'In', icon: Icon(Icons.directions_car, color: Colors.grey),),
                     //new Tab(icon: new Image.asset("lib/assets/images/end_call_btn.png"), text: "Browse"),
                     //new Tab(icon: Icon(Icons.directions_car, color: Colors.grey), text: "Browse"),
-                    new Tab(text: "Friends List"),
-                    new Tab(text: "Friends Request"),
+                    new Tab(text: "Family List"),
+                    new Tab(text: "Family Request"),
                   ],),
                 flexibleSpace: Container(
                   constraints: BoxConstraints.expand(
@@ -357,7 +360,7 @@ class _FriendScreenState extends State<FriendScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom:50.0),
                           child: Text(
-                            "Friends",
+                            "Family",
                             textAlign: TextAlign.center,
                             style: new TextStyle(
                                 fontFamily: 'Helvetica',

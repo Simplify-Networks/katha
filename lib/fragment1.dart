@@ -22,17 +22,19 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   }
 
   Future<void> getUserInfo() async {
-    userModel = await GlobalStorage().getUser();
-    setState(() {
-      name = userModel.name;
-      picPath = userModel.profilePicPath;
+    //userModel = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value){
+      userModel = value;
+      setState(() {
+        name = userModel.name;
+        picPath = userModel.profilePicPath;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
 
     List storyphoto = ["lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
     List storytittle = ["Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
@@ -41,6 +43,37 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
     return Scaffold(
       body: Stack(
         children: <Widget>[
+          Container(
+            constraints: BoxConstraints.expand(
+              height: 200.0,
+            ),
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(colors: [
+                Color(0xffBFD4DB),
+                Color(0xff78A2CC)
+              ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.0,1.0],
+                  tileMode: TileMode.clamp
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:55.0),
+                child: Text(
+                  "LIBRARY",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      fontFamily: 'Helvetica',
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400
+                  ),
+                ),
+              ),
+            ),
+          ),
           /*Container(
             constraints: BoxConstraints.expand(
               height: 200.0,
@@ -231,7 +264,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
             ),
           ),*/
           Padding(
-            padding: const EdgeInsets.only(top:40.0),
+            padding: const EdgeInsets.only(top:220.0),
             child: Container(
               //padding: EdgeInsets.all(5),
               child: ListView.builder(

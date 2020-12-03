@@ -106,41 +106,43 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   }
 
   Future<void> startDBListener() async {
-    userM = await GlobalStorage().getUser();
-    UserModel sD = new UserModel();
-    String userid = userM.userID;
+    //userM = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value){
+      userM = value;
+      UserModel sD = new UserModel();
+      String userid = userM.userID;
 
-    updates = databaseReference.child("call").child(userid).onChildAdded.listen((event) {
+      updates = databaseReference.child("call").child(userid).onChildAdded.listen((event) {
 
-      if(event.snapshot.key == "name"){
-        sD.name = event.snapshot.value;
-      }
-
-      if(event.snapshot.key == "imagePath"){
-        sD.profilePicPath = event.snapshot.value;
-      }
-
-      if(event.snapshot.key == "picPath"){
-        sD.profilePicPath = event.snapshot.value;
-      }
-
-      if(event.snapshot.key == "roomID")
-      {
-        if(event.snapshot.value != null && event.snapshot.value != "")
-        {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ReceiverScreen(storyTitle:"",roomID:event.snapshot.value,senderDetails:sD)));
+        if(event.snapshot.key == "name"){
+          sD.name = event.snapshot.value;
         }
-      }
-      if(event.snapshot.key == "title")
-      {
-        if(event.snapshot.value != null && event.snapshot.value != "")
-        {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ReceiverScreen(storyTitle:event.snapshot.value,roomID:"",senderDetails:sD)));
+
+        if(event.snapshot.key == "imagePath"){
+          sD.profilePicPath = event.snapshot.value;
         }
-      }
+
+        if(event.snapshot.key == "picPath"){
+          sD.profilePicPath = event.snapshot.value;
+        }
+
+        if(event.snapshot.key == "roomID")
+        {
+          if(event.snapshot.value != null && event.snapshot.value != "")
+          {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ReceiverScreen(storyTitle:"",roomID:event.snapshot.value,senderDetails:sD)));
+          }
+        }
+        if(event.snapshot.key == "title")
+        {
+          if(event.snapshot.value != null && event.snapshot.value != "")
+          {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ReceiverScreen(storyTitle:event.snapshot.value,roomID:"",senderDetails:sD)));
+          }
+        }
+      });
+      SetOnlineStatus();
     });
-
-    SetOnlineStatus();
   }
 
   void SetOnlineStatus()
@@ -153,11 +155,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   }
 
   Future<void> startDBFriendListener() async {
-    userM = await GlobalStorage().getUser();
-    friend_event = databaseReference.child("friend_request").child(userM.userID).onChildAdded.listen((event) {
-      Map<dynamic,dynamic> map = event.snapshot.value;
-      _showNotifications(map["name"],map["requestor_id"]);
+    //userM = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value){
+      userM = value;
+      friend_event = databaseReference.child("friend_request").child(userM.userID).onChildAdded.listen((event) {
+        Map<dynamic,dynamic> map = event.snapshot.value;
+        _showNotifications(map["name"],map["requestor_id"]);
+      });
     });
+
   }
 
   @override
@@ -209,7 +215,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   }
   @override
   Widget build(BuildContext context) {
-    _screens = [Fragment1(),Fragment2(storyTitle: ""),Fragment3(),Fragment4()];
+    //_screens = [Fragment1(),Fragment2(storyTitle: ""),Fragment3(),Fragment4()];
+    _screens = [Fragment1(),Fragment2(storyTitle: ""),Fragment4()];
     return Scaffold(
       body: PageView(
         controller: _pageController,
@@ -217,17 +224,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
         onPageChanged: _onPageChanged,
         physics: NeverScrollableScrollPhysics(),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      /*bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.book,),
-            title: Text("Story"),
+            title: Text("Library"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            title: Text("Contacts"),
+            title: Text("Family"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
@@ -240,10 +247,100 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
         ],
         //selectedLabelStyle: TextStyle(fontSize: 22),
         //selectedItemColor: Colors.red,
-        //backgroundColor: Colors.black,
+        backgroundColor: Color(0xff78A2CC),
         currentIndex: this._currentIndex,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
+      ),*/
+      /*bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF00D0E1), Color(0xFF00B3FA)],
+            begin: Alignment.topLeft,
+            end: Alignment.topRight,
+            stops: [0.0, 0.8],
+            tileMode: TileMode.clamp,
+          ),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: 0,
+          onTap: (index) {},
+          showUnselectedLabels: false,
+          backgroundColor: Colors.transparent,
+          type: BottomNavigationBarType.fixed,
+          elevation: 0,
+          unselectedItemColor: Colors.white,
+          selectedIconTheme: IconThemeData(color: Colors.white),
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text(
+                "Home",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.business),
+              title: Text(
+                "Business",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              title: Text(
+                "School",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),*/
+      bottomNavigationBar: Container(
+        decoration: new BoxDecoration(
+          gradient: new LinearGradient(colors: [
+            Color(0xffBFD4DB),
+            Color(0xff78A2CC)
+          ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: [0.0,1.0],
+              tileMode: TileMode.clamp
+          ),
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          onTap: _onItemTapped,
+          currentIndex: this._currentIndex,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.black,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage("lib/assets/images/library.png"),
+              ),
+              title: Text("Library"),
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage("lib/assets/images/family.png"),
+              ),
+              title: Text("Family"),
+            ),
+            /*BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              title: Text("News"),
+            ),*/
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage("lib/assets/images/account.png"),
+              ),
+              title: Text("Account"),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -469,10 +566,13 @@ class _Fragment4State extends State<Fragment4> {
   String picPath = "";
 
   Future<void> getUserInfo() async {
-    userModel = await GlobalStorage().getUser();
-    setState(() {
-      name = userModel.name;
-      picPath = userModel.profilePicPath;
+    //userModel = await GlobalStorage().getUser();
+    GlobalStorage().getUser().then((value){
+      userModel = value;
+      setState(() {
+        name = userModel.name;
+        picPath = userModel.profilePicPath;
+      });
     });
   }
 
@@ -509,7 +609,7 @@ class _Fragment4State extends State<Fragment4> {
                    child: Padding(
                      padding: const EdgeInsets.only(bottom:55.0),
                      child: Text(
-                       "ACCOUNTS",
+                       "ACCOUNT",
                        textAlign: TextAlign.center,
                        style: new TextStyle(
                            fontFamily: 'Helvetica',
@@ -577,7 +677,7 @@ class _Fragment4State extends State<Fragment4> {
                      elevation: 0,
                      color: Colors.transparent,
                      child: ListTile(
-                       title: Text("Friends", style: TextStyle(
+                       title: Text("Family", style: TextStyle(
                            fontFamily: 'Helvetica',
                            color: Colors.black,
                            fontSize: 15,

@@ -25,24 +25,27 @@ class FirebaseDB {
 
   void startDBListener() async
   {
-    final userM = await GlobalStorage().getUser();
-    String userid = userM.userID;
-    updates = databaseReference.child("call").child(userid).onChildAdded.listen((event) {
+    //final userM = await GlobalStorage().getUser();
 
-      if(event.snapshot.key == "roomID")
-      {
-        if(event.snapshot.value != null && event.snapshot.value != "")
+    GlobalStorage().getUser().then((value){
+      String userid = value.userID;
+      updates = databaseReference.child("call").child(userid).onChildAdded.listen((event) {
+
+        if(event.snapshot.key == "roomID")
         {
-          //jitsiMeet().joinMeeting("",event.snapshot.value);
+          if(event.snapshot.value != null && event.snapshot.value != "")
+          {
+            //jitsiMeet().joinMeeting("",event.snapshot.value);
+          }
         }
-      }
-      if(event.snapshot.key == "title")
-      {
-        if(event.snapshot.value != null && event.snapshot.value != "")
+        if(event.snapshot.key == "title")
         {
-          //jitsiMeet().joinMeeting(event.snapshot.value,"");
+          if(event.snapshot.value != null && event.snapshot.value != "")
+          {
+            //jitsiMeet().joinMeeting(event.snapshot.value,"");
+          }
         }
-      }
+      });
     });
   }
 
