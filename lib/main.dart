@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:katha/StoryIntro.dart';
 import 'package:katha/StorySlider.dart';
 import 'package:katha/UserModel.dart';
 import 'package:katha/login.dart';
