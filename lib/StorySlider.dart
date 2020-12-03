@@ -10,6 +10,9 @@ class StorySlider extends StatefulWidget {
 }
 
 class _StorySliderState extends State<StorySlider> {
+
+  List gingerBread = ["lib/assets/Story/Cover.jpg","Picture1.png","lib/assets/Story/Picture2.png","lib/assets/Story/Picture3.png","lib/assets/Story/Picture4.png","lib/assets/Story/Picture5.png","lib/assets/Story/Picture6.png","lib/assets/Story/Picture7.png","lib/assets/Story/Picture8.png","lib/assets/Story/Picture9.png","lib/assets/Story/Picture10.png","lib/assets/Story/Picture11.png","lib/assets/Story/Picture12.png"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,9 +66,11 @@ class _StorySliderState extends State<StorySlider> {
                       height: MediaQuery.of(context).size.height - 120,
                       width: MediaQuery.of(context).size.width,
                       color: Colors.blue,
-                    ),
-                    Center(
-                      child: Text("Page $index"),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("lib/assets/Story/Cover.jpg"),fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ],
                 );
