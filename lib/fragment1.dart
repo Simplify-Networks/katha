@@ -36,9 +36,9 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
 
-    List storyphoto = ["lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
-    List storytittle = ["Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
-    List storyexplaination = ["Story of a Beautiful Princess", "An Adventurous Tale","A Moral Story","A Bunny's Adventure","Story on a Little Bear","Fun Little Story about a Monster","Tale of Two Best Friends","Tale of Two Tails","Story of Thomas and Friends","A Brave Soldier's Tale"];
+    List storyphoto = ["lib/assets/Story/gingerbread.jpg","lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
+    List storytittle = ["The Gingerbread Man","Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
+    List storyexplaination = ["An American Fairy Tale","Story of a Beautiful Princess", "An Adventurous Tale","A Moral Story","A Bunny's Adventure","Story on a Little Bear","Fun Little Story about a Monster","Tale of Two Best Friends","Tale of Two Tails","Story of Thomas and Friends","A Brave Soldier's Tale"];
 
     return Scaffold(
       body: Stack(
@@ -321,7 +321,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                     ],
                   );
                 },
-                itemCount: 10,
+                itemCount: 11,
               ),
             ),
           ),

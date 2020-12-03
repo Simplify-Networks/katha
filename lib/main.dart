@@ -4,7 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:katha/StoryIntro.dart';
+import 'package:katha/StorySlider.dart';
 import 'package:katha/UserModel.dart';
 import 'package:katha/login.dart';
 import 'package:katha/splash.dart';
@@ -718,9 +722,11 @@ class _Fragment4State extends State<Fragment4> {
 }
 
 signout(BuildContext context) async{
-  await _auth.signOut();
   GlobalStorage().logoff();
-  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+  await _auth.signOut();
+  await GoogleSignIn().signOut();
+  await FacebookAuth.instance.logOut();
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Splash()));
 }
 
 

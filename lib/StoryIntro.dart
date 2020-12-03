@@ -24,7 +24,7 @@ class _StoryIntroState extends State<StoryIntro> {
           Container(
             height: MediaQuery.of(context).size.height/2.5,
             width: MediaQuery.of(context).size.width,
-            child: Image(image:AssetImage("lib/assets/Story/Beauty and the beast.jpg"), fit: BoxFit.cover),
+            child: Image(image:AssetImage("lib/assets/Story/gingerbread.jpg"), fit: BoxFit.cover),
           ),
           Container(
             child:Padding(
@@ -34,14 +34,14 @@ class _StoryIntroState extends State<StoryIntro> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Text("CARRIE CARDINAL", style: TextStyle(
+                  Text("The Gingerbread Man", style: TextStyle(
                       fontFamily: 'SFProDisplay',
                       color: Colors.blueAccent,
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                   ),),
                   SizedBox(height: 15),
-                  Text("Publisher: Megan Casas", style: TextStyle(
+                  Text("Publisher: Usborne Publishing Ltd", style: TextStyle(
                     fontFamily: 'SFProDisplay',
                     color: Colors.black,
                     fontSize: 20,
@@ -53,20 +53,20 @@ class _StoryIntroState extends State<StoryIntro> {
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),),
-                  Text("Author:Megan Casas", style: TextStyle(
+                  Text("Author: Lesley Sims", style: TextStyle(
                     fontFamily: 'SFProDisplay',
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),),
-                  Text("Pages: 14", style: TextStyle(
+                  Text("Pages: 12", style: TextStyle(
                     fontFamily: 'SFProDisplay',
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),),
                   SizedBox(height: 30),
-                  Text("Childeren's Christmas Book", style: TextStyle(
+                  Text("Usborne Listen and Read Story Books", style: TextStyle(
                     fontFamily: 'SFProDisplay',
                     color: Colors.black,
                     fontSize: 20,
