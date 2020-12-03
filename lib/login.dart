@@ -417,11 +417,17 @@ isFirebaseAuthSignedIn(BuildContext context) async{
           downloadImage(userProfilePic);
         }
 
-        checkUserExist(email).then((value) {
-          if(!value) {
-            registerUser(email, userID, userType, userName, userProfilePic);
-          }
-        });
+        // checkUserExist(email).then((value) {
+        //   if(!value) {
+        //     registerUser(email, userID, userType, userName, userProfilePic);
+        //   }
+        // });
+        bool abc;
+        abc = await checkUserExist(email);
+        if(!abc) {
+               registerUser(email, userID, userType, userName, userProfilePic);
+             }
+
 
         userName = user.displayName;
 
