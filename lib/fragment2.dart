@@ -141,19 +141,31 @@ class _Fragment2State extends State<Fragment2> {
         {
           if(customController.text.toString() != userModel.userID)
           {
-            bool exist = await checkUserID(customController.text.toString());
+            var isFriend = false;
+            for(var i=0;i<UserDetailsList.length;i++){
+              if(customController.text.toString() == UserDetailsList[i].userid){
+                isFriend = true;
+                break;
+              }
+            }
 
-            if(exist){
-              databaseReference.child("friend_request").child(customController.text.toString()).child(userModel.userID).set({
-                'requestor_id': userModel.userID,
-                'name':userModel.name,
-                'picPath':userModel.profilePicPath,
-                'status':'request',
-              });
-              Toast.show("Request sent.", context, duration: 3);
+            if(!isFriend){
+              bool exist = await checkUserID(customController.text.toString());
+              if(exist){
+                databaseReference.child("friend_request").child(customController.text.toString()).child(userModel.userID).set({
+                  'requestor_id': userModel.userID,
+                  'name':userModel.name,
+                  'picPath':userModel.profilePicPath,
+                  'status':'request',
+                });
+                Toast.show("Request sent.", context, duration: 3);
+              }
+              else{
+                Toast.show("User ID not found.", context, duration: 3);
+              }
             }
             else{
-              Toast.show("User ID not found.", context, duration: 3);
+              Toast.show("User ID added.", context, duration: 3);
             }
           }
           else

@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:katha/UserModel.dart';
 import 'package:katha/createaccount.dart';
+import 'package:toast/toast.dart';
 
 import 'DisplayUserList.dart';
 import 'GlobalStorage.dart';
@@ -84,7 +85,7 @@ class _FriendScreenState extends State<FriendScreen> {
     var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
     Map<String,dynamic> map = jsonDecode(response.body.toString());
     String s = map['status'];
-
+    print("response = $response");
     if(s != "success")
     {
       return false;
@@ -129,14 +130,11 @@ class _FriendScreenState extends State<FriendScreen> {
     await FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).once().then((DataSnapshot snapshot) {
       Map<dynamic,dynamic> map = snapshot.value;
 
-      print("map= $map");
-
       if(map !=  null)
       {
         map.forEach((key, value) {
           Map<dynamic,dynamic> map1 = value;
           map1.forEach((key, value) {
-            print("value = $value");
             if(key == "picPath")
             {
               _picPath.add(value);
@@ -180,17 +178,20 @@ class _FriendScreenState extends State<FriendScreen> {
         FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).child(requestorID).remove();
         Navigator.of(context).pop();
         getFriendRequestList();
+        Toast.show("Friend rejected.", context, duration: 3);
       },
     );
 
     Widget acceptButton = FlatButton(
-      child: Text("Accpet"),
+      child: Text("Accept"),
       onPressed:  () {
-        addFriend(userModel.userID,requestorID);
-        FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).child(requestorID).remove();
-        Navigator.of(context).pop();
-        getFriendRequestList();
-        getFriend();
+        addFriend(userModel.userID,requestorID).then((value){
+          FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).child(requestorID).remove();
+          Navigator.of(context).pop();
+          getFriendRequestList();
+          getFriend();
+          Toast.show("Friend accepted.", context, duration: 3);
+        });
       },
     );
 
@@ -242,12 +243,20 @@ class _FriendScreenState extends State<FriendScreen> {
     );
 
     Widget DeleteButton = FlatButton(
-      child: Text("Delete"),
+      child: Text("Remove"),
       onPressed:  () {
-        deleteFriend(userModel.userID,requestorID);
-        FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).child(requestorID).remove();
-        Navigator.of(context).pop();
-        getFriend();
+        deleteFriend(userModel.userID,requestorID).then((value) {
+          if(value){
+            FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).child(requestorID).remove();
+            getFriend();
+            Navigator.of(context).pop();
+            Toast.show("Removed successfully.", context, duration: 3);
+          }
+          else{
+            Toast.show("Fail to remove.", context, duration: 3);
+          }
+
+        });
       },
     );
 
