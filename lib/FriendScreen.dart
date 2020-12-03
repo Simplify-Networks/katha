@@ -181,7 +181,7 @@ class _FriendScreenState extends State<FriendScreen> {
         FirebaseDatabase.instance.reference().child("friend_request").child(userModel.userID).child(requestorID).remove();
         Navigator.of(context).pop();
         getFriendRequestList();
-        Toast.show("Friend rejected.", context, duration: 3);
+        Toast.show("Rejected.", context, duration: 3);
       },
     );
 
@@ -193,7 +193,7 @@ class _FriendScreenState extends State<FriendScreen> {
           Navigator.of(context).pop();
           getFriendRequestList();
           getFriend();
-          Toast.show("Friend accepted.", context, duration: 3);
+          Toast.show("Accepted.", context, duration: 3);
         });
       },
     );
