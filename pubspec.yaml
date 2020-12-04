@@ -35,7 +35,7 @@ dependencies:
   firebase_auth: "^0.18.1+2"
   firebase_database: ^4.3.0
   google_sign_in: "^4.5.1"
-  flutter_facebook_auth: "^0.3.0"
+  flutter_facebook_auth: ^1.0.2
   sign_in_with_apple: ^2.5.4
   http: ^0.12.2
   email_validator: ^1.0.0

@@ -22,9 +22,9 @@ class jitsiMeet{
   var subjectText = "";
   var nameText = "";
   var emailText = "";
-  var isAudioOnly = true;
-  var isAudioMuted = true;
-  var isVideoMuted = true;
+  var isAudioOnly = false;
+  var isAudioMuted = false;
+  var isVideoMuted = false;
   UserModel userM = new UserModel();
 
   factory jitsiMeet(){
