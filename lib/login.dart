@@ -269,31 +269,34 @@ signInWithGoogle() async {
 
 ///Sign in With Facebook
 signInWithFacebook() async {
-  // Trigger the sign-in flow
-  final LoginResult result = await FacebookAuth.instance.login();
+  // await platform.invokeMethod('signOutAGConnectAuth');
+  try {
+    // by default the login method has the next permissions ['email','public_profile']
+    AccessToken accessToken = await FacebookAuth.instance.login();
+    var facebookUserInfo = await FacebookAuth.instance.getUserData();
+    print(accessToken.token);
 
-  switch (result.status) {
-    case FacebookAuthLoginResponse.ok:
-    // get the user data
-    /*final userData = await FacebookAuth.instance.getUserData(fields: "name, picture.height(200)");
-      setState(() {
-        userProfilePic = userData["picture"]["data"]["url"].toString();
-        userName = userData["name"].toString();
-        isLogin = true;
-      });*/
-      break;
-    case FacebookAuthLoginResponse.cancelled:
-      print("login cancelled");
-      break;
-    default:
-      print("login failed");
+      // Create a credential fthe access token
+    final FacebookAuthCredential facebookAuthCredential =
+    FacebookAuthProvider.credential(accessToken.token);
+
+    // Once signed in, return the UserCredential
+    await _auth.signInWithCredential(facebookAuthCredential);
+
+  } on FacebookAuthException catch (e) {
+    print(e.message);
+    switch (e.errorCode) {
+      case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+        print("You have a previous login operation in progress");
+        break;
+      case FacebookAuthErrorCode.CANCELLED:
+        print("login cancelled");
+        break;
+      case FacebookAuthErrorCode.FAILED:
+        print("login failed");
+        break;
+    }
   }
-
-  // Create a credential from the access token
-  final FacebookAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(result.accessToken.token);
-
-  // Once signed in, return the UserCredential
-  await _auth.signInWithCredential(facebookAuthCredential);
 }
 
 ///Sign in with Apple

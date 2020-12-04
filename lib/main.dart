@@ -645,7 +645,7 @@ class _Fragment4State extends State<Fragment4> {
                        style: new TextStyle(
                            fontFamily: 'Capriola',
                            color: Colors.white,
-                           fontSize: 20,
+                           fontSize: 30,
                            fontWeight: FontWeight.w400
                        ),
                      ),

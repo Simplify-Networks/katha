@@ -381,7 +381,7 @@ class _Fragment2State extends State<Fragment2> {
                           style: new TextStyle(
                               fontFamily: 'Capriola',
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 30,
                               fontWeight: FontWeight.w400
                           ),
                         ),
@@ -389,7 +389,7 @@ class _Fragment2State extends State<Fragment2> {
                     ),
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10,65,10,0),
+                        padding: const EdgeInsets.fromLTRB(10,60,10,0),
                         child:Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
