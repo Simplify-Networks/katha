@@ -35,39 +35,39 @@ class _StoryIntroState extends State<StoryIntro> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Text("The Gingerbread Man", style: TextStyle(
-                      fontFamily: 'SFProDisplay',
+                      fontFamily: 'Capriola',
                       color: Colors.blueAccent,
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                   ),),
                   SizedBox(height: 15),
                   Text("Publisher: Usborne Publishing Ltd", style: TextStyle(
-                    fontFamily: 'SFProDisplay',
+                    fontFamily: 'Capriola',
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),),
                   Text("Age Ranges: 3 - 9", style: TextStyle(
-                    fontFamily: 'SFProDisplay',
+                    fontFamily: 'Capriola',
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),),
                   Text("Author: Lesley Sims", style: TextStyle(
-                    fontFamily: 'SFProDisplay',
+                    fontFamily: 'Capriola',
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),),
                   Text("Pages: 12", style: TextStyle(
-                    fontFamily: 'SFProDisplay',
+                    fontFamily: 'Capriola',
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),),
                   SizedBox(height: 30),
                   Text("Usborne Listen and Read Story Books", style: TextStyle(
-                    fontFamily: 'SFProDisplay',
+                    fontFamily: 'Capriola',
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
@@ -100,7 +100,7 @@ class _StoryIntroState extends State<StoryIntro> {
               child: Container(
                 alignment: Alignment.center,
                 child: Text("Read By Myself", style: TextStyle(
-                    fontFamily: 'SFProDisplay',
+                    fontFamily: 'Capriola',
                     color: Colors.black,
                     fontSize: 13,
                     fontWeight: FontWeight.w200

@@ -65,7 +65,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                   "LIBRARY",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                      fontFamily: 'Helvetica',
+                      fontFamily: 'Capriola',
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.w400
@@ -294,18 +294,18 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(150,40,0,0),
                                 child: Text(storytittle[i], style: TextStyle(
-                                    fontFamily: 'SFProDisplay',
+                                    fontFamily: 'Capriola',
                                     color: Color(0xff4A4A4A),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700
                                 ),),
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(150,60,0,0),
                                 child: Text(storyexplaination[i], style: TextStyle(
-                                    fontFamily: 'Helvetica',
+                                    fontFamily: 'Capriola',
                                     color: Color(0xff4A4A4A),
-                                    fontSize: 15,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w300),
                                 ),
                               )],

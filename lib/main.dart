@@ -500,7 +500,7 @@ class _Fragment3State extends State<Fragment3> {
                   "News",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                      fontFamily: 'Helvetica',
+                      fontFamily: 'Capriola',
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.w400
@@ -530,7 +530,7 @@ class _Fragment3State extends State<Fragment3> {
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15,
-                                fontFamily: 'Helvetica',
+                                fontFamily: 'Capriola',
                               ),
                               textAlign: TextAlign.start,
                             ),
@@ -541,7 +541,7 @@ class _Fragment3State extends State<Fragment3> {
                               style: TextStyle(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 15,
-                                fontFamily: 'Helvetica',
+                                fontFamily: 'Capriola',
                               ),
                               textAlign: TextAlign.start,
                             ),
@@ -616,7 +616,7 @@ class _Fragment4State extends State<Fragment4> {
                        "ACCOUNT",
                        textAlign: TextAlign.center,
                        style: new TextStyle(
-                           fontFamily: 'Helvetica',
+                           fontFamily: 'Capriola',
                            color: Colors.white,
                            fontSize: 20,
                            fontWeight: FontWeight.w400
@@ -648,7 +648,7 @@ class _Fragment4State extends State<Fragment4> {
                  Padding(
                    padding: const EdgeInsets.only(top:10.0),
                    child: Text(name, style: TextStyle(
-                       fontFamily: 'SFProDisplay',
+                       fontFamily: 'Capriola',
                        color: Colors.black,
                        fontSize: 17,
                        fontWeight: FontWeight.w600
@@ -657,7 +657,7 @@ class _Fragment4State extends State<Fragment4> {
                  Padding(
                    padding: const EdgeInsets.only(top:10.0,bottom:10),
                    child: SelectableText("ID: ${userModel.userID}", style: TextStyle(
-                       fontFamily: 'Helvetica',
+                       fontFamily: 'Capriola',
                        color: Colors.black,
                        fontSize: 15,
                        fontWeight: FontWeight.w700
@@ -682,7 +682,7 @@ class _Fragment4State extends State<Fragment4> {
                      color: Colors.transparent,
                      child: ListTile(
                        title: Text("Family", style: TextStyle(
-                           fontFamily: 'Helvetica',
+                           fontFamily: 'Capriola',
                            color: Colors.black,
                            fontSize: 15,
                            fontWeight: FontWeight.w500
@@ -700,7 +700,7 @@ class _Fragment4State extends State<Fragment4> {
                      color: Colors.transparent,
                      child: ListTile(
                        title: Text("Sign Out", style: TextStyle(
-                           fontFamily: 'Helvetica',
+                           fontFamily: 'Capriola',
                            color: Colors.red,
                            fontSize: 15,
                            fontWeight: FontWeight.w600

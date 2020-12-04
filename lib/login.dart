@@ -106,7 +106,7 @@ class SubTitle extends StatelessWidget {
         "Inspiring stories at your fingertips",
         textAlign: TextAlign.center,
         style: new TextStyle(
-            fontFamily: "Helvetica",
+            fontFamily: "Capriola",
             fontSize: 15.0,
             color: Colors.white,
             fontWeight: FontWeight.w400,

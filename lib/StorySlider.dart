@@ -23,7 +23,7 @@ class _StorySliderState extends State<StorySlider> {
             height: 170,
             child: Center(
               child: Text("The Gingerbread Man", style: TextStyle(
-                  fontFamily: 'SFProDisplay',
+                  fontFamily: 'Capriola',
                   color: Color(0xff4A4A4A),
                   fontSize: 25,
                   fontWeight: FontWeight.w800

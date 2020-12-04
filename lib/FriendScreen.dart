@@ -363,7 +363,7 @@ class _FriendScreenState extends State<FriendScreen> {
                             "Family",
                             textAlign: TextAlign.center,
                             style: new TextStyle(
-                                fontFamily: 'Helvetica',
+                                fontFamily: 'Capriola',
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w400
@@ -472,7 +472,7 @@ class _FriendScreenState extends State<FriendScreen> {
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(130,60,0,0),
                                         child: Text(FriendList[i].name, style: TextStyle(
-                                            fontFamily: 'SFProDisplay',
+                                            fontFamily: 'Capriola',
                                             color: Color(0xff4A4A4A),
                                             fontSize: 17,
                                             fontWeight: FontWeight.w600
@@ -539,7 +539,7 @@ class _FriendScreenState extends State<FriendScreen> {
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(130,60,0,0),
                                         child: Text(RequestorList[i].name, style: TextStyle(
-                                            fontFamily: 'SFProDisplay',
+                                            fontFamily: 'Capriola',
                                             color: Color(0xff4A4A4A),
                                             fontSize: 17,
                                             fontWeight: FontWeight.w600

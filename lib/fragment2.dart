@@ -192,7 +192,7 @@ class _Fragment2State extends State<Fragment2> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Add Family"),
+      title: Text("Invite a Member"),
       content: TextField(
         controller: customController,
         //decoration: new InputDecoration.collapsed(hintText: "Insert User ID"),
@@ -203,7 +203,7 @@ class _Fragment2State extends State<Fragment2> {
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.black),
           ),
-          hintText: "Insert User ID",
+          hintText: "Enter Katha ID",
         ),
       ),
       actions: [
@@ -368,7 +368,7 @@ class _Fragment2State extends State<Fragment2> {
                           "FAMILY",
                           textAlign: TextAlign.center,
                           style: new TextStyle(
-                              fontFamily: 'Helvetica',
+                              fontFamily: 'Capriola',
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.w400
@@ -468,7 +468,7 @@ class _Fragment2State extends State<Fragment2> {
                             children: <Widget>[
                               //Text(_notesForDisplay[(i-1) < 0 ? 0 : i], style: TextStyle(
                               Text(UserDetailsListDisplay[(i-1) < 0 ? 0 : i].name, style: TextStyle(
-                                  fontFamily: 'SFProDisplay',
+                                  fontFamily: 'Capriola',
                                   color: Color(0xff4A4A4A),
                                   fontSize: 17,
                                   fontWeight: FontWeight.w600
@@ -494,7 +494,7 @@ class _Fragment2State extends State<Fragment2> {
                           child: Column(
                             children: <Widget>[
                               Text(UserDetailsListDisplay[i].status == "-" ? "OFFLINE" : UserDetailsListDisplay[i].status, style: TextStyle(
-                                  fontFamily: 'Helvetica',
+                                  fontFamily: 'Capriola',
                                   //color: UserDetailsListDisplay[i].status == "-" ? Colors.red:Color(0xff51B549),
                                   color: getColor(UserDetailsListDisplay[i].status),
                                   fontSize: 10,

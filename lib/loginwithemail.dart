@@ -96,7 +96,7 @@ class SubTitle extends StatelessWidget {
         "Inspiring stories at your fingertips",
         textAlign: TextAlign.center,
         style: new TextStyle(
-          fontFamily: "Helvetica",
+          fontFamily: "Capriola",
           fontSize: 15.0,
           color: Colors.white,
           fontWeight: FontWeight.w400,
@@ -275,7 +275,7 @@ Future<List> checkUserExist(final String email, _password) async{
   getpassword = data[0]["password"];
   getusername = data[0]["userName"];
   getpic = data[0]["profilepicURL"];
-  getuserid = data[0]["serveruid"];
+  getuserid = data[0]["userID"];
   getusertype = data[0]["userType"];
   print('abc' + getpassword);
   // print("data: " + data.toString());

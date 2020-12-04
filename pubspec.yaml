@@ -107,5 +107,9 @@ flutter:
       fonts:
         - asset: lib/assets/font/font/SFProDisplay-Regular.ttf
 
+    - family: Capriola
+      fonts:
+        - asset: lib/assets/font/font/Capriola-Regular.ttf
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
