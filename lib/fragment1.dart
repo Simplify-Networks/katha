@@ -55,13 +55,14 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
 
+    double safearea = MediaQuery.of(context).padding.top;
 
     return Scaffold(
       body: Stack(
         children: <Widget>[
           Container(
             constraints: BoxConstraints.expand(
-              height: 150.0,
+              height: 220.0,
             ),
             decoration: new BoxDecoration(
               gradient: new LinearGradient(colors: [
@@ -77,11 +78,21 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
             child: Stack(
               overflow: Overflow.visible,
               children: <Widget>[
+                Positioned(child: Image.asset("lib/assets/images/applogo.png",
+                    height: 115),
+                  top: 1 + safearea,
+                  left: 5.0,
+                ),
+                Positioned(child: Image.asset("lib/assets/images/logoreverse.png",
+                    height: 80),
+                  top: 0 + safearea,
+                  right: 5.0,
+                ),
                 Column(
                   children: <Widget>[
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top:60.0),
+                        padding: const EdgeInsets.only(top:70.0),
                         child: Text(
                           "Library",
                           textAlign: TextAlign.center,
@@ -96,7 +107,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                     ),
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10,15,10,0),
+                        padding: const EdgeInsets.fromLTRB(10,65,10,0),
                         child:Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -340,7 +351,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
             ),
           ),*/
           Padding(
-            padding: const EdgeInsets.only(top:160.0),
+            padding: const EdgeInsets.only(top:230.0),
             child: Container(
               //padding: EdgeInsets.all(5),
               child: ListView.builder(

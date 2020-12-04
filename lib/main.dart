@@ -612,6 +612,9 @@ class _Fragment4State extends State<Fragment4> {
   }
   @override
   Widget build(BuildContext context) {
+
+    double safearea = MediaQuery.of(context).padding.top;
+
     return Scaffold(
      body: Container(
        child: Column(
@@ -620,7 +623,7 @@ class _Fragment4State extends State<Fragment4> {
              children: <Widget>[
                Container(
                  constraints: BoxConstraints.expand(
-                   height: 200.0,
+                   height: 220.0,
                  ),
                  decoration: new BoxDecoration(
                    gradient: new LinearGradient(colors: [
@@ -648,6 +651,16 @@ class _Fragment4State extends State<Fragment4> {
                      ),
                    ),
                  ),
+               ),
+               Positioned(child: Image.asset("lib/assets/images/applogo.png",
+                   height: 115),
+                 top: 1 + safearea,
+                 left: 5.0,
+               ),
+               Positioned(child: Image.asset("lib/assets/images/logoreverse.png",
+                   height: 80),
+                 top: 0 + safearea,
+                 right: 5.0,
                ),
                Container(
                  child: Center(

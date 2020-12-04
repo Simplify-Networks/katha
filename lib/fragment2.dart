@@ -332,6 +332,7 @@ class _Fragment2State extends State<Fragment2> {
   @override
   Widget build(BuildContext context) {
 
+    double safearea = MediaQuery.of(context).padding.top;
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
@@ -343,7 +344,7 @@ class _Fragment2State extends State<Fragment2> {
         children: <Widget>[
           Container(
             constraints: BoxConstraints.expand(
-              height: 180.0,
+              height: 220.0,
             ),
             decoration: new BoxDecoration(
               gradient: new LinearGradient(colors: [
@@ -359,6 +360,16 @@ class _Fragment2State extends State<Fragment2> {
             child: Stack(
               overflow: Overflow.visible,
               children: <Widget>[
+                Positioned(child: Image.asset("lib/assets/images/applogo.png",
+                    height: 115),
+                    top: 1 + safearea,
+                    left: 5.0,
+                ),
+                Positioned(child: Image.asset("lib/assets/images/logoreverse.png",
+                    height: 80),
+                  top: 0 + safearea,
+                  right: 5.0,
+                ),
                 Column(
                   children: <Widget>[
                     Center(
@@ -378,7 +389,7 @@ class _Fragment2State extends State<Fragment2> {
                     ),
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10,30,10,0),
+                        padding: const EdgeInsets.fromLTRB(10,65,10,0),
                         child:Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -433,7 +444,7 @@ class _Fragment2State extends State<Fragment2> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 180),
+            padding: const EdgeInsets.only(top: 220),
             child: ListView.builder(
               padding: EdgeInsets.zero,
               scrollDirection: Axis.vertical,

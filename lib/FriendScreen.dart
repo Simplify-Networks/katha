@@ -200,7 +200,19 @@ class _FriendScreenState extends State<FriendScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Friend Request"),
+      titlePadding: EdgeInsets.only(top: 15.0),
+      title: Row(
+        children: [
+          Text("    Friend Request"),
+          Spacer(),
+          IconButton(icon:
+           Icon(Icons.close),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
       content: Container(
         height: 140,
         child: Column(
@@ -217,7 +229,6 @@ class _FriendScreenState extends State<FriendScreen> {
         ),
       ),
       actions: [
-        cancelButton,
         rejectButton,
         acceptButton,
       ],

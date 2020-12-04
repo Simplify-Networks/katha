@@ -77,7 +77,7 @@ class _StoryIntroState extends State<StoryIntro> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top:50.0),
+            padding: const EdgeInsets.only(top:25.0),
             child: Container(
               alignment: Alignment.center,
               color: Colors.transparent,
