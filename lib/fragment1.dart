@@ -94,7 +94,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                       child: Padding(
                         padding: const EdgeInsets.only(top:70.0),
                         child: Text(
-                          "Library",
+                          "LIBRARY",
                           textAlign: TextAlign.center,
                           style: new TextStyle(
                               fontFamily: 'Capriola',
