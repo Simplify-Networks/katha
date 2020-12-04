@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:katha/GlobalStorage.dart';
 import 'package:katha/StoryIntro.dart';
+import 'package:katha/StoryIntroBusy.dart';
+import 'package:katha/StoryIntroGappu.dart';
+import 'package:katha/StoryIntroMere.dart';
+import 'package:katha/StoryIntroNaa.dart';
 import 'Story.dart';
 import 'UserModel.dart';
 import 'fragment2.dart';
@@ -20,6 +24,8 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   List storyphoto = ["lib/assets/Story/busyants.jpeg","lib/assets/Story/gappucannotdance.jpeg","lib/assets/Story/mybestfriend.jpeg","lib/assets/Story/undermybed.jpeg","lib/assets/Story/gingerbread.jpg","lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
   List storytittle = ["Busy Ants","Gappu Can't Dance","My Best Friend","Under My Bed","The Gingerbread Man","Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
   List storyexplaination = ["Describe Someone Who Is Very HardWorking","A Story about the Joy of Dancing","Would you like to have a very special friend?","There's a Tiger under the bed","An American Fairy Tale","Story of a Beautiful Princess", "An Adventurous Tale","A Moral Story","A Bunny's Adventure","Story on a Little Bear","Fun Little Story about a Monster","Tale of Two Best Friends","Tale of Two Tails","Story of Thomas and Friends","A Brave Soldier's Tale"];
+  // List storyintrotittle = ["Busy Ants","Gappu Can't Dance","My Best Friend","Under My Bed","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man", "The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man"];
+  // List storyintrophoto = ["Busy Ants","Gappu Can't Dance","My Best Friend","Under My Bed","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man", "The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man","The Gingerbread Man"];
 
   @override
   void initState() {
@@ -398,7 +404,32 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                               )],
                           ),
                           onTap:(){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => StoryIntro(storyTitle: storyListDisplay[i].storytittle)));
+                            if (storyListDisplay[i].storytittle == "Busy Ants") {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      StoryIntroBusy(storyTitle: storyListDisplay[i]
+                                          .storytittle,)));
+                            } else if (storyListDisplay[i].storytittle == "Gappu Can't Dance") {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      StoryIntroGappu(storyTitle: storyListDisplay[i]
+                                          .storytittle,)));
+                            } else if(storyListDisplay[i].storytittle== "My Best Friend") {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      StoryIntroNaa(storyTitle: storyListDisplay[i]
+                                          .storytittle,)));
+                            } else if(storyListDisplay[i].storytittle == "Under My Bed") {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      StoryIntroMere(storyTitle: storyListDisplay[i]
+                                          .storytittle,)));
+                            } else {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      StoryIntro(storyTitle: storyListDisplay[i]
+                                          .storytittle,)));
+                            }
                           },
                         ),
                       ),
