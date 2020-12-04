@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:katha/GlobalStorage.dart';
 import 'package:katha/StoryIntro.dart';
+import 'Story.dart';
 import 'UserModel.dart';
 import 'fragment2.dart';
 
@@ -14,11 +15,29 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   UserModel userModel = new UserModel();
   String name = "";
   String picPath = "";
+  List<Story> storyList = new List<Story>();
+  List<Story> storyListDisplay = new List<Story>();
+  List storyphoto = ["lib/assets/Story/gingerbread.jpg","lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
+  List storytittle = ["The Gingerbread Man","Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
+  List storyexplaination = ["An American Fairy Tale","Story of a Beautiful Princess", "An Adventurous Tale","A Moral Story","A Bunny's Adventure","Story on a Little Bear","Fun Little Story about a Monster","Tale of Two Best Friends","Tale of Two Tails","Story of Thomas and Friends","A Brave Soldier's Tale"];
 
   @override
   void initState() {
     getUserInfo();
+    assignStoryList();
     super.initState();
+  }
+
+  void assignStoryList() {
+    for(var i = 0;i<storyphoto.length;i++){
+      Story story = new Story();
+      story.storyexplaination = storyexplaination[i];
+      story.storytittle = storytittle[i];
+      story.storyphoto = storyphoto[i];
+
+      storyList.add(story);
+      storyListDisplay.add(story);
+    }
   }
 
   Future<void> getUserInfo() async {
@@ -36,11 +55,6 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
 
-    List forsearch = [];
-
-    List storyphoto = ["lib/assets/Story/gingerbread.jpg","lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
-    List storytittle = ["The Gingerbread Man","Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
-    List storyexplaination = ["An American Fairy Tale","Story of a Beautiful Princess", "An Adventurous Tale","A Moral Story","A Bunny's Adventure","Story on a Little Bear","Fun Little Story about a Monster","Tale of Two Best Friends","Tale of Two Tails","Story of Thomas and Friends","A Brave Soldier's Tale"];
 
     return Scaffold(
       body: Stack(
@@ -106,24 +120,24 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                                 ),
                               ),
                               onChanged: (text){
-                                // text = text.toLowerCase();
-                                // setState(() {
-                                //   if(text == "")
-                                //   {
-                                //    forsearch = null;
-                                //   }
-                                //   else
-                                //   {
-                                //     forsearch = null;
-                                //     UserDetailsListDisplay = new List<DisplayUserList>();
-                                //
-                                //     storytittle.forEach((story) {
-                                //       if (storytittle.name.toLowerCase().contains(text)) {
-                                //         UserDetailsListDisplay.add(userDetail);
-                                //       }
-                                //     });
-                                //   }
-                                // });
+                                text = text.toLowerCase();
+                                setState(() {
+                                  if(text == "")
+                                  {
+                                    storyListDisplay = storyList;
+                                  }
+                                  else
+                                  {
+                                    storyListDisplay = null;
+                                    storyListDisplay = new List<Story>();
+
+                                    storyList.forEach((userDetail) {
+                                      if (userDetail.storytittle.toLowerCase().contains(text)) {
+                                        storyListDisplay.add(userDetail);
+                                      }
+                                    });
+                                  }
+                                });
                                },
                             ),
                             data: Theme.of(context).copyWith(primaryColor: Colors.white),
@@ -351,11 +365,11 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                               Container(
                                 height: 130,
                                 width: 130,
-                                child: Image(image:AssetImage(storyphoto[i]), fit: BoxFit.cover),
+                                child: Image(image:AssetImage(storyListDisplay[i].storyphoto), fit: BoxFit.cover),
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(150,40,0,0),
-                                child: Text(storytittle[i], style: TextStyle(
+                                child: Text(storyListDisplay[i].storytittle, style: TextStyle(
                                     fontFamily: 'Capriola',
                                     color: Color(0xff4A4A4A),
                                     fontSize: 15,
@@ -364,7 +378,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(150,60,0,0),
-                                child: Text(storyexplaination[i], style: TextStyle(
+                                child: Text(storyListDisplay[i].storyexplaination, style: TextStyle(
                                     fontFamily: 'Capriola',
                                     color: Color(0xff4A4A4A),
                                     fontSize: 14,
@@ -373,7 +387,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                               )],
                           ),
                           onTap:(){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => StoryIntro(storyTitle: storytittle[i])));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => StoryIntro(storyTitle: storyListDisplay[i].storytittle)));
                           },
                         ),
                       ),
@@ -383,7 +397,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                     ],
                   );
                 },
-                itemCount: 11,
+                itemCount: storyListDisplay.length,
               ),
             ),
           ),
@@ -395,4 +409,5 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+
 }
