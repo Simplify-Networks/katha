@@ -36,6 +36,8 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
 
+    List forsearch = [];
+
     List storyphoto = ["lib/assets/Story/gingerbread.jpg","lib/assets/Story/Beauty and the beast.jpg","lib/assets/Story/Cinderella.jpg","lib/assets/Story/Golden Eggs and Ham.jpg", "lib/assets/Story/Hello bunny.jpg", "lib/assets/Story/How big are your worries.png","lib/assets/Story/How to make a monster smile.jpg","lib/assets/Story/In your own back yard.jpg","lib/assets/Story/Squirrel.jpg","lib/assets/Story/Thomas.jpg","lib/assets/Story/Warrier.png"];
     List storytittle = ["The Gingerbread Man","Beauty and the beast","Cinderella","Golden Eggs and Ham","Hello bunny", "How big are your worries","How to make a monster smile","In your own backyard","Squirrel","Thomas","Warrier"];
     List storyexplaination = ["An American Fairy Tale","Story of a Beautiful Princess", "An Adventurous Tale","A Moral Story","A Bunny's Adventure","Story on a Little Bear","Fun Little Story about a Monster","Tale of Two Best Friends","Tale of Two Tails","Story of Thomas and Friends","A Brave Soldier's Tale"];
@@ -45,7 +47,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
         children: <Widget>[
           Container(
             constraints: BoxConstraints.expand(
-              height: 200.0,
+              height: 150.0,
             ),
             decoration: new BoxDecoration(
               gradient: new LinearGradient(colors: [
@@ -58,20 +60,80 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                   tileMode: TileMode.clamp
               ),
             ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom:55.0),
-                child: Text(
-                  "LIBRARY",
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(
-                      fontFamily: 'Capriola',
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400
-                  ),
+            child: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top:60.0),
+                        child: Text(
+                          "Library",
+                          textAlign: TextAlign.center,
+                          style: new TextStyle(
+                              fontFamily: 'Capriola',
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10,15,10,0),
+                        child:Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white24,
+                          ),
+                          height: 40,
+                          child: Theme(
+                            child: TextField(
+                              cursorColor: Colors.black,
+                              decoration: InputDecoration(
+                                hintText: '',
+                                prefixIcon: IconTheme(
+                                  data: new IconThemeData(color: Colors.white),
+                                  child: new Icon(Icons.search),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white12,width: 0),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white12,width: 0),
+                                ),
+                              ),
+                              onChanged: (text){
+                                // text = text.toLowerCase();
+                                // setState(() {
+                                //   if(text == "")
+                                //   {
+                                //    forsearch = null;
+                                //   }
+                                //   else
+                                //   {
+                                //     forsearch = null;
+                                //     UserDetailsListDisplay = new List<DisplayUserList>();
+                                //
+                                //     storytittle.forEach((story) {
+                                //       if (storytittle.name.toLowerCase().contains(text)) {
+                                //         UserDetailsListDisplay.add(userDetail);
+                                //       }
+                                //     });
+                                //   }
+                                // });
+                               },
+                            ),
+                            data: Theme.of(context).copyWith(primaryColor: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
           ),
           /*Container(
@@ -264,7 +326,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
             ),
           ),*/
           Padding(
-            padding: const EdgeInsets.only(top:220.0),
+            padding: const EdgeInsets.only(top:160.0),
             child: Container(
               //padding: EdgeInsets.all(5),
               child: ListView.builder(

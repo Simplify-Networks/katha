@@ -198,7 +198,7 @@ class _FriendScreenState extends State<FriendScreen> {
       },
     );
 
-    // set up the AlertDialo
+    // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Friend Request"),
       content: Container(

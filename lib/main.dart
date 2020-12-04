@@ -312,38 +312,62 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
               tileMode: TileMode.clamp
           ),
         ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          onTap: _onItemTapped,
-          currentIndex: this._currentIndex,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.black,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage("lib/assets/images/library.png"),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 0),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            onTap: _onItemTapped,
+            currentIndex: this._currentIndex,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.black,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: ImageIcon(
+                  AssetImage("lib/assets/images/library.png"),
+                    size: 35
+                ),
+                title: Text("Library",
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(
+                    fontFamily: "Capriola",
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.normal
+                ),),
               ),
-              title: Text("Library"),
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage("lib/assets/images/family.png"),
+              BottomNavigationBarItem(
+                icon: ImageIcon(
+                  AssetImage("lib/assets/images/family.png"),
+                    size: 35
+                ),
+                title: Text("Family",
+                  textAlign: TextAlign.center,
+                    style: new TextStyle(
+                        fontFamily: "Capriola",
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.normal
+                  ),),
               ),
-              title: Text("Family"),
-            ),
-            /*BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              title: Text("News"),
-            ),*/
-            BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage("lib/assets/images/account.png"),
+              /*BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                title: Text("News"),
+              ),*/
+              BottomNavigationBarItem(
+                icon: ImageIcon(
+                  AssetImage("lib/assets/images/account.png"),
+                    size: 35
+                ),
+                title: Text("Account",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      fontFamily: "Capriola",
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.normal
+                  ),),
               ),
-              title: Text("Account"),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

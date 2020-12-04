@@ -333,7 +333,7 @@ class _Fragment2State extends State<Fragment2> {
   Widget build(BuildContext context) {
 
     Size size = MediaQuery.of(context).size;
-    double heigh = size.height;
+    double height = size.height;
     double width = size.width;
     String roomID = "";
     
@@ -343,7 +343,7 @@ class _Fragment2State extends State<Fragment2> {
         children: <Widget>[
           Container(
             constraints: BoxConstraints.expand(
-              height: 200.0,
+              height: 180.0,
             ),
             decoration: new BoxDecoration(
               gradient: new LinearGradient(colors: [
@@ -363,7 +363,7 @@ class _Fragment2State extends State<Fragment2> {
                   children: <Widget>[
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top:60.0),
+                        padding: const EdgeInsets.only(top:70.0),
                         child: Text(
                           "FAMILY",
                           textAlign: TextAlign.center,
@@ -378,7 +378,7 @@ class _Fragment2State extends State<Fragment2> {
                     ),
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10,50,10,0),
+                        padding: const EdgeInsets.fromLTRB(10,30,10,0),
                         child:Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -433,7 +433,7 @@ class _Fragment2State extends State<Fragment2> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 210),
+            padding: const EdgeInsets.only(top: 180),
             child: ListView.builder(
               padding: EdgeInsets.zero,
               scrollDirection: Axis.vertical,
