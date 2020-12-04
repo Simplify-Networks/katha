@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:jitsi_meet/feature_flag/feature_flag.dart';
 import 'package:jitsi_meet/feature_flag/feature_flag_enum.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:jitsi_meet/jitsi_meeting_listener.dart';
@@ -79,7 +80,7 @@ class jitsiMeet{
       // Enable or disable any feature flag here
       // If feature flag are not provided, default values will be used
       // Full list of feature flags (and defaults) available in the README
-      Map<FeatureFlagEnum, bool> featureFlags = {
+      /*Map<FeatureFlagEnum, bool> featureFlags = {
         FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
         FeatureFlagEnum.LIVE_STREAMING_ENABLED: false,
         FeatureFlagEnum.INVITE_ENABLED: false,
@@ -101,11 +102,30 @@ class jitsiMeet{
       } else if (Platform.isIOS) {
         // Disable PIP on iOS as it looks weird
         featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
+      }*/
+
+      FeatureFlag featureFlag = FeatureFlag();
+      featureFlag.welcomePageEnabled = false;
+      featureFlag.liveStreamingEnabled = false;
+      featureFlag.inviteEnabled= false;
+      featureFlag.chatEnabled= false;
+      featureFlag.toolboxAlwaysVisible= false;
+      featureFlag.raiseHandEnabled= false;
+      featureFlag.recordingEnabled= false;
+      featureFlag.iOSRecordingEnabled= false;
+      featureFlag.calendarEnabled= false;
+      featureFlag.addPeopleEnabled= false;
+      featureFlag.closeCaptionsEnabled= false;
+
+      if (Platform.isAndroid) {
+        featureFlag.callIntegrationEnabled = false;
+      } else if (Platform.isIOS) {
+        featureFlag.pipEnabled = false;
       }
 
       if(hideTitle)
       {
-        featureFlags[FeatureFlagEnum.MEETING_NAME_ENABLED] = false;
+        featureFlag.meetingNameEnabled= false;
       }
 
       UserModel userModel = await GlobalStorage().getUser();
@@ -120,7 +140,18 @@ class jitsiMeet{
         ..audioOnly = isAudioOnly
         ..audioMuted = isAudioMuted
         ..videoMuted = isVideoMuted
-        ..featureFlags.addAll(featureFlags);
+        ..featureFlag = featureFlag;
+
+      /*var options = JitsiMeetingOptions()
+        ..room = roomText.text
+        ..serverURL = serverUrl
+        ..subject = subjectText.text
+        ..userDisplayName = nameText.text
+        ..userEmail = emailText.text
+        ..audioOnly = isAudioOnly
+        ..audioMuted = isAudioMuted
+        ..videoMuted = isVideoMuted
+        ..featureFlag = featureFlag;*/
 
       debugPrint("JitsiMeetingOptions: $options");
       await JitsiMeet.joinMeeting(
