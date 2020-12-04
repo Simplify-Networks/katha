@@ -46,7 +46,7 @@ class _Fragment2State extends State<Fragment2> {
   StreamSubscription <Event> updates;
   TextEditingController customController = TextEditingController();
 
-   Future<bool> checkUserID(final String userid) async{
+  Future<bool> checkUserID(final String userid) async{
     final url = "http://35.198.227.22/getUser"; // production server
     Map body = {"userID": userid};
     var response = await http.post(url, body: json.encode(body), headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
@@ -68,9 +68,14 @@ class _Fragment2State extends State<Fragment2> {
     //userModel = await GlobalStorage().getUser();
     GlobalStorage().getUser().then((value) async {
       userModel = value;
-      _FrienduserID.clear();
-      _Friendname.clear();
-      _FriendpicPath.clear();
+//      _FrienduserID.clear();
+//      _Friendname.clear();
+//      _FriendpicPath.clear();
+      _notes.clear();
+      _notesForDisplay.clear();
+      _userID.clear();
+      _picPath.clear();
+      _status.clear();
 
       final url = "http://35.198.227.22/getFriend"; // production server
       Map body = {"myUserID": userModel.userID};
@@ -80,10 +85,6 @@ class _Fragment2State extends State<Fragment2> {
       map.forEach((key, value) {
         List<dynamic> list = value;
         for(var i=0;i<list.length;i++){
-//        _FrienduserID.add(list[i]["userID"]);
-//        _Friendname.add(list[i]["userName"]);
-//        _FriendpicPath.add(list[i]["profilepicURL"]);
-//        _notesForDisplay.add(list[i]["userName"]);
           _notes.add(list[i]["userName"]);
           _notesForDisplay.add(list[i]["userName"]);
           _userID.add(list[i]["userID"]);
@@ -110,6 +111,9 @@ class _Fragment2State extends State<Fragment2> {
         }
       }
     }
+
+    UserDetailsList.clear();
+    UserDetailsListDisplay.clear();
 
     for(var i = 0;i<_notesForDisplay.length;i++)
     {
@@ -221,43 +225,45 @@ class _Fragment2State extends State<Fragment2> {
     );
   }
 
-  void assignVariable(List name) {
-
-    for (var i = 0; i < name.length; i++) {
-      if(name[i]["userID"] != userModel.userID)
-      {
-        _notes.add(name[i]["userName"]);
-        _notesForDisplay.add(name[i]["userName"]);
-        _userID.add(name[i]["userID"]);
-        _picPath.add(name[i]["profilepicURL"]);
-        _status.add("-");
-      }
-    }
-
-    for (var i = 0; i < _id.length; i++) {
-      for (var j = 0; j < _userID.length; j++) {
-        if(_id[i] == _userID[j])
-        {
-          _status[j] = _statusFromDb[i];
-        }
-      }
-    }
-
-    for(var i = 0;i<_notesForDisplay.length;i++)
-    {
-      DisplayUserList displayUserList = new DisplayUserList();
-      displayUserList.name = _notes[i];
-      displayUserList.userid = _userID[i];
-      displayUserList.profilePicPath = _picPath[i];
-      displayUserList.status = _status[i];
-
-      UserDetailsList.add(displayUserList);
-      UserDetailsListDisplay.add(displayUserList);
-    }
-
-  }
+//  void assignVariable(List name) {
+//
+//    for (var i = 0; i < name.length; i++) {
+//      if(name[i]["userID"] != userModel.userID)
+//      {
+//        _notes.add(name[i]["userName"]);
+//        _notesForDisplay.add(name[i]["userName"]);
+//        _userID.add(name[i]["userID"]);
+//        _picPath.add(name[i]["profilepicURL"]);
+//        _status.add("-");
+//      }
+//    }
+//
+//    for (var i = 0; i < _id.length; i++) {
+//      for (var j = 0; j < _userID.length; j++) {
+//        if(_id[i] == _userID[j])
+//        {
+//          _status[j] = _statusFromDb[i];
+//        }
+//      }
+//    }
+//
+//    for(var i = 0;i<_notesForDisplay.length;i++)
+//    {
+//      DisplayUserList displayUserList = new DisplayUserList();
+//      displayUserList.name = _notes[i];
+//      displayUserList.userid = _userID[i];
+//      displayUserList.profilePicPath = _picPath[i];
+//      displayUserList.status = _status[i];
+//
+//      UserDetailsList.add(displayUserList);
+//      UserDetailsListDisplay.add(displayUserList);
+//    }
+//
+//  }
 
   Future<void> getUserStatus() async {
+    _id.clear();
+    _statusFromDb.clear();
     await databaseReference.child("user").once().then((DataSnapshot snapshot) {
       Map<dynamic,dynamic> map = snapshot.value;
       map.forEach((key, value) {
@@ -278,34 +284,47 @@ class _Fragment2State extends State<Fragment2> {
     });
   }
 
-  Future checkUsername() async{
-    final url = "http://35.198.227.22/getUsername"; // production server
-    Map body = {};
-    var body_encoded = json.encode(body);
-    var response = await http.post(url, body: body_encoded, headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
-    //print("Response: " + response.body);
-    var extractdata = json.decode(response.body);
-    List data;
-    data = extractdata["result"];
-    return data;
+  void setStatusListener(){
+    GlobalStorage().getUser().then((value){
+      updates = databaseReference.child("user").onValue.listen((event) {
+
+        //print(event.snapshot.value);
+        getUserStatus();
+      });
+
+    });
+
   }
 
-  Future<void> checkfordisplayusername() async {
-    //userModel = await GlobalStorage().getUser();
-    GlobalStorage().getUser().then((value) async {
-      userModel = value;
-      List list = await checkUsername();
-      setState(() {
-        assignVariable(list);
-      });
-    });
-  }
+//  Future checkUsername() async{
+//    final url = "http://35.198.227.22/getUsername"; // production server
+//    Map body = {};
+//    var body_encoded = json.encode(body);
+//    var response = await http.post(url, body: body_encoded, headers:{ "Accept": "application/json" } ,).timeout(Duration(seconds: 30));
+//    //print("Response: " + response.body);
+//    var extractdata = json.decode(response.body);
+//    List data;
+//    data = extractdata["result"];
+//    return data;
+//  }
+//
+//  Future<void> checkfordisplayusername() async {
+//    //userModel = await GlobalStorage().getUser();
+//    GlobalStorage().getUser().then((value) async {
+//      userModel = value;
+//      List list = await checkUsername();
+//      setState(() {
+//        assignVariable(list);
+//      });
+//    });
+//  }
 
   @override
   void initState() {
     // checkUsername();
     // assignVariable();
-    getUserStatus();
+    setStatusListener();
+    //getUserStatus();
     super.initState();
   }
 
@@ -337,7 +356,7 @@ class _Fragment2State extends State<Fragment2> {
     double height = size.height;
     double width = size.width;
     String roomID = "";
-    
+
     return Scaffold(
       body: Stack(
         overflow: Overflow.clip,
@@ -362,8 +381,8 @@ class _Fragment2State extends State<Fragment2> {
               children: <Widget>[
                 Positioned(child: Image.asset("lib/assets/images/applogo.png",
                     height: 115),
-                    top: 1 + safearea,
-                    left: 5.0,
+                  top: 1 + safearea,
+                  left: 5.0,
                 ),
                 Positioned(child: Image.asset("lib/assets/images/logoreverse.png",
                     height: 80),
