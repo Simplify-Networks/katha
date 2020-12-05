@@ -393,7 +393,7 @@ class _Fragment2State extends State<Fragment2> {
                   children: <Widget>[
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top:70.0),
+                        padding: const EdgeInsets.only(top:105.0),
                         child: Text(
                           "FAMILY",
                           textAlign: TextAlign.center,
@@ -408,7 +408,7 @@ class _Fragment2State extends State<Fragment2> {
                     ),
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10,60,10,0),
+                        padding: const EdgeInsets.fromLTRB(10,25,10,0),
                         child:Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),

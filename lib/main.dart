@@ -637,7 +637,7 @@ class _Fragment4State extends State<Fragment4> {
                  ),
                  child: Center(
                    child: Padding(
-                     padding: const EdgeInsets.only(bottom:55.0),
+                     padding: const EdgeInsets.only(bottom:5.0),
                      child: Text(
                        "ACCOUNT",
                        textAlign: TextAlign.center,

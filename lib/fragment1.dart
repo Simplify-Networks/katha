@@ -98,7 +98,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                   children: <Widget>[
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top:70.0),
+                        padding: const EdgeInsets.only(top:105.0),
                         child: Text(
                           "LIBRARY",
                           textAlign: TextAlign.center,
@@ -113,7 +113,7 @@ class _Fragment1State extends State<Fragment1> with AutomaticKeepAliveClientMixi
                     ),
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10,60,10,0),
+                        padding: const EdgeInsets.fromLTRB(10,25,10,0),
                         child:Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
