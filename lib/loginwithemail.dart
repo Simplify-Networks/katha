@@ -272,19 +272,23 @@ Future<List> checkUserExist(final String email, _password) async{
   var extractdata = json.decode(response.body);
   List data;
   data = extractdata["result"];
-  getpassword = data[0]["password"];
-  getusername = data[0]["userName"];
-  getpic = data[0]["profilepicURL"];
-  getuserid = data[0]["userID"];
-  getusertype = data[0]["userType"];
-  print('abc' + getpassword);
-  // print("data: " + data.toString());
+  if (data.isEmpty){
+    return [false];
+  } else {
+    getpassword = data[0]["password"];
+    getusername = data[0]["userName"];
+    getpic = data[0]["profilepicURL"];
+    getuserid = data[0]["userID"];
+    getusertype = data[0]["userType"];
+    print('abc' + getpassword);
+    // print("data: " + data.toString());
 
-  if(getpassword == _password){
-    details = [true,getusername,getpic,getuserid,getusertype,email];
-    return details;
-  }else{
-    return [false] ;
+    if (getpassword == _password) {
+      details = [true, getusername, getpic, getuserid, getusertype, email];
+      return details;
+    } else {
+      return [false];
+    }
   }
 }
 
